@@ -12,15 +12,17 @@ export default class ReceitaForm extends React.Component{
 		let nome_receita = this._nome_receita;
 		let ingredientes = this._ingredientes;
 		let modo_preparo = this._modo_preparo;
+		let categoria = this._categoria;
 
-		console.log(ingredientes.value);
+		console.log("No form");
+		console.log(categoria.value);
 
 		const lista_ingredientes = ingredientes.value.split('\n');
 		console.log(lista_ingredientes);
 
 		const lista_modo_preparo = modo_preparo.value.split('\n');
 
-		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo);
+		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value);
 		this._tempo_preparo.value = "";
 		this._nivel_dificuldade.value = "";
 		this._nome_receita.value = "";
@@ -31,6 +33,10 @@ export default class ReceitaForm extends React.Component{
 	render(){
 
 		const imageFile = require('../../images/recipe-icon.png');
+
+		const categorias = ['Bolos e Tortas', 'Doces e Sobremesas', 'Massas', 'Lanches'];
+
+		const categorias_select = categorias.map( (categoria, idx) => <option key={idx}>{categoria}</option>);
 
 		return(
 
@@ -51,6 +57,13 @@ export default class ReceitaForm extends React.Component{
 							<div className="col-sm-5">
 								<label htmlFor="nivel-dificuldade">Nivel de dificuldade</label>
 								<input type="text" className="form-control" id="nivel-dificuldade" ref={(input) => this._nivel_dificuldade = input}/>
+							</div>
+
+							<div className="form-group col-sm-6">
+							    <label htmlFor="categoriaSelect">Categoria da Receita</label>
+							    <select className="form-control" id="categoriaSelect" ref={(select) => this._categoria = select}>
+							      {categorias_select}
+							    </select>
 							</div>
 					    	
 						</div>				

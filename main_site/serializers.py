@@ -69,8 +69,8 @@ class ReceitaSerializer(serializers.ModelSerializer):
 		fields = ('id', 'nome_receita', 'foto_da_receita', 'url_da_imagem', 'subpartes', 'categoria', 'tempo_de_preparo', 'nivel_de_dificuldade')
 
 	def create(self, validated_data):
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 		subpartes_list = validated_data.pop('subpartes')
 
 		receita = Receita.objects.create(**validated_data)

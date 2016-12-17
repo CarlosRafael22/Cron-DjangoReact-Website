@@ -68,12 +68,12 @@ export default class ReceitaList extends React.Component{
 		this.setState({receitas});
 	}
 
-	_addReceita(tempo_de_preparo, nivel_de_dificuldade, nome_receita, ingredientes, modo_preparo){
+	_addReceita(tempo_de_preparo, nivel_de_dificuldade, nome_receita, ingredientes, modo_preparo, categoria){
 
 		//const receita = {nome_receita, nivel_de_dificuldade};
 		console.log("No add receita!!");
 
-		console.log(ingredientes);
+		console.log(categoria);
 
 		let lista_ingredientes_objs = [];
 		// Criando os ingredientes objects
@@ -107,7 +107,7 @@ export default class ReceitaList extends React.Component{
 		subpartes_lista.push(parte_receita);
 
 		/// CRIANDO O OBJETO RECEITA PARA SER MANDADO
-		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista}
+		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista, "categoria": categoria}
 		receita = JSON.stringify(receita);
 		jQuery.ajax({
 			type: 'POST',
@@ -116,7 +116,13 @@ export default class ReceitaList extends React.Component{
 			contentType: 'application/json'
 		}).done(newReceita => {
 			console.log("New recipe posted");
+			console.log(typeof(newReceita));
 			console.log(newReceita);
+
+			// Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
+			this._fetchReceitas()
+			console.log("atualizar no Add");
+			this.setState({receitas: this.state.receitas.concat([newReceita]) });
 		})
 		.fail(function(xhr, status, error){
 			console.log(error);

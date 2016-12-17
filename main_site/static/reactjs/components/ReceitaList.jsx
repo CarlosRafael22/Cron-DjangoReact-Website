@@ -38,9 +38,20 @@ export default class ReceitaList extends React.Component{
 
 	_deleteReceita(receita){
 
+		console.log("Vou deletar receita");
+		console.log(receita);
+
+		const receitaID = receita.id;
+
+		// Vai procurar o receita que vai ser removido na lista de receitas
+		let deletedReceita = this.state.receitas.filter(receita => receita.id == receitaID)[0];
+		console.log(deletedReceita);
+
 		jQuery.ajax({
 			method: 'DELETE',
-			url: `/receitas/${receita.id}`
+			url: `/api/receitas/${deletedReceita.id}`
+		}).done(function(){
+			console.log("Deletou");
 		});
 
 		// Mas nao vamos esperar ate que a request pra API termine antes de atualizar o component's state.
@@ -48,7 +59,8 @@ export default class ReceitaList extends React.Component{
 
 		// Clonando o array existente com o Spread Operator
 		const receitas = [...this.state.receitas];
-		const receitaIndex = receitas.indexOf(receita);
+		const receitaIndex = receitas.indexOf(deletedReceita);
+		console.log(receitaIndex);
 		// Remove the receita from the receita's array
 		receitas.splice(receitaIndex, 1);
 

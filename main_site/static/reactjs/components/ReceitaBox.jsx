@@ -25,13 +25,13 @@ class IngredientesSubparte extends React.Component{
 class ModoPreparoSubparte extends React.Component{
 		render(){
 			const lista_passos = this.props.lista_modo_preparo;
-			console.log("Passo");
-			console.log(lista_passos);
+			// console.log("Passo");
+			// console.log(lista_passos);
 			const listaPassos = lista_passos.map( (passo, idx) =>
 				<p key={idx}>{passo['descricao']} {passo['id']}</p>
 			);
-			console.log("PassoSubparte");
-			console.log(listaPassos);
+			// console.log("PassoSubparte");
+			// console.log(listaPassos);
 
 			let nome_parte;
 			if(this.props.nome_parte == null){
@@ -58,20 +58,20 @@ export default class ReceitaBox extends React.Component{
 		let listas_ingredientes = [];
 		let listas_modos_de_preparo = [];
 
-		console.log(subpartes);
-		console.log(typeof subpartes);
+		// console.log(subpartes);
+		// console.log(typeof subpartes);
 		for (var i=0; i<subpartes.length; i++){
-			console.log("Cada subparte");
-			console.log(subpartes[i]);
+			// console.log("Cada subparte");
+			// console.log(subpartes[i]);
 			listas_ingredientes.push(subpartes[i]['ingredientes']);
-			console.log(subpartes[i]["ingredientes"]);
+			// console.log(subpartes[i]["ingredientes"]);
 			listas_modos_de_preparo.push(subpartes[i]['modo_de_preparo']);
 			listas_nomes_partes.push(subpartes[i]['nome_da_parte']);
 		}
 
-		console.log(listas_ingredientes);
-		console.log(listas_modos_de_preparo);
-		console.log(listas_nomes_partes);
+		// console.log(listas_ingredientes);
+		// console.log(listas_modos_de_preparo);
+		// console.log(listas_nomes_partes);
 		return{
 			"nomes_partes": listas_nomes_partes, 
 			"listas_ingredientes" : listas_ingredientes, 
@@ -82,11 +82,11 @@ export default class ReceitaBox extends React.Component{
 
 	_getIngredientesView(listas_nomes_partes, listas_ingredientes){
 
-		console.log("No getView");
+		//console.log("No getView ingredientes");
 		return listas_ingredientes.map( (lista, index) => {
-			console.log(index);
-			console.log(listas_nomes_partes[index]);
-			console.log(lista);
+			// console.log(index);
+			// console.log(listas_nomes_partes[index]);
+			// console.log(lista);
 			return(
 				<IngredientesSubparte nome_parte={listas_nomes_partes[index]} lista_ingredientes={lista}
 				key={index} />
@@ -96,11 +96,11 @@ export default class ReceitaBox extends React.Component{
 	}
 
 	_getModoPreparoView(listas_nomes_partes, listas_modos_de_preparo){
-		console.log("No getView");
+		//console.log("No getView modo_de_preparo");
 		return listas_modos_de_preparo.map( (lista, index) => {
-			console.log(index);
-			console.log(listas_nomes_partes[index]);
-			console.log(lista);
+			// console.log(index);
+			// console.log(listas_nomes_partes[index]);
+			// console.log(lista);
 			return(
 				<ModoPreparoSubparte nome_parte={listas_nomes_partes[index]} lista_modo_preparo={lista}
 				key={index} />
@@ -117,7 +117,7 @@ export default class ReceitaBox extends React.Component{
 		// Show confirmation box before deleting
 		if(confirm('Tem certeza que quer deletar?')){
 			// Call the onDelete passed from the ReceitaList with the receita as argument
-			this.props.onDelete(this.props.receita);
+			this.props.onDelete(this.props);
 		}
 	}
 
@@ -125,8 +125,8 @@ export default class ReceitaBox extends React.Component{
 	render(){
 
 		const subpartesArrays = this._handleSubparts();
-		console.log("Pego no render:");
-		console.log(subpartesArrays["nomes_partes"]);
+		// console.log("Pego no render:");
+		// console.log(subpartesArrays["nomes_partes"]);
 
 		const ingredientes = this._getIngredientesView(subpartesArrays["nomes_partes"], subpartesArrays["listas_ingredientes"]);
 		const passos = this._getModoPreparoView(subpartesArrays["nomes_partes"], subpartesArrays["listas_modos_de_preparo"]);

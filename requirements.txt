@@ -1,0 +1,4 @@
+Django==1.10.3
+django-webpack-loader==0.4.1
+djangorestframework==3.5.3
+Pillow==3.4.2

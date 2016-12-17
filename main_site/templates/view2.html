@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block main %}
+<div id="ReceitaDiv"></div>
+{% render_bundle 'vendors' %}
+{% render_bundle 'ReceitaApp' %}
+{% endblock %}

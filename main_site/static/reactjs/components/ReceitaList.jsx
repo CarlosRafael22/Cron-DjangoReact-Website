@@ -68,12 +68,11 @@ export default class ReceitaList extends React.Component{
 		this.setState({receitas});
 	}
 
-	_addReceita(tempo_de_preparo, nivel_de_dificuldade, nome_receita, ingredientes, modo_preparo, categoria){
+	_addReceita(tempo_de_preparo, nivel_de_dificuldade, nome_receita, ingredientes, modo_preparo, categoria, foto_da_receita){
 
-		//const receita = {nome_receita, nivel_de_dificuldade};
 		console.log("No add receita!!");
 
-		console.log(categoria);
+		console.log(foto_da_receita);
 
 		let lista_ingredientes_objs = [];
 		// Criando os ingredientes objects
@@ -107,13 +106,13 @@ export default class ReceitaList extends React.Component{
 		subpartes_lista.push(parte_receita);
 
 		/// CRIANDO O OBJETO RECEITA PARA SER MANDADO
-		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista, "categoria": categoria}
+		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista, "categoria": categoria,
+		"foto_da_receita": foto_da_receita}
 		receita = JSON.stringify(receita);
 		jQuery.ajax({
 			type: 'POST',
 			url: '/api/receitas/',
-			data: receita,
-			contentType: 'application/json'
+			data: receita
 		}).done(newReceita => {
 			console.log("New recipe posted");
 			console.log(typeof(newReceita));

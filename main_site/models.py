@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 
+# Unique identifier pra gerar o nome da imagem
+import uuid
+
 # Create your models here.
 class Ingrediente(models.Model):
 	quantidade = models.CharField(max_length=50, null=True)
@@ -38,3 +41,12 @@ class Receita(models.Model):
 	# 	if not self.nome_receita:
 	# 		self.nome_receita = "Receita "+self._id
 	# 	super(Receita, self).save(*args, **kw)
+
+# TO CRIANDO UM MODEL DA IMAGEM PRA VER SE FICA MAIS FACIL DE SERIALIZAR
+# E TB PRA DPS PODER TER VARIAS IMAGENS EM UMA MESMA RECEITA
+class Foto_Receita(models.Model):
+	def upload_filename(instance, filename):
+		extension = filename.split(".")[-1]
+		return "{}.{}".format(uuid.uuid4(), extension)
+
+	foto = models.ImageField(upload_to=upload_filename, null=True)

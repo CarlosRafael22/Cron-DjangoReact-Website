@@ -3,10 +3,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita
-from .serializers import IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer
+from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita
+from .serializers import IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer
 
 from rest_framework import generics
+from rest_framework.decorators import parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class IngredienteList(generics.ListCreateAPIView):
 	queryset = Ingrediente.objects.all()
@@ -79,6 +81,7 @@ class ReceitaList(generics.ListCreateAPIView):
 	serializer_class = ReceitaSerializer
 
 @api_view(['GET', 'POST'])
+@parser_classes((FormParser, MultiPartParser,))
 def receita_list(request, format=None):
 
 	if request.method == 'GET':
@@ -87,8 +90,8 @@ def receita_list(request, format=None):
 		return Response(serializer.data)
 
 	elif request.method == 'POST':
-		# import pdb;
-		# pdb.set_trace();
+		import pdb;
+		pdb.set_trace();
 		serializer = ReceitaSerializer(data=request.data)
 		if serializer.is_valid():
 			# Salvando o objeto no banco
@@ -101,7 +104,11 @@ class ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = ReceitaSerializer
 ########################################################################
 
+class Foto_ReceitaList(generics.ListCreateAPIView):
+	queryset = Foto_Receita.objects.all()
+	serializer_class = Foto_ReceitaSerializer
 
+########################################################################
 def render_home(request):
 	return render(request, 'view1.html')
 

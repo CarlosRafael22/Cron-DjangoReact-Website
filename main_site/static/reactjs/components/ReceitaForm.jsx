@@ -2,6 +2,32 @@ import React from "react"
 
 export default class ReceitaForm extends React.Component{
 
+	constructor(){
+		super();
+
+		this.state = {
+			data_uri: null,
+			processing: false
+		}
+	}
+
+	_handleFile(event){
+
+		const reader = new FileReader();
+		const file = event.target.files[0];
+		console.log(file);
+
+		reader.onload = (upload) => {
+			this.setState({
+				data_uri: upload.target.result,
+				filename: file.name,
+				filetype: file.type
+			});
+		};
+
+		reader.readAsDataURL(file);
+	}
+
 	_handleSubmit(event){
 		// Then the page doesnt reaload when the form is submitted!!
 		event.preventDefault();
@@ -13,16 +39,26 @@ export default class ReceitaForm extends React.Component{
 		let ingredientes = this._ingredientes;
 		let modo_preparo = this._modo_preparo;
 		let categoria = this._categoria;
+		//let foto_receita = this._foto;
 
 		console.log("No form");
-		console.log(categoria.value);
+		//console.log(foto_receita.value);
+		console.log(this.state);
+
+		// Criando o objeto que vai ser mandado com a foto
+		const foto_data = {
+			data_uri: this.state.data_uri,
+			filename: this.state.filename,
+			filetype: this.state.filetype
+		};
+		console.log(foto_data);
 
 		const lista_ingredientes = ingredientes.value.split('\n');
-		console.log(lista_ingredientes);
+		//console.log(lista_ingredientes);
 
 		const lista_modo_preparo = modo_preparo.value.split('\n');
 
-		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value);
+		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, foto_data);
 		this._tempo_preparo.value = "";
 		this._nivel_dificuldade.value = "";
 		this._nome_receita.value = "";
@@ -70,7 +106,8 @@ export default class ReceitaForm extends React.Component{
 					    
 					</div>
 					<div className="form-group">
-					    <input type="file" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"/>
+					    <input type="file" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" ref={(input) => this._foto = input}
+					    onChange={this._handleFile.bind(this)}/>
 					    	<small id="fileHelp" className="form-text text-muted">Essa sera a imagem de capa da receita</small>
 					</div>
 					<div className="form-group row">

@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -140,7 +141,7 @@ WEBPACK_LOADER = {
 }
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-MEDIA_ROOT = os.path.join(MAIN_SITE_PATH, '/media/')
+MEDIA_ROOT = os.path.join(MAIN_SITE_PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT, used for managing stored files. 
 # It must end in a slash if set to a non-empty value.

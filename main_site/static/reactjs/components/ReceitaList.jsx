@@ -108,7 +108,8 @@ export default class ReceitaList extends React.Component{
 		/// CRIANDO O OBJETO RECEITA PARA SER MANDADO
 		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista, "categoria": categoria,
 		"foto_da_receita": foto_da_receita}
-		receita = JSON.stringify(receita);
+		//receita = JSON.stringify(receita);
+		console.log(receita);
 		jQuery.ajax({
 			type: 'POST',
 			url: '/api/receitas/',

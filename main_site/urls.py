@@ -20,7 +20,9 @@ urlpatterns = [
 	url(r'^api/receitas/(?P<pk>[0-9]+)/$', views.ReceitaDetail.as_view()),
 	url(r'^ingredientes/$', views.render_home),
 	url(r'^receitas/$', views.render_view2),
-	url(r'api/fotos/', views.Foto_ReceitaList.as_view()),
+	url(r'^chat/$', views.render_chat),
+	url(r'^api/fotos/$', views.Foto_ReceitaList.as_view()),
+	url(r'^api/fotos/(?P<pk>[0-9]+)/$', views.Foto_ReceitaDetail.as_view()),
 	
 ]
 

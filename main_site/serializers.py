@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita
 import json
 
-from drf_extra_fields.fields import Base64ImageField
+# from drf_extra_fields.fields import Base64ImageField
 
 # class IngredienteSerializer(serializers.Serializer):
 # 	quantidade = serializers.CharField(max_length=50)
@@ -64,8 +64,14 @@ class Parte_da_ReceitaSerializer(serializers.ModelSerializer):
 
 		return parte_da_receita
 
+class Foto_ReceitaSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Foto_Receita
+		fields = '__all__'
+
 class ReceitaSerializer(serializers.ModelSerializer):
-	foto_da_receita = Base64ImageField(max_length=None, use_url=True) 
+	foto_da_receita = Foto_ReceitaSerializer() 
 	subpartes = Parte_da_ReceitaSerializer(many=True)
 	class Meta:
 		model = Receita
@@ -92,11 +98,6 @@ class ReceitaSerializer(serializers.ModelSerializer):
 
 		return receita
 
-class Foto_ReceitaSerializer(serializers.ModelSerializer):
-
-	class Meta:
-		model = Foto_Receita
-		fields = '__all__'
 
 # data2 = {
 # 	'ingredientes': [{'nome_ingrediente': "150 g de farinha de trigo (1 xícara cheia)"}, {'nome_ingrediente': "1 colher de chá de fermento em pó"}],

@@ -10,6 +10,8 @@ from rest_framework import generics
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from django.views.decorators.csrf import csrf_exempt
+
 class IngredienteList(generics.ListCreateAPIView):
 	queryset = Ingrediente.objects.all()
 	serializer_class = IngredienteSerializer
@@ -80,11 +82,14 @@ class ReceitaList(generics.ListCreateAPIView):
 	queryset = Receita.objects.all()
 	serializer_class = ReceitaSerializer
 
+# @method_decorator(csrf_exempt)
 @api_view(['GET', 'POST'])
 @parser_classes((FormParser, MultiPartParser,))
 def receita_list(request, format=None):
 
 	if request.method == 'GET':
+		# import pdb;
+		# pdb.set_trace();
 		partes_receita = Receita.objects.all()
 		serializer = ReceitaSerializer(partes_receita, many=True)
 		return Response(serializer.data)
@@ -108,12 +113,19 @@ class Foto_ReceitaList(generics.ListCreateAPIView):
 	queryset = Foto_Receita.objects.all()
 	serializer_class = Foto_ReceitaSerializer
 
+class Foto_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Foto_Receita.objects.all()
+	serializer_class = Foto_ReceitaSerializer
+
 ########################################################################
 def render_home(request):
 	return render(request, 'view1.html')
 
 def render_view2(request):
 	return render(request, 'view2.html')
+
+def render_chat(request):
+	return render(request, 'viewChat.html')
 
 # Create your views here.
 

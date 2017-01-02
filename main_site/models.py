@@ -20,6 +20,16 @@ class Parte_da_Receita(models.Model):
 	ingredientes = models.ManyToManyField(Ingrediente)
 	modo_de_preparo = models.ManyToManyField(Passo_da_Receita)
 
+# TO CRIANDO UM MODEL DA IMAGEM PRA VER SE FICA MAIS FACIL DE SERIALIZAR
+# E TB PRA DPS PODER TER VARIAS IMAGENS EM UMA MESMA RECEITA
+class Foto_Receita(models.Model):
+	def upload_filename(instance, filename):
+		extension = filename.split(".")[-1]
+		return "{}.{}".format(uuid.uuid4(), extension)
+
+	foto = models.ImageField(upload_to=upload_filename, null=True)
+
+
 class Receita(models.Model):
 	def get_image_path(self, instance):
 		self.url_da_imagem = '/media/' + 'categorias/{0}/{1}'.format(self.categoria, instance)
@@ -27,7 +37,8 @@ class Receita(models.Model):
 
 
 	nome_receita = models.CharField(max_length=100, default="Receita")
-	foto_da_receita = models.ImageField(upload_to=get_image_path, null=True)
+	#foto_da_receita = models.ImageField(upload_to=get_image_path, null=True)
+	foto_da_receita = models.ForeignKey(Foto_Receita, null=True, on_delete=models.CASCADE, default=1)
 	url_da_imagem = models.CharField(max_length=100, null=True)
 	subpartes = models.ManyToManyField(Parte_da_Receita)
 	categoria = models.CharField(max_length=100, default="Sem categoria")
@@ -41,12 +52,3 @@ class Receita(models.Model):
 	# 	if not self.nome_receita:
 	# 		self.nome_receita = "Receita "+self._id
 	# 	super(Receita, self).save(*args, **kw)
-
-# TO CRIANDO UM MODEL DA IMAGEM PRA VER SE FICA MAIS FACIL DE SERIALIZAR
-# E TB PRA DPS PODER TER VARIAS IMAGENS EM UMA MESMA RECEITA
-class Foto_Receita(models.Model):
-	def upload_filename(instance, filename):
-		extension = filename.split(".")[-1]
-		return "{}.{}".format(uuid.uuid4(), extension)
-
-	foto = models.ImageField(upload_to=upload_filename, null=True)

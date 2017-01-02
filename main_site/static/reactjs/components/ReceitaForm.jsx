@@ -58,7 +58,7 @@ export default class ReceitaForm extends React.Component{
 
 		const lista_modo_preparo = modo_preparo.value.split('\n');
 
-		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, foto_data);
+		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, null);
 		this._tempo_preparo.value = "";
 		this._nivel_dificuldade.value = "";
 		this._nome_receita.value = "";

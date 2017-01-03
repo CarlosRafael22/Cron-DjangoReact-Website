@@ -119,6 +119,9 @@ class Foto_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 
 ########################################################################
 def render_home(request):
+	return render(request, 'main_view.html')
+
+def render_view1(request):
 	return render(request, 'view1.html')
 
 def render_view2(request):

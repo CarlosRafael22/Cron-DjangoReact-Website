@@ -26,7 +26,7 @@ export default class IngredienteBox extends React.Component{
 		return(
 			<div className="well">
 				<h3>{this.props.nome_ingrediente} {this.props.id}</h3>
-				<div clasName="row">
+				<div className="row">
 					<a href="#" className="col-sm-6">Quantidade: <span className="badge">{this.props.quantidade}</span></a>
 					<button className="btn btn-danger col-sm-6" onClick={this._handleDelete.bind(this)}>Deletar</button>
 				</div>

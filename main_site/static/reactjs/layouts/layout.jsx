@@ -1,0 +1,29 @@
+import React from "react"
+import { Link } from "react-router"
+
+export default class Layout extends React.Component{
+
+	render(){
+		return(
+
+			<div>
+				<ul className="nav nav-tabs">
+				  <li role="presentation" className="active">
+				  	<Link to="/home">Home</Link>
+				  </li>
+				  <li role="presentation">
+				  	<Link to="/ingredientes">Ingredientes</Link>
+				  </li>
+				  <li role="presentation">
+				  	<Link to="/receitas">Receitas</Link>
+				  </li>
+				  <li role="presentation">
+				  	<Link to="/home">Chat</Link>
+				  </li>
+				</ul>
+
+				{this.props.children}
+			</div>
+		)
+	}
+}

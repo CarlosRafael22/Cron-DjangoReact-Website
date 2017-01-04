@@ -18,7 +18,7 @@ export default class Layout extends React.Component{
 				  	<Link to="/receitas">Receitas</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="/home">Chat</Link>
+				  	<Link to="/chat">Chat</Link>
 				  </li>
 				</ul>
 

@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!doctype html>
 <html class="no-js" lang="">
   <head>
@@ -5,9 +6,72 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- A PARTIR DAQUI EH O CODIGO DO FIREBASE CHAT -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <!-- <link rel="manifest" href="manifest.json"> -->
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Friendly Chat">
+    <meta name="theme-color" content="#303F9F">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Friendly Chat">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-navbutton-color" content="#303F9F">
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+
     <script>console.time('react-app')</script>
   </head>
   <body>
+
     {% block main %}{% endblock %}
+
+    <!-- CODIGO DO FIREBASE CHAT DAQUI PRA BAIXO -->
+    <!-- Firebase -->
+    <!-- ***********************************************************************************************************************
+         * TODO(DEVELOPER): Paste the initialization snippet from: Firebase Console > Overview > Add Firebase to your web app. *
+         *********************************************************************************************************************** -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDN0d1r29U0X6J84cxsXQENU-x5q_RxZZQ",
+        authDomain: "chron-399c2.firebaseapp.com",
+        databaseURL: "https://chron-399c2.firebaseio.com",
+        storageBucket: "chron-399c2.appspot.com",
+        messagingSenderId: "4885211469"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="{% static 'scripts/chat.js' %}"></script> -->
+    
+    <!-- <script>
+    // and here's the trick (works everywhere)
+    function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+    // use like
+    r(function(){
+        alert('DOM Ready!');
+    });
+    </script> -->
   </body>
 </html>

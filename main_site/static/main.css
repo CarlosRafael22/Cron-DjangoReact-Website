@@ -53,7 +53,7 @@ main, #messages-card {
 }
 #messages {
   overflow-y: auto;
-  margin-bottom: 10px;
+  margin-bottom: 100px;
   height: calc(100% - 80px);
 }
 #message-filler {

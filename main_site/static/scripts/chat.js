@@ -21,8 +21,11 @@ function FriendlyChat() {
 
   // Shortcuts to DOM Elements.
   this.messageList = document.getElementById('messages');
+  console.log(this.messageList);
   this.messageForm = document.getElementById('message-form');
+  console.log(this.messageForm);
   this.messageInput = document.getElementById('message');
+  console.log(this.messageInput);
   this.submitButton = document.getElementById('submit');
   this.submitImageButton = document.getElementById('submitImage');
   this.imageForm = document.getElementById('image-form');
@@ -202,6 +205,8 @@ FriendlyChat.prototype.checkSignedInWithMessage = function() {
     message: 'You must sign-in first',
     timeout: 2000
   };
+  console.log("CheckSigned");
+  console.log(this.signInSnackbar);
   this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };

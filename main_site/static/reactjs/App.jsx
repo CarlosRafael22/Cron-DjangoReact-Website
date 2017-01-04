@@ -5,15 +5,8 @@ import {hashHistory, Router, Route, Redirect} from "react-router"
 import HomeContainer from "./containers/HomeContainer"
 import App1Container from "./containers/App1Container"
 import ReceitaContainer from "./containers/ReceitaContainer"
+import ChatContainer from "./containers/ChatContainer"
 import Layout from "./layouts/layout"
-
-// class App extends React.Component {
-//   render() {
-//     return (
-//       <App1Container />
-//     )
-//   }
-// }
 
 class AppRouter extends React.Component{
 	render(){
@@ -24,6 +17,7 @@ class AppRouter extends React.Component{
 					<Route path="home" component={HomeContainer} />
 					<Route path="ingredientes" component={App1Container} />
 					<Route path="receitas" component={ReceitaContainer} />
+					<Route path="chat" component={ChatContainer} />
 				</Route>
 			</Router>	
 		)

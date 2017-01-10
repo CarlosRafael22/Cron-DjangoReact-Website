@@ -16,9 +16,60 @@ export default class ChatContainer extends React.Component{
 		console.log(this.FriendlyChat.userPic);
 	}
 
-	_signInFirebase(){
-
+	componentWillUnmount(){
+		console.log("Terminando Chat");
 	}
+
+	// render(){
+
+	// 	const ownStyle = {
+	// 		"paddingTop": "50px"
+	// 	};
+
+	// 	return(
+
+	// 		<div className="container" style={ownStyle}>
+	// 			<form>
+	// 			  <div className="form-group">
+	// 			    <label htmlFor="exampleInputEmail1">Email address</label>
+	// 			    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+	// 			    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+	// 			  </div>
+	// 			  <div className="form-group">
+	// 			    <label htmlFor="exampleInputPassword1">Password</label>
+	// 			    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+	// 			  </div>
+	// 			</form>
+
+
+	// 			<button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+	// 			  Button
+	// 			</button>
+				
+	// 			<button className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+	// 			  <i className="material-icons">add</i>
+	// 			</button>
+
+
+	// 			<span className="mdl-chip mdl-chip--contact">
+	// 			    <span className="mdl-chip__contact mdl-color--teal mdl-color-text--white">A</span>
+	// 			    <span className="mdl-chip__text">Contact Chip</span>
+	// 			</span>
+				
+	// 			<span className="mdl-chip mdl-chip--contact mdl-chip--deletable">
+	// 			    <img className="mdl-chip__contact" src="/templates/dashboard/images/user.jpg"></img>
+	// 			    <span className="mdl-chip__text">Deletable Contact Chip</span>
+	// 			    <a href="#" className="mdl-chip__action"><i className="material-icons">cancel</i></a>
+	// 			</span>
+
+	// 			<span className="mdl-chip mdl-chip--deletable">
+	// 			    <span className="mdl-chip__text">Deletable Chip</span>
+	// 			    <button type="button" className="mdl-chip__action"><i className="material-icons">cancel</i></button>
+	// 			</span>
+	// 		</div>
+
+	// 	)
+	// }
 
 	render(){
 		return(
@@ -51,7 +102,11 @@ export default class ChatContainer extends React.Component{
 					  <div id="messages">
 						<span id="message-filler"></span>
 					  </div>
-					  <form id="message-form" action="#">
+					  
+					</div>
+					
+					<div className="mdl-card__actions mdl-card--border">
+					<form id="message-form" action="#">
 						<div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 						  <input className="mdl-textfield__input" type="text" id="message"/>
 						  <label className="mdl-textfield__label" htmlFor="message">Message...</label>
@@ -321,8 +376,11 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
 	this.messageList.appendChild(div);
   }
   if (picUrl) {
+  	console.log("Viu a foto");
+  	console.log(div);
 	div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
+  console.log("Saiu da foto");
   div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
   if (text) { // If the message is text.

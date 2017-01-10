@@ -12,7 +12,7 @@ class AppRouter extends React.Component{
 	render(){
 		return (
 			<Router history={hashHistory}>
-				<Redirect from="/" to="/home"/>
+				<Redirect from="/" to="/chat"/>
 				<Route path="/" component={Layout}>
 					<Route path="home" component={HomeContainer} />
 					<Route path="ingredientes" component={App1Container} />
@@ -24,13 +24,13 @@ class AppRouter extends React.Component{
 	}
 }
 
-const app = (
-	<Router>
-		<Route path="/" component={Layout} />
-	</Router>
-)
+// const app = (
+// 	<Router>
+// 		<Route path="/" component={Layout} />
+// 	</Router>
+// )
 
-console.log(app)
+// console.log(app)
 
 render(<AppRouter />, document.getElementById('main_div'), function(){
 	console.timeEnd('react-app')

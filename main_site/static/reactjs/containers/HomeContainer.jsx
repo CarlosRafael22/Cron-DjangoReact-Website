@@ -3,6 +3,10 @@ import React from "react"
 
 export default class HomeContainer extends React.Component{
 
+	componentWillUnmount(){
+		console.log("Terminando Home");
+	}
+
 	render(){
 
 		const ownStyle = {

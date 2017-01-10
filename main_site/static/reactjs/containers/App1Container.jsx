@@ -5,6 +5,11 @@ import ReceitaList from "../components/ReceitaList"
 import IngredienteList from "../components/IngredienteList"
 
 export default class App1Container extends React.Component {
+
+  componentWillUnmount(){
+    console.log("Terminando Ingred");
+  }
+
   render() {
     return (
       <div className="container">

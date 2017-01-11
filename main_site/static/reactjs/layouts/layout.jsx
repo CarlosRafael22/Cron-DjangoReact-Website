@@ -8,7 +8,7 @@ export default class Layout extends React.Component{
 
 			<div>
 				<ul className="nav nav-tabs">
-				  <li role="presentation" className="active">
+				  <li role="presentation" activeClassName="active">
 				  	<Link to="/home">Home</Link>
 				  </li>
 				  <li role="presentation">

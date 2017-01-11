@@ -9,15 +9,25 @@ import ChatContainer from "./containers/ChatContainer"
 import Layout from "./layouts/layout"
 
 class AppRouter extends React.Component{
+	_loadElements(){
+	  let button = document.createElement('button');
+	  let textNode = document.createTextNode('App!');
+	  button.appendChild(textNode);
+	  button.className = 'mdl-button mdl-js-button mdl-js-ripple-effect';
+	  componentHandler.upgradeElement(button);
+	  document.getElementById('message-form').appendChild(button);
+	}
+
 	render(){
 		return (
 			<Router history={hashHistory}>
-				<Redirect from="/" to="/chat"/>
+				<Redirect from="/" to="/home"/>
 				<Route path="/" component={Layout}>
 					<Route path="home" component={HomeContainer} />
 					<Route path="ingredientes" component={App1Container} />
 					<Route path="receitas" component={ReceitaContainer} />
-					<Route path="chat" component={ChatContainer} />
+					<Route path="chat" component={ChatContainer}/>
+					{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 				</Route>
 			</Router>	
 		)

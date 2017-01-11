@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita
+from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach
+from django.contrib.auth.models import User
 import json
 
 # from drf_extra_fields.fields import Base64ImageField
@@ -104,3 +105,36 @@ class ReceitaSerializer(serializers.ModelSerializer):
 # 	'modo_de_preparo': [{'descricao': "Misturar a manteiga, levar por mais 30 segundos"},
 # 	{'descricao': "Misture"}]
 # }
+
+#################################################################
+#
+# SERIALIZERS DOS MODELOS DO USUARIO
+#
+#################################################################
+
+class UserSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = User
+		fields = '__all__'
+
+class PerfilSerializer(serializers.ModelSerializer):
+	user = UserSerializer()
+
+	class Meta:
+		model = Perfil
+		fields = '__all__'
+
+class PacienteSerializer(serializers.ModelSerializer):
+	perfil = PerfilSerializer()
+
+	class Meta:
+		model = Paciente
+		fields = '__all__'
+
+class CoachSerializer(serializers.ModelSerializer):
+	perfil = PerfilSerializer()
+
+	class Meta:
+		model = Coach
+		fields = '__all__'

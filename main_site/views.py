@@ -1,16 +1,20 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita
-from .serializers import IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach)
+from django.contrib.auth.models import User
+from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
+	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer)
 
 from rest_framework import generics
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
-
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import permissions
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
 class IngredienteList(generics.ListCreateAPIView):
 	queryset = Ingrediente.objects.all()
@@ -118,6 +122,77 @@ class Foto_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = Foto_ReceitaSerializer
 
 ########################################################################
+
+#
+#
+# VIEWS DOS MODELS DE USUARIO
+#
+#
+########################################################################
+class UserList(generics.ListCreateAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+########################################################################
+
+class PerfilList(generics.ListCreateAPIView):
+	queryset = Perfil.objects.all()
+	serializer_class = PerfilSerializer
+
+class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Perfil.objects.all()
+	serializer_class = PerfilSerializer
+
+########################################################################
+
+class PacienteList(generics.ListCreateAPIView):
+	queryset = Paciente.objects.all()
+	serializer_class = PacienteSerializer
+
+class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Paciente.objects.all()
+	serializer_class = PacienteSerializer
+
+########################################################################
+
+class CoachList(generics.ListCreateAPIView):
+	queryset = Coach.objects.all()
+	serializer_class = CoachSerializer
+
+class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Coach.objects.all()
+	serializer_class = CoachSerializer
+
+#########################################################################
+#
+#	OVERRIDING ObtainAuthToken PARA QUE ELE RETORNE O USUARIO TB E NAO SO O TOKEN AO LOGAR
+#
+
+class CustomObtainAuthToken(ObtainAuthToken):
+	def post(self, request, *args, **kwargs):
+		#Calling the post method of the parent class to get the token.
+		#Then we lookup the token to get the user associated
+		response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+		token = Token.objects.get(key=response.data['token'])
+		# Tem que serializar o user pq senao vai dar:
+		# TypeError at /api-token-auth/↵<User: rani> is not JSON serializable
+		# ao fazer a requisicao
+		user_serialized = UserSerializer(token.user)
+
+		# Nao vou dar todas as informacoes do User para o front-end!
+		# Aqui eu limito o que vou passar
+		user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+		"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+		"id": user_serialized.data['id']}
+		return Response({'token': token.key, 'user': user})
+
+#########################################################################
 def render_home(request):
 	return render(request, 'main_view.html')
 

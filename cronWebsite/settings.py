@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'main_site',
     'webpack_loader',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

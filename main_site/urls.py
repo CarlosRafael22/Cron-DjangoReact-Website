@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.authtoken import views as authtoken_views
 from main_site import views
 
 urlpatterns = [
@@ -24,6 +25,17 @@ urlpatterns = [
 	url(r'^chat/$', views.render_chat),
 	url(r'^api/fotos/$', views.Foto_ReceitaList.as_view()),
 	url(r'^api/fotos/(?P<pk>[0-9]+)/$', views.Foto_ReceitaDetail.as_view()),
+	url(r'^api/usuarios/$', views.UserList.as_view()),
+	url(r'^api/usuarios/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+	url(r'^api/perfis/$', views.PerfilList.as_view()),
+	url(r'^api/perfis/(?P<pk>[0-9]+)/$', views.PerfilDetail.as_view()),
+	url(r'^api/pacientes/$', views.PacienteList.as_view()),
+	url(r'^api/pacientes/(?P<pk>[0-9]+)/$', views.PacienteDetail.as_view()),
+	url(r'^api/coaches/$', views.CoachList.as_view()),
+	url(r'^api/coaches/(?P<pk>[0-9]+)/$', views.CoachDetail.as_view()),
+
+	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
+	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),
 	
 ]
 

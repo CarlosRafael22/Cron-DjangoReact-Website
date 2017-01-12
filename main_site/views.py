@@ -179,6 +179,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 		#Calling the post method of the parent class to get the token.
 		#Then we lookup the token to get the user associated
 		response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+		print(response);
 		token = Token.objects.get(key=response.data['token'])
 		# Tem que serializar o user pq senao vai dar:
 		# TypeError at /api-token-auth/↵<User: rani> is not JSON serializable

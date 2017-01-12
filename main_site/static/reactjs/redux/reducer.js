@@ -3,11 +3,12 @@
 // import { combineReducers } from 'redux'
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS
-} from './actions'
+} from './action'
 
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
 // we would also want a util to check if the token is expired.
+//function auth(state = {
 function auth(state = {
     isFetching: false,
     isAuthenticated: localStorage.getItem('id_token') ? true : false
@@ -41,6 +42,7 @@ function auth(state = {
   }
 }
 
+export default auth
 // // The quotes reducer
 // function quotes(state = {}, action) {
 //   switch (action.type) {

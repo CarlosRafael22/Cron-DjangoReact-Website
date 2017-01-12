@@ -9,8 +9,12 @@ import ChatContainer from "./containers/ChatContainer"
 import Layout from "./layouts/layout"
 
 import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 import reducer from './redux/reducer'
+import thunk from 'redux-thunk'
+import storeLocal from './redux/store'
+
+import {loginUser, logoutUser} from './redux/action'
 
 
 class AppRouter extends React.Component{
@@ -25,7 +29,10 @@ class AppRouter extends React.Component{
 
 	render(){
 
-		const store = createStore(reducer);
+		const store = createStore(reducer, applyMiddleware(thunk));
+		console.log(storeLocal);
+
+		//store.dispatch(loginUser({}));
 		return (
 
 			<Provider store={store}>
@@ -44,6 +51,7 @@ class AppRouter extends React.Component{
 	}
 }
 
+// exports.store = store;
 // const app = (
 // 	<Router>
 // 		<Route path="/" component={Layout} />

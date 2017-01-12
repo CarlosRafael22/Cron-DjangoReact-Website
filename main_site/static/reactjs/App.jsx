@@ -8,6 +8,11 @@ import ReceitaContainer from "./containers/ReceitaContainer"
 import ChatContainer from "./containers/ChatContainer"
 import Layout from "./layouts/layout"
 
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+import reducer from './redux/reducer'
+
+
 class AppRouter extends React.Component{
 	_loadElements(){
 	  let button = document.createElement('button');
@@ -19,17 +24,22 @@ class AppRouter extends React.Component{
 	}
 
 	render(){
+
+		const store = createStore(reducer);
 		return (
-			<Router history={hashHistory}>
-				<Redirect from="/" to="/home"/>
-				<Route path="/" component={Layout}>
-					<Route path="home" component={HomeContainer} />
-					<Route path="ingredientes" component={App1Container} />
-					<Route path="receitas" component={ReceitaContainer} />
-					<Route path="chat" component={ChatContainer}/>
-					{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
-				</Route>
-			</Router>	
+
+			<Provider store={store}>
+				<Router history={hashHistory}>
+					<Redirect from="/" to="/home"/>
+					<Route path="/" component={Layout}>
+						<Route path="home" component={HomeContainer} />
+						<Route path="ingredientes" component={App1Container} />
+						<Route path="receitas" component={ReceitaContainer} />
+						<Route path="chat" component={ChatContainer}/>
+						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
+					</Route>
+				</Router>
+			</Provider>
 		)
 	}
 }

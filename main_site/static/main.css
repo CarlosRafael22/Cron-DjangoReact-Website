@@ -133,7 +133,9 @@ main, #messages-card {
   width: 100%;
   right: 0;
   padding-left: 10px;
-  justify-content: flex-end;
+  /* NAO SEI PQ MAS COM O FLEX-END O SIGN-IN BUTTON FICAVA ATRAS DO USER-CONTAINER*/
+  /*justify-content: flex-end;*/
+  justify-content: center;
   padding-right: 10px;
 }
 #user-container #user-pic {

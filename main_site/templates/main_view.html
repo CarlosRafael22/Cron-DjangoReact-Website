@@ -3,6 +3,8 @@
 {% load render_bundle from webpack_loader %}
 
 {% block main %}
+
+
 <div id="main_div"></div>
 
 <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
@@ -18,6 +20,14 @@
   firebase.initializeApp(config);
 </script>
 <!-- <script src="{% static 'scripts/chat.js' %}"></script> -->
+
+<!-- Menu Toggle Script -->
+<!--     <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script> -->
 {% render_bundle 'vendors' %}
 {% render_bundle 'App' %}
 {% endblock %}

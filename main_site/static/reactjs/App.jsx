@@ -51,15 +51,6 @@ class AppRouter extends React.Component{
 	}
 }
 
-// exports.store = store;
-// const app = (
-// 	<Router>
-// 		<Route path="/" component={Layout} />
-// 	</Router>
-// )
-
-// console.log(app)
-
 render(<AppRouter />, document.getElementById('main_div'), function(){
 	console.timeEnd('react-app')
 })

@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
 	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer)
 
+# IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
+from .serializers import AuthCustomTokenSerializer
+from rest_framework import parsers, renderers
+
 from rest_framework import generics
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -15,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
 
 class IngredienteList(generics.ListCreateAPIView):
 	queryset = Ingrediente.objects.all()
@@ -130,7 +135,8 @@ class Foto_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 #
 ########################################################################
 class UserList(generics.ListCreateAPIView):
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	# Tirei o Permission pq senao dava Forbiden ao tentar criar User fazendo um POST pra a url 
+	#permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
@@ -174,16 +180,35 @@ class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 #	OVERRIDING ObtainAuthToken PARA QUE ELE RETORNE O USUARIO TB E NAO SO O TOKEN AO LOGAR
 #
 
-class CustomObtainAuthToken(ObtainAuthToken):
+
+## ANTES FAZIA OVERRIDE DE ObtainAuthToken E SO MUDAVA O POST MAS AGORA EU MUDEI O SERIALIZER
+## TB, ENTAO EH COMO SE FOSSE UMA CLASSE NOVA E NAO HERDA MAIS
+class CustomObtainAuthToken(APIView):
+	throttle_classes = ()
+	permission_classes = ()
+	parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+	renderer_classes = (renderers.JSONRenderer,)
+	serializer_class = AuthCustomTokenSerializer
+
 	def post(self, request, *args, **kwargs):
 		#Calling the post method of the parent class to get the token.
 		#Then we lookup the token to get the user associated
-		response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
-		print(response);
-		token = Token.objects.get(key=response.data['token'])
+		# response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+		# print(response);
+		
+		# NOVO METODO POST COMPLETO
+		# No serializer eu to autenticando o usuario
+		serializer = AuthCustomTokenSerializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		# Pega o usuario ja autenticado
+		user = serializer.validated_data['user']
+		token, created = Token.objects.get_or_create(user=user)
+		#token = Token.objects.get(key=response.data['token'])
+		
 		# Tem que serializar o user pq senao vai dar:
 		# TypeError at /api-token-auth/↵<User: rani> is not JSON serializable
 		# ao fazer a requisicao
+		print(token)
 		user_serialized = UserSerializer(token.user)
 
 		# Nao vou dar todas as informacoes do User para o front-end!

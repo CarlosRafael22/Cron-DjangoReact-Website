@@ -3,6 +3,11 @@ from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Fo
 from django.contrib.auth.models import User
 import json
 
+#Usado no Custom AuthTokenSerializer
+from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext_lazy as _
+
 # from drf_extra_fields.fields import Base64ImageField
 
 # class IngredienteSerializer(serializers.Serializer):
@@ -118,6 +123,26 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = '__all__'
 
+	# TEM QUE FAZER O OVERRIDE DESSES METODOS PARA SALVAR A SENHA COM HASH
+	# PQ SENAO ELE VAI SALVAR COMO PLAIN TEXT
+	def create(self, validated_data):
+		# Nao precisa complicar nada aqui tentando fazer o hash da senha com set_password()
+		# So precisa chamar o create_user(username, email, password) padrao
+		user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+
+		print("New user")
+		print(user)
+		return user
+
+	def update(self, instance, validated_data):
+		for attr, value in validated_data.items():
+			if attr == 'password':
+				instance.set_password(value)
+			else:
+				setattr(instance, attr, value)
+		instance.save()
+		return instance
+
 class PerfilSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
 
@@ -138,3 +163,60 @@ class CoachSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Coach
 		fields = '__all__'
+
+#############################################################
+##
+#
+#	TEM QUE CRIAR UM SERIALIZER NOVO PARA QUE O OBTAINAUTHTOKEN 
+# 	POSSA RECEBER EMAIL E USERNAME NO LOGIN E SIGNUP
+#
+##
+#############################################################
+
+### FUNCAO PARA VALIDAR SE EH EMAIL MESMO
+def validateEmail( email ):
+	from django.core.validators import validate_email
+	from django.core.exceptions import ValidationError
+	try:
+		validate_email( email )
+		return True
+	except ValidationError:
+		return False
+
+
+class AuthCustomTokenSerializer(serializers.Serializer):
+    email_or_username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        email_or_username = attrs.get('email_or_username')
+        password = attrs.get('password')
+
+        if email_or_username and password:
+            # Check if user sent email
+            if validateEmail(email_or_username):
+           	    # Se mandou o email, entao retorna o usuario fazendo a consulta pelo email
+                user_request = get_object_or_404(
+                    User,
+                    email=email_or_username,
+                )
+
+           	    # Pega o username desse usuario
+                email_or_username = user_request.username
+
+            # Se nao tiver sido com email entao ele ja vai ter o username e autentica
+            user = authenticate(username=email_or_username, password=password)
+
+            if user:
+                if not user.is_active:
+                    msg = _('User account is disabled.')
+                    raise exceptions.ValidationError(msg)
+            else:
+                msg = _('Unable to log in with provided credentials.')
+                raise exceptions.ValidationError(msg)
+        else:
+            msg = _('Must include "email or username" and "password"')
+            raise exceptions.ValidationError(msg)
+
+        attrs['user'] = user
+        return attrs

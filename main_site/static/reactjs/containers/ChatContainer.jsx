@@ -72,7 +72,7 @@ export default class ChatContainer extends React.Component{
 		
 		return(
 
-			<div>
+			<div >
 			<div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
 			  <header className="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
@@ -339,12 +339,53 @@ FriendlyChat.prototype.saveImageMessage = function(event) {
 
 // Signs-in Friendly Chat.
 FriendlyChat.prototype.signIn = function() {
+
+ //  function getUserInfo(auth, result){
+ //  	// This gives you a Google Access Token. You can use it to access the Google API.
+	// var token = result.credential.accessToken;
+	// // The signed-in user info.
+	// var user = result.user;
+
+	// auth.info = {
+	// 	"token": token,
+	// 	"user": user
+	// };
+	// console.log("Logou");
+	// console.log(auth.info);
+ //  }
+
   // TODO(DEVELOPER): Sign in Firebase with credential from the Google user.
   // Sign in Firebase using popup auth and Google as the identity provider
   console.log("Clicou");
   var provider = new firebase.auth.GoogleAuthProvider();
-  this.auth.signInWithPopup(provider);
+  this.auth.signInWithPopup(provider).then(function(result){
+  	// This gives you a Google Access Token. You can use it to access the Google API.
+	var token = result.credential.accessToken;
+	// The signed-in user info.
+	var user = result.user;
+
+	let info = {
+		"token": token,
+		"user": user
+	};
+	console.log("Logou");
+	console.log(info);
+  }).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+  console.log(errorMessage);
+});
+  console.log(this.auth);
 };
+// this.auth.signInWithPopup(provider).then(getUserInfo(this.auth, result));
+//   console.log(this.auth);
+// };
 
 // Signs-out of Friendly Chat.
 FriendlyChat.prototype.signOut = function() {
@@ -357,6 +398,8 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
   if (user) { // User is signed in!
 	// Get profile pic and user's name from the Firebase user object.
 	console.log("Tem user");
+	console.log(this.auth);
+	console.log(this.auth.currentUser);
 	var profilePicUrl = user.photoURL;   // TODO(DEVELOPER): Get profile pic.
 	console.log(profilePicUrl);
 	var userName = user.displayName;        // TODO(DEVELOPER): Get user's name.
@@ -398,10 +441,6 @@ FriendlyChat.prototype.checkSignedInWithMessage = function() {
 	message: 'You must sign-in first',
 	timeout: 2000
   };
-  console.log("No checkSigned");
-  console.log(this);
-  console.log(this.signInSnackbar);
-  console.log(this.signInSnackbar.MaterialSnackbar);
   this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };
@@ -435,11 +474,11 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
 	this.messageList.appendChild(div);
   }
   if (picUrl) {
-  	console.log("Viu a foto");
-  	console.log(div);
+  	// console.log("Viu a foto");
+  	// console.log(div);
 	div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
-  console.log("Saiu da foto");
+  // console.log("Saiu da foto");
   div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
   if (text) { // If the message is text.

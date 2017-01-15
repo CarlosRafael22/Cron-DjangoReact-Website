@@ -114,36 +114,6 @@ export function loginUser(creds) {
 
     });
   }
-
-
-  // return dispatch => {
-  //   console.log(creds)
-  //   // We dispatch requestLogin to kickoff the call to the API
-  //   dispatch(requestLogin(creds))
-
-  //   jQuery.ajax({
-  //     type: 'POST',
-  //     url: '/api-token-auth/',
-  //     data: {"username": username, "password": password}
-  //   }).done(authInfo => {
-
-  //     // PEGUEI O TOKEN DO USUARIO
-  //     console.log("User logged");
-  //     console.log(typeof(authInfo));
-  //     console.log(authInfo);
-
-  //     // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
-  //     console.log(authInfo.user);
-
-  //     this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
-  //   })
-  //   .fail(function(xhr, status, error){
-  //     console.log(error);
-  //     console.log(xhr);
-
-  //   });
-  // }
-
 }
 
 
@@ -181,5 +151,91 @@ export function logoutUser() {
     localStorage.removeItem('id_token')
     localStorage.removeItem('user')
     dispatch(receiveLogout())
+  }
+}
+
+
+//Sign Up User
+export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
+
+function requestSignUp(creds) {
+  console.log("Request signup");
+  return {
+    type: SIGNUP_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    creds
+  }
+}
+
+function receiveSignUp(authInfo) {
+  console.log("Received signup");
+  return {
+    type: SIGNUP_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    id_token: authInfo.token,
+    user: authInfo.user
+  }
+}
+
+function signUpError(message) {
+  return {
+    type: SIGNUP_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message
+  }
+}
+
+
+// Calls the API to get a token and
+// dispatches actions along the way
+export function signUpUser(creds) {
+
+  console.log("Estamos no signup user")
+  console.log(creds);
+
+  return dispatch => {
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(requestSignUp(creds))
+
+    jQuery.ajax({
+      type: 'POST',
+      url: '/api/usuarios/',
+      data: creds
+    }).done(authInfo => {
+
+      console.log(authInfo);
+      // PEGUEI O TOKEN DO USUARIO
+      // console.log("User signed up");
+      // console.log(typeof(authInfo));
+      // console.log(authInfo);
+
+      // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
+      // console.log(authInfo.user);
+
+      // // If login was successful, set the token in local storage
+      // localStorage.setItem('id_token', authInfo.token);
+      // // the localStorage seems to be limited to handle only string key/value pairs.
+      // // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
+      // let user = JSON.stringify(authInfo.user);
+      // localStorage.setItem('user', user);
+      // console.log(localStorage);
+      // // Dispatch the success action
+      // dispatch(receiveLogin(authInfo));
+
+      //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      console.log(response);
+      dispatch(loginError(user.message))
+
+    });
   }
 }

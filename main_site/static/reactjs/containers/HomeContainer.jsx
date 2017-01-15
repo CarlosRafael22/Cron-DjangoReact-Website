@@ -1,6 +1,6 @@
 import React from "react"
 
-import {loginUser, logoutUser} from '../redux/action'
+import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import { connect } from 'react-redux'
 import store from '../redux/store'
 import reducer from '../redux/reducer'
@@ -19,6 +19,7 @@ class HomeContainer extends React.Component{
 		console.log(this.state);
 		console.log("Local Storage");
 		console.log(localStorage);
+		console.log(this.context);
 		//console.log(localStorage.user.username);
 	}
 
@@ -31,44 +32,23 @@ class HomeContainer extends React.Component{
 		store.dispatch(logoutUser());
 	}
 
+	_signup(){
+
+		let username = this._username.value;
+		let password = this._password.value;
+		let email = this._email.value;
+
+		console.log("Dispatching SignUp");
+		store.dispatch(signUpUser({"username":username, "email":email, "password": password}));
+	}
+
 	_loginSubmit(event){
-		// Then the page doesnt reaload when the form is submitted!!
-		// event.preventDefault();
-
-		// let username = this._username.value;
-		// let password = this._password.value;
-
-		// console.log(username);
-		// console.log(password);
-
-		// jQuery.ajax({
-		// 	type: 'POST',
-		// 	url: '/api-token-auth/',
-		// 	data: {"username": username, "password": password}
-		// }).done(authInfo => {
-
-		// 	// PEGUEI O TOKEN DO USUARIO
-		// 	console.log("User logged");
-		// 	console.log(typeof(authInfo));
-		// 	console.log(authInfo);
-
-		// 	// AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
-		// 	console.log(authInfo.user);
-
-		// 	this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
-		// })
-		// .fail(function(xhr, status, error){
-		// 	console.log(error);
-		// 	console.log(xhr);
-
-		// });
-
 
 		let username = this._username.value;
 		let password = this._password.value;
 
 		console.log("Dispatching");
-		store.dispatch(loginUser({"username":username, "password": password}));
+		store.dispatch(loginUser({"email_or_username":username, "password": password}));
 
 	}
 
@@ -87,20 +67,48 @@ class HomeContainer extends React.Component{
 			<div className="container" style={ownStyle}>
 				<form onSubmit={this._loginSubmit.bind(this)}>
 				  <div className="form-group">
-				    <label htmlFor="exampleInputEmail1">Username</label>
-				    <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username" 
+				    <label htmlFor="inputUsername">Username</label>
+				    <input type="text" className="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter username" 
 				    ref={(input) => this._username = input}/>
-				    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
 				  </div>
 				  <div className="form-group">
-				    <label htmlFor="exampleInputPassword1">Password</label>
-				    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"
+				    <label htmlFor="inputEmail">Email</label>
+				    <input type="text" className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" 
+				    ref={(input) => this._email = input}/>
+				  </div>
+				  
+				  <div className="form-group">
+				    <label htmlFor="inputPassword">Password</label>
+				    <input type="password" className="form-control" id="inputPassword" placeholder="Password"
 				    ref={(input) => this._password = input}/>
 				  </div>
 				  <button type="submit" className="btn btn-primary">Login</button>
+				  <button type="button" className="btn btn-success" onClick={this._signup.bind(this)}>SignUp</button>
 				  <button type="button" className="btn btn-danger" onClick={this._logout.bind(this)}>Logout</button>
 				</form>
 			</div>
+			{/*<div>
+						<ul className="nav nav-tabs">
+					  <li className="active"><a data-toggle="tab" href="#home">Home</a></li>
+					  <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+					  <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+					</ul>
+			
+					<div className="tab-content">
+					  <div id="home" className="tab-pane fade in active">
+					    <h3>HOME</h3>
+					    <p>Some content.</p>
+					  </div>
+					  <div id="menu1" className="tab-pane fade">
+					    <h3>Menu 1</h3>
+					    <p>Some content in menu 1.</p>
+					  </div>
+					  <div id="menu2" className="tab-pane fade">
+					    <h3>Menu 2</h3>
+					    <p>Some content in menu 2.</p>
+					  </div>
+					</div>
+					</div>*/}
 		}else{
 			view = 
 			<div className="alert alert-success" role="alert">
@@ -109,35 +117,6 @@ class HomeContainer extends React.Component{
 
 
 		}
-		// onSubmit={dispatch(loginUser({"username": this._username.value, "password": this._password.value}))}
-
-		// if(!this.state.logado){
-		// 			view = 
-		// 			<div className="container" style={ownStyle}>
-
-		// 				<form onSubmit={store.dispatch(loginUser({"username": this._username.value, "password": this._password.value}))}>
-		// 				  <div className="form-group">
-		// 				    <label htmlFor="exampleInputEmail1">Username</label>
-		// 				    <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username" 
-		// 				    ref={(input) => this._username = input}/>
-		// 				    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-		// 				  </div>
-		// 				  <div className="form-group">
-		// 				    <label htmlFor="exampleInputPassword1">Password</label>
-		// 				    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"
-		// 				    ref={(input) => this._password = input}/>
-		// 				  </div>
-		// 				  <button type="submit" className="btn btn-primary">Login</button>
-		// 				</form>
-		// 			</div>
-		// 		}else{
-		// 			view = 
-		// 			<div className="alert alert-success" role="alert">
-		// 			  <strong>Well done, {this.state.usuario.first_name}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.token}</a>.
-		// 			</div>
-
-
-		// 		}
 
 
 		return(
@@ -145,5 +124,7 @@ class HomeContainer extends React.Component{
 		)
 	}
 }
-
+HomeContainer.contextTypes = {
+	store: React.PropTypes.object.isRequired
+};
 export default connect()(HomeContainer)

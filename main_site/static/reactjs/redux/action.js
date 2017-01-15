@@ -210,22 +210,22 @@ export function signUpUser(creds) {
 
       console.log(authInfo);
       // PEGUEI O TOKEN DO USUARIO
-      // console.log("User signed up");
-      // console.log(typeof(authInfo));
-      // console.log(authInfo);
+      console.log("User signed up");
+      console.log(typeof(authInfo));
+      console.log(authInfo);
 
       // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
-      // console.log(authInfo.user);
+      console.log(authInfo.user);
 
-      // // If login was successful, set the token in local storage
-      // localStorage.setItem('id_token', authInfo.token);
-      // // the localStorage seems to be limited to handle only string key/value pairs.
-      // // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
-      // let user = JSON.stringify(authInfo.user);
-      // localStorage.setItem('user', user);
-      // console.log(localStorage);
-      // // Dispatch the success action
-      // dispatch(receiveLogin(authInfo));
+      // If login was successful, set the token in local storage
+      localStorage.setItem('id_token', authInfo.token);
+      // the localStorage seems to be limited to handle only string key/value pairs.
+      // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
+      let user = JSON.stringify(authInfo.user);
+      localStorage.setItem('user', user);
+      console.log(localStorage);
+      // Dispatch the success action
+      dispatch(receiveLogin(authInfo));
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })
@@ -233,7 +233,7 @@ export function signUpUser(creds) {
       console.log(error);
       console.log(xhr);
 
-      console.log(response);
+      // console.log(response);
       dispatch(loginError(user.message))
 
     });

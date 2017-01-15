@@ -140,6 +140,32 @@ class UserList(generics.ListCreateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+	def create(self, serializer):
+		
+		serializer = UserSerializer(data=self.request.data)
+		if serializer.is_valid(raise_exception=True):
+			#Pegou o user que acabou de ser salvo
+			user = serializer.save()
+
+		token, created = Token.objects.get_or_create(user=user)
+		#token = Token.objects.get(key=response.data['token'])
+		
+		# Tem que serializer o user pq senao vai dar:
+		# TypeError at /api-token-auth/↵<User: rani> is not JSON serializable
+		# ao fazer a requisicao
+		print(token)
+		# import pdb;
+		# pdb.set_trace();
+		user_serialized = UserSerializer(token.user)
+
+		# Nao vou dar todas as informacoes do User para o front-end!
+		# Aqui eu limito o que vou passar
+		user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+		"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+		"id": user_serialized.data['id']}
+		headers = self.get_success_headers(serializer.data)
+		return Response({'token': token.key, 'user': user}, status=status.HTTP_201_CREATED, headers=headers)
+
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 	queryset = User.objects.all()
@@ -205,7 +231,7 @@ class CustomObtainAuthToken(APIView):
 		token, created = Token.objects.get_or_create(user=user)
 		#token = Token.objects.get(key=response.data['token'])
 		
-		# Tem que serializar o user pq senao vai dar:
+		# Tem que serializer o user pq senao vai dar:
 		# TypeError at /api-token-auth/↵<User: rani> is not JSON serializable
 		# ao fazer a requisicao
 		print(token)

@@ -119,7 +119,11 @@ class NavHeader extends React.Component{
 	
 	_showUserInfo(){
 		let user = localStorage.getItem('user');
-		user = JSON.parse(user);
+		if(user != "undefined"){
+			user = JSON.parse(user);
+		}else{
+			user = "Undefined";
+		}
 		console.log(user);
 
 		return user.username;

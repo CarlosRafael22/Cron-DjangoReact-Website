@@ -12,15 +12,20 @@ class HomeContainer extends React.Component{
 
 		console.log(this.state);
 		this.state = {
-			logado: false,
-			token: null,
-			usuario: null
+			django_token: localStorage.getItem('id_token'),
+			usuario: localStorage.getItem('user')
 		};
 		console.log(this.state);
-		console.log("Local Storage");
+		console.log("Home Local Storage");
 		console.log(localStorage);
 		console.log(this.context);
 		//console.log(localStorage.user.username);
+
+		// Gambiarra para qd mudar o state eu fazer o setState e ele ter que render de novo
+		store.subscribe(() => {
+			console.log("Subscribed");
+			this.setState({usuario: localStorage.getItem('user'), django_token: localStorage.getItem('id_token')});
+		});
 	}
 
 	componentWillUnmount(){
@@ -62,7 +67,7 @@ class HomeContainer extends React.Component{
 
 		let view;
 		// Vendo se o usuario esta logado. Se nao estiver vai mostrar o Login Form, se estiver mostra alguma outra coisa
-		if(!this.state.logado){
+		if(localStorage.getItem('user') == null){
 			view = 
 			<div className="container" style={ownStyle}>
 				<form onSubmit={this._loginSubmit.bind(this)}>
@@ -87,35 +92,11 @@ class HomeContainer extends React.Component{
 				  <button type="button" className="btn btn-danger" onClick={this._logout.bind(this)}>Logout</button>
 				</form>
 			</div>
-			{/*<div>
-						<ul className="nav nav-tabs">
-					  <li className="active"><a data-toggle="tab" href="#home">Home</a></li>
-					  <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-					  <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-					</ul>
-			
-					<div className="tab-content">
-					  <div id="home" className="tab-pane fade in active">
-					    <h3>HOME</h3>
-					    <p>Some content.</p>
-					  </div>
-					  <div id="menu1" className="tab-pane fade">
-					    <h3>Menu 1</h3>
-					    <p>Some content in menu 1.</p>
-					  </div>
-					  <div id="menu2" className="tab-pane fade">
-					    <h3>Menu 2</h3>
-					    <p>Some content in menu 2.</p>
-					  </div>
-					</div>
-					</div>*/}
 		}else{
 			view = 
 			<div className="alert alert-success" role="alert">
-			  <strong>Well done, {this.state.usuario.first_name}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.token}</a>.
+			  <strong>Well done, {this.state.usuario}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.django_token}</a>.
 			</div>
-
-
 		}
 
 

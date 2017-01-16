@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
+import { Link } from "react-router"
 import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import store from '../redux/store'
 
@@ -172,16 +173,6 @@ class NavHeader extends React.Component{
 			  	// This gives you a Google Access Token. You can use it to access the Google API.
 			  	console.log("Logou Firebase");
 			  	console.log(result);
-				// var token = result.credential.accessToken;
-				// // The signed-in user info.
-				// var user = result.user;
-
-				// let info = {
-				// 	"token": token,
-				// 	"user": user
-				// };
-				// console.log("Info");
-				// console.log(info);
 			  }).catch(function(error) {
 				  // Handle Errors here.
 				  var errorCode = error.code;
@@ -196,33 +187,6 @@ class NavHeader extends React.Component{
 			})
 
 		}
-
-		// firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
-		//   	// This gives you a Google Access Token. You can use it to access the Google API.
-		//   	console.log("Logou Firebase");
-		//   	console.log(result);
-		// 	// var token = result.credential.accessToken;
-		// 	// // The signed-in user info.
-		// 	// var user = result.user;
-
-		// 	// let info = {
-		// 	// 	"token": token,
-		// 	// 	"user": user
-		// 	// };
-		// 	// console.log("Info");
-		// 	// console.log(info);
-		//   })
-		//     .catch(function(error) {
-		//   // Handle Errors here.
-		//   var errorCode = error.code;
-		//   var errorMessage = error.message;
-		//   if (errorCode === 'auth/wrong-password') {
-		//     alert('Wrong password.');
-		//   } else {
-		//     alert(errorMessage);
-		//   }
-		//   console.log(error);
-		// });
 	}
 
 	_addUserInFirebase(username, id){
@@ -389,7 +353,6 @@ class NavHeader extends React.Component{
 					    <input type="password" className="form-control" id="inputPassword" placeholder="Password"
 					    ref={(input) => this._password = input}/>
 					  </div>
-					  <button type="button" className="btn btn-danger" onClick={this._signOutFirebase.bind(this)}>Logout</button>
 					</form>
 				</div>
 			</Modal>
@@ -422,7 +385,7 @@ class NavHeader extends React.Component{
 		)
 
 		// AGORA O HEADER VAI SER DIFERENTE BASEADO EM SE O USUARIO ESTA LOGADO OU NAO
-		let headerLoggedOut = (
+		let headerUserLoggedOut = (
 			<nav className="navbar navbar-inverse navbar-fixed-top">
 		      <div className="container-fluid">
 		        <div className="navbar-header">
@@ -442,14 +405,15 @@ class NavHeader extends React.Component{
 					</button>
 					</li>
 		            <li><a href="#" onClick={this._handleShowModal.bind(this, 1)}>Signup</a></li>
-		            <li><a href="#">Profile</a></li>
+		            {/*<Link to="/home">Profile</Link>*/}
+		            <li><a href="#/home">Profile</a></li>
 		          </ul>
 		        </div>
 		      </div>
 	    	</nav>
 		)
 
-		let headerLoggedIn = (
+		let headerUserLoggedIn = (
 			<nav className="navbar navbar-inverse navbar-fixed-top">
 		      <div className="container-fluid">
 		        <div className="navbar-header">
@@ -468,7 +432,8 @@ class NavHeader extends React.Component{
 					</button>
 					</li>
 		            <li><a href="#" onClick={this._logout.bind(this)}>Log out</a></li>
-		            <li><a href="#">Profile</a></li>
+		            {/*<Link to="/home">Profile</Link>*/}
+		            <li><a href="#/home">Profile</a></li>
 		          </ul>
 		        </div>
 		      </div>
@@ -484,7 +449,7 @@ class NavHeader extends React.Component{
 
 		return (
 			<div>
-			{localStorage.getItem('user') != null ? headerLoggedIn : headerLoggedOut}
+			{localStorage.getItem('user') == null ? headerUserLoggedOut : headerUserLoggedIn}
 	    	{/* PRIMEIRA PARTE VE SE TA COM O showModal E DPS DENTRO DO PRIMEIRO () VE SE EH O DE LOGIN OU SIGNUP*/}
 	    	{this.state.showModal ? ( this.state.modalType==0 ? modalLogIn : modalSignUp ) : (null) }
 	    	</div>

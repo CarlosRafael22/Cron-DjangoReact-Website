@@ -100,9 +100,19 @@ class NavHeader extends React.Component{
 		console.log("Unmounting NavHeader");
 	}
 
-	_signInFirebase(email, password){
+	_validateEmail(email) {
+	  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	  return re.test(email);
+	}
+
+	_signInFirebase(emailOrUsername, password){
 		console.log("Vou logar no Firebase");
-		firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
+
+		// Primeiro vendo se passou email ou username
+		if(this._validateEmail(emailOrUsername)){
+			const email = emailOrUsername;
+			console.log("Com email");
+			firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
 		  	// This gives you a Google Access Token. You can use it to access the Google API.
 		  	console.log("Logou Firebase");
 		  	console.log(result);
@@ -116,18 +126,103 @@ class NavHeader extends React.Component{
 			// };
 			// console.log("Info");
 			// console.log(info);
-		  })
-		    .catch(function(error) {
-		  // Handle Errors here.
-		  var errorCode = error.code;
-		  var errorMessage = error.message;
-		  if (errorCode === 'auth/wrong-password') {
-		    alert('Wrong password.');
-		  } else {
-		    alert(errorMessage);
-		  }
-		  console.log(error);
-		});
+		  }).catch(function(error) {
+			  // Handle Errors here.
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  if (errorCode === 'auth/wrong-password') {
+			    alert('Wrong password.');
+			  } else {
+			    alert(errorMessage);
+			  }
+			  console.log(error);
+			});
+		}else{
+			const username = emailOrUsername;
+			console.log("Com username");
+			// Se passou o username a gnt vai ter q pegar o email
+			const usuariosRef = firebase.database().ref('usuarios');
+			usuariosRef.orderByChild('username').startAt(username).endAt(username).once('value', function(snapshot){
+				// Vai ter iterar pelo snapshot que volta para com o child() ter acesso
+				// a cada user e pegar o email
+				// e o snapshot:
+				// Object
+				//  30 : Object
+					// displayName : "wilton"
+					// email : "wilton@hotmail.com"
+					// userUID : "iha3yNACCkPNmWI1YWlWjYMAMVH2"
+					// username : "wilton"
+				let email;
+				console.log("Email do username: ", username);
+				console.log(snapshot);
+				console.log(snapshot.val());
+				snapshot.forEach(function(childSnapshot){
+
+					console.log("Child snapshot");
+					console.log(childSnapshot);
+
+					email = childSnapshot.child("email").val();
+					console.log(email);
+					console.log("Vou logar firebase");
+
+				})
+				
+				console.log("Ja to esperando pra logar");
+				firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
+			  	// This gives you a Google Access Token. You can use it to access the Google API.
+			  	console.log("Logou Firebase");
+			  	console.log(result);
+				// var token = result.credential.accessToken;
+				// // The signed-in user info.
+				// var user = result.user;
+
+				// let info = {
+				// 	"token": token,
+				// 	"user": user
+				// };
+				// console.log("Info");
+				// console.log(info);
+			  }).catch(function(error) {
+				  // Handle Errors here.
+				  var errorCode = error.code;
+				  var errorMessage = error.message;
+				  if (errorCode === 'auth/wrong-password') {
+				    alert('Wrong password.');
+				  } else {
+				    alert(errorMessage);
+				  }
+				  console.log(error);
+				});
+			})
+
+		}
+
+		// firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
+		//   	// This gives you a Google Access Token. You can use it to access the Google API.
+		//   	console.log("Logou Firebase");
+		//   	console.log(result);
+		// 	// var token = result.credential.accessToken;
+		// 	// // The signed-in user info.
+		// 	// var user = result.user;
+
+		// 	// let info = {
+		// 	// 	"token": token,
+		// 	// 	"user": user
+		// 	// };
+		// 	// console.log("Info");
+		// 	// console.log(info);
+		//   })
+		//     .catch(function(error) {
+		//   // Handle Errors here.
+		//   var errorCode = error.code;
+		//   var errorMessage = error.message;
+		//   if (errorCode === 'auth/wrong-password') {
+		//     alert('Wrong password.');
+		//   } else {
+		//     alert(errorMessage);
+		//   }
+		//   console.log(error);
+		// });
 	}
 
 	_addUserInFirebase(username, id){
@@ -163,7 +258,9 @@ class NavHeader extends React.Component{
 				const usuariosRef = firebase.database().ref('usuarios');
 				usuariosRef.child(djangoId).set({
 					username: username,
-					userAuth: result.uid
+					userUID: result.uid,
+					email: result.email,
+					displayName: result.displayName
 				}).then(function(){
 					console.log("Criou o novo usuario no Firebase");
 				}).catch(function(error){

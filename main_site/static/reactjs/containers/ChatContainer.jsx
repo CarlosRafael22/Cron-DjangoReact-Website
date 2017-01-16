@@ -252,6 +252,8 @@ FriendlyChat.prototype.initFirebase = function() {
   this.storage = firebase.storage();
   // Initiates Firebase auth and listen to auth state changes
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
+
+  this.imageFile = require('../../images/profile_placeholder.png');
 };
 
 // Loads chat messages history and listens for upcoming ones.

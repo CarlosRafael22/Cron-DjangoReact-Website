@@ -167,7 +167,7 @@ class UserList(generics.ListCreateAPIView):
 		return Response({'token': token.key, 'user': user}, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+	# permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 

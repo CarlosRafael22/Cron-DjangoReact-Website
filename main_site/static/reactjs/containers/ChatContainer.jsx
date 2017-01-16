@@ -360,6 +360,8 @@ FriendlyChat.prototype.signIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider).then(function(result){
   	// This gives you a Google Access Token. You can use it to access the Google API.
+  	console.log("SignPopUp");
+  	console.log(result);
 	var token = result.credential.accessToken;
 	// The signed-in user info.
 	var user = result.user;

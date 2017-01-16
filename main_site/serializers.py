@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 # from drf_extra_fields.fields import Base64ImageField
 
 # class IngredienteSerializer(serializers.Serializer):
@@ -175,8 +178,6 @@ class CoachSerializer(serializers.ModelSerializer):
 
 ### FUNCAO PARA VALIDAR SE EH EMAIL MESMO
 def validateEmail( email ):
-	from django.core.validators import validate_email
-	from django.core.exceptions import ValidationError
 	try:
 		validate_email( email )
 		return True
@@ -203,20 +204,23 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
            	    # Pega o username desse usuario
                 email_or_username = user_request.username
+                print(email_or_username)
 
+            print(password)
             # Se nao tiver sido com email entao ele ja vai ter o username e autentica
             user = authenticate(username=email_or_username, password=password)
+            print(user)
 
             if user:
                 if not user.is_active:
                     msg = _('User account is disabled.')
-                    raise exceptions.ValidationError(msg)
+                    raise ValidationError(msg)
             else:
                 msg = _('Unable to log in with provided credentials.')
-                raise exceptions.ValidationError(msg)
+                raise ValidationError(msg)
         else:
             msg = _('Must include "email or username" and "password"')
-            raise exceptions.ValidationError(msg)
+            raise ValidationError(msg)
 
         attrs['user'] = user
         return attrs

@@ -67,9 +67,146 @@ class NavHeader extends React.Component{
 		});
 	}
 
+	componentDidMount(){
+		const usuariosRef = firebase.database().ref('usuarios');
+		console.log("NavHeader mounted");
+		console.log(usuariosRef);
+		//const usuariosRef = rootRef.child('usuarios');
+		usuariosRef.on('value', snapshot => {
+			console.log("Usuario Firebase");
+			console.log(snapshot);
+			console.log(snapshot.val());
+
+			// Vou pegar as infos de login do usuario no Firebase Auth
+
+			// console.log("Firebase user connected");
+			// const fireUser = firebase.auth().currentUser;
+
+		});
+
+		firebase.auth().onAuthStateChanged(function(user) {
+		  if (user) {
+		    // User is signed in.
+		    console.log("Firebase user connected");
+		    console.log(user);
+		  } else {
+		    // No user is signed in.
+		    console.log("Firebase user NOT connected");
+		  }
+		});
+	}
+
 	componentWillUnmount(){
 		console.log("Unmounting NavHeader");
 	}
+
+	_signInFirebase(email, password){
+		console.log("Vou logar no Firebase");
+		firebase.auth().signInWithEmailAndPassword(email, password).then(function(result){
+		  	// This gives you a Google Access Token. You can use it to access the Google API.
+		  	console.log("Logou Firebase");
+		  	console.log(result);
+			// var token = result.credential.accessToken;
+			// // The signed-in user info.
+			// var user = result.user;
+
+			// let info = {
+			// 	"token": token,
+			// 	"user": user
+			// };
+			// console.log("Info");
+			// console.log(info);
+		  })
+		    .catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  if (errorCode === 'auth/wrong-password') {
+		    alert('Wrong password.');
+		  } else {
+		    alert(errorMessage);
+		  }
+		  console.log(error);
+		});
+	}
+
+	_addUserInFirebase(username, id){
+		console.log("Vai add user na tabela Firebase");
+		const usuariosRef = firebase.database().ref('usuarios');
+		usuariosRef.push({
+			username: username,
+			djangoID: id
+		}).then(function(){
+			console.log("Criou o novo usuario no Firebase");
+		}).catch(function(error){
+			console.error(error);
+		});
+
+	}
+
+
+	_signUpFirebase(email, password, username, djangoId){
+		console.log("Vou signUp no Firebase");
+		firebase.auth().createUserWithEmailAndPassword(email, password).then(function(result){
+		  	// This gives you a Google Access Token. You can use it to access the Google API.
+		  	console.log("Criou no Firebase");
+		  	console.log(result);
+		  	console.log(result.uid);
+
+		  	// Salvando o displayName como username pq senao ao falar no chat nao vai aparecer nome algum
+		  	result.updateProfile({
+		        displayName: username
+		    }).then(function() {
+		        // Update successful.
+
+		        console.log("Vai add user na tabela Firebase");
+				const usuariosRef = firebase.database().ref('usuarios');
+				usuariosRef.child(djangoId).set({
+					username: username,
+					userAuth: result.uid
+				}).then(function(){
+					console.log("Criou o novo usuario no Firebase");
+				}).catch(function(error){
+					console.error(error);
+				});
+
+		    }, function(error) {
+		        // An error happened.
+		        console.log("Deu merda no updateProfile");
+		        console.log(error);
+		    });        
+
+		  	
+		  })
+		    .catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  if (errorCode === 'auth/wrong-password') {
+		    alert('Wrong password.');
+		  } else {
+		    alert(errorMessage);
+		  }
+		  console.log(error);
+		});
+	}
+
+
+	_signOutFirebase(){
+		firebase.auth().signOut().then(function() {
+		  // Sign-out successful.
+		  console.log("Deslogou Firebase");
+		  console.log(localStorage);
+		}, function(error) {
+		  // An error happened.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  console.log(errorCode);
+		  console.log(errorMessage);
+		});
+	}
+
+	
 
 	// FUNCAO PARA MANTER UM LISTENER NO STORE E AO MUDAR O ESTADO (LOGANDO OU DESLOGANDO)
 	// A GNT MUDA O HEADER TB
@@ -95,6 +232,7 @@ class NavHeader extends React.Component{
 	_logout(){
 		console.log("Logout Home");
 		store.dispatch(logoutUser());
+		this._signOutFirebase();
 	}
 
 	_signup(){
@@ -104,7 +242,13 @@ class NavHeader extends React.Component{
 		let email = this._email.value;
 
 		console.log("Dispatching SignUp");
-		store.dispatch(signUpUser({"username":username, "email":email, "password": password}));
+		store.dispatch(signUpUser({"username":username, "email":email, "password": password}, this._signUpFirebase.bind(this), this._addUserInFirebase.bind(this)));
+		//this._signUpFirebase(email, password);
+
+		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE
+		// PQ O METODO createUserWithEmailAndPassword CRIA UM USER EM UMA TABLEA A PARTE
+		// http://stackoverflow.com/questions/14673708/how-do-i-return-a-list-of-users-if-i-use-the-firebase-simple-username-password
+
 	}
 
 	_loginSubmit(event){
@@ -112,8 +256,11 @@ class NavHeader extends React.Component{
 		let usernameOrEmail = this._usernameOrEmail.value;
 		let password = this._password.value;
 
+		let emailFirebase = usernameOrEmail;
+
 		console.log("Dispatching");
 		store.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}));
+		this._signInFirebase(emailFirebase, password);
 
 	}
 	
@@ -145,6 +292,7 @@ class NavHeader extends React.Component{
 					    <input type="password" className="form-control" id="inputPassword" placeholder="Password"
 					    ref={(input) => this._password = input}/>
 					  </div>
+					  <button type="button" className="btn btn-danger" onClick={this._signOutFirebase.bind(this)}>Logout</button>
 					</form>
 				</div>
 			</Modal>
@@ -261,3 +409,9 @@ function mapStateToProps(state) {
 	  }
 	}
 export default connect(mapStateToProps)(NavHeader)
+
+
+
+function FirebaseAccess(){
+
+}

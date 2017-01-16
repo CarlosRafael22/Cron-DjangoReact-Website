@@ -16,6 +16,8 @@ import storeLocal from './redux/store'
 
 import {loginUser, logoutUser} from './redux/action'
 
+import * as firebase from 'firebase'
+
 
 class AppRouter extends React.Component{
 	_loadElements(){

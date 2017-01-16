@@ -93,6 +93,10 @@ export function loginUser(creds) {
       // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);
 
+
+      // REGISTRANDO O USER NO FIREBASE SO AGORA PQ EU QUERO CRIA-LO NA TABELA COM A ID DO DJANGO
+
+
       // If login was successful, set the token in local storage
       localStorage.setItem('id_token', authInfo.token);
       // the localStorage seems to be limited to handle only string key/value pairs.
@@ -108,8 +112,6 @@ export function loginUser(creds) {
     .fail(function(xhr, status, error){
       console.log(error);
       console.log(xhr);
-
-      console.log(response);
       dispatch(loginError(user.message))
 
     });
@@ -193,7 +195,7 @@ function signUpError(message) {
 
 // Calls the API to get a token and
 // dispatches actions along the way
-export function signUpUser(creds) {
+export function signUpUser(creds, signUpFirebase) {
 
   console.log("Estamos no signup user")
   console.log(creds);
@@ -213,6 +215,9 @@ export function signUpUser(creds) {
       console.log("User signed up");
       console.log(typeof(authInfo));
       console.log(authInfo);
+
+      // CADASTRANDO NO FIREBASE
+      signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id);
 
       // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);

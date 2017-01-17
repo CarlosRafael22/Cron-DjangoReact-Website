@@ -18,6 +18,8 @@ export default class ReceitaForm extends React.Component{
 		console.log(file);
 
 		reader.onload = (upload) => {
+			console.log("File handled");
+			console.log(upload);
 			this.setState({
 				data_uri: upload.target.result,
 				filename: file.name,
@@ -45,13 +47,29 @@ export default class ReceitaForm extends React.Component{
 		//console.log(foto_receita.value);
 		console.log(this.state);
 
-		// Criando o objeto que vai ser mandado com a foto
-		const foto_data = {
-			data_uri: this.state.data_uri,
-			filename: this.state.filename,
-			filetype: this.state.filetype
-		};
-		console.log(foto_data);
+		// const fileUpload = document.getElementById('inputFile');
+		// console.log("fileUpload:");
+		// console.log(fileUpload);
+
+		// const foto = fileUpload.files[0];
+		// console.log(foto);
+		// console.log(foto.name);
+		// // Criando o objeto que vai ser mandado com a foto
+		// const foto_data = {
+		// 	data_uri: this.state.data_uri,
+		// 	filename: this.state.filename,
+		// 	filetype: this.state.filetype
+		// };
+		// console.log(foto_data);
+
+		// // Create a new FormData object.
+		// var formData = new FormData();
+		// formData.append('file', foto, foto.name);
+		// console.log("FormData");
+		// console.log(formData);
+		// for (var [key, value] of formData.entries()) { 
+		//   console.log(key, value);
+		// }
 
 		const lista_ingredientes = ingredientes.value.split('\n');
 		//console.log(lista_ingredientes);
@@ -59,11 +77,12 @@ export default class ReceitaForm extends React.Component{
 		const lista_modo_preparo = modo_preparo.value.split('\n');
 
 		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, null);
-		this._tempo_preparo.value = "";
-		this._nivel_dificuldade.value = "";
-		this._nome_receita.value = "";
-		this._ingredientes.value = "";
-		this._modo_preparo.value = "";
+		//this.props.addFoto(foto_data);
+		// this._tempo_preparo.value = "";
+		// this._nivel_dificuldade.value = "";
+		// this._nome_receita.value = "";
+		// this._ingredientes.value = "";
+		// this._modo_preparo.value = "";
 	}
 
 	render(){
@@ -106,7 +125,7 @@ export default class ReceitaForm extends React.Component{
 					    
 					</div>
 					<div className="form-group">
-					    <input type="file" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" ref={(input) => this._foto = input}
+					    <input type="file" name="fotoUploadInput" className="form-control-file" id="inputFile" aria-describedby="fileHelp" ref={(input) => this._foto = input}
 					    onChange={this._handleFile.bind(this)}/>
 					    	<small id="fileHelp" className="form-text text-muted">Essa sera a imagem de capa da receita</small>
 					</div>

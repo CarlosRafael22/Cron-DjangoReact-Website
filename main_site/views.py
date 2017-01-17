@@ -12,7 +12,7 @@ from rest_framework import parsers, renderers
 
 from rest_framework import generics
 from rest_framework.decorators import parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser, JSONParser
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -93,7 +93,7 @@ class ReceitaList(generics.ListCreateAPIView):
 
 # @method_decorator(csrf_exempt)
 @api_view(['GET', 'POST'])
-@parser_classes((FormParser, MultiPartParser,))
+@parser_classes((JSONParser, FormParser, MultiPartParser,))
 def receita_list(request, format=None):
 
 	if request.method == 'GET':
@@ -121,6 +121,27 @@ class ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 class Foto_ReceitaList(generics.ListCreateAPIView):
 	queryset = Foto_Receita.objects.all()
 	serializer_class = Foto_ReceitaSerializer
+
+@api_view(['GET', 'POST'])
+@parser_classes((FormParser, MultiPartParser,FileUploadParser,))
+def foto_list(request, format=None):
+
+	if request.method == 'GET':
+		# import pdb;
+		# pdb.set_trace();
+		fotos_receita = Foto_Receita.objects.all()
+		serializer = Foto_ReceitaSerializer(fotos_receita, many=True)
+		return Response(serializer.data)
+
+	elif request.method == 'POST':
+		import pdb;
+		pdb.set_trace();
+		serializer = Foto_ReceitaSerializer(data=request.data)
+		if serializer.is_valid():
+			# Salvando o objeto no banco
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Foto_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Foto_Receita.objects.all()

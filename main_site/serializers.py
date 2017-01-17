@@ -79,8 +79,16 @@ class Foto_ReceitaSerializer(serializers.ModelSerializer):
 		model = Foto_Receita
 		fields = '__all__'
 
+	def create(self, validated_data):
+
+		import pdb;
+		pdb.set_trace();
+
+		foto = Foto_Receita.objects.create(**validated_data)
+		return foto
+
 class ReceitaSerializer(serializers.ModelSerializer):
-	foto_da_receita = Foto_ReceitaSerializer() 
+	foto_da_receita = Foto_ReceitaSerializer(required=False, allow_null=True) 
 	subpartes = Parte_da_ReceitaSerializer(many=True)
 	class Meta:
 		model = Receita

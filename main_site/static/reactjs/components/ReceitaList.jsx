@@ -108,12 +108,13 @@ export default class ReceitaList extends React.Component{
 		/// CRIANDO O OBJETO RECEITA PARA SER MANDADO
 		let receita = {"nome_receita": nome_receita, "tempo_de_preparo": tempo_de_preparo, "nivel_de_dificuldade": nivel_de_dificuldade, "subpartes": subpartes_lista, "categoria": categoria,
 		"foto_da_receita": foto_da_receita}
-		//receita = JSON.stringify(receita);
+		receita = JSON.stringify(receita);
 		console.log(receita);
 		jQuery.ajax({
 			type: 'POST',
 			url: '/api/receitas/',
-			data: receita
+			data: receita,
+			contentType: 'application/json'
 		}).done(newReceita => {
 			console.log("New recipe posted");
 			console.log(typeof(newReceita));
@@ -134,6 +135,39 @@ export default class ReceitaList extends React.Component{
 
 	}
 
+	_addFoto(foto_da_receita){
+		console.log("No add foto");
+		console.log(foto_da_receita);
+
+		// for (var [key, value] of foto_da_receita.entries()) { 
+		//   console.log(key, value);
+		// }
+
+		const data = {"foto": foto_da_receita};
+		jQuery.ajax({
+			type: 'POST',
+			url: '/api/fotos/',
+			data: data,
+			contentType: 'multipart/form-data',
+		}).done(newFoto => {
+			console.log("New foto posted");
+			console.log(typeof(newFoto));
+			console.log(newFoto);
+
+			// Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
+			// this._fetchReceitas()
+			// console.log("atualizar no Add");
+			// this.setState({receitas: this.state.receitas.concat([newFoto]) });
+		})
+		.fail(function(xhr, status, error){
+			console.log(error);
+			console.log(xhr);
+		})
+		.always(foto => {
+			console.log(foto);
+		});
+	}
+
 	render(){
 
 		// Pegando as receitas
@@ -143,7 +177,7 @@ export default class ReceitaList extends React.Component{
 		return (
 			<div>
 				<div className="col-md-8 col-md-offset-2">
-					<ReceitaForm addReceita={this._addReceita.bind(this)}/>
+					<ReceitaForm addReceita={this._addReceita.bind(this)} addFoto={this._addFoto.bind(this)}/>
 				</div>				
 				<div className="panel panel-default col-md-6">
 					<div className="panel-heading">Existem {qtdsReceitas} receitas no banco:</div>

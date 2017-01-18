@@ -30,7 +30,12 @@ class Passo_da_Receita(models.Model):
 class Parte_da_Receita(models.Model):
 	nome_da_parte = models.CharField(max_length=50, null=True)
 	ingredientes = models.ManyToManyField(Ingrediente)
-	modo_de_preparo = models.ManyToManyField(Passo_da_Receita)
+	modo_de_preparo = models.ManyToManyField(Passo_da_Receita, through='Ordem_Passo_na_Parte_Receita')
+
+class Ordem_Passo_na_Parte_Receita(models.Model):
+	passo = models.ForeignKey(Passo_da_Receita)
+	parte_da_receita = models.ForeignKey(Parte_da_Receita)
+	ordem_passo_na_parte = models.IntegerField()
 
 # TO CRIANDO UM MODEL DA IMAGEM PRA VER SE FICA MAIS FACIL DE SERIALIZAR
 # E TB PRA DPS PODER TER VARIAS IMAGENS EM UMA MESMA RECEITA
@@ -42,6 +47,8 @@ class Foto_Receita(models.Model):
 	foto = models.ImageField(upload_to=upload_filename, null=True)
 
 
+DEFAULT_FOTO_ID = 1
+DEFAULT_SUBPARTE_ID = 1
 class Receita(models.Model):
 	def get_image_path(self, instance):
 		self.url_da_imagem = '/media/' + 'categorias/{0}/{1}'.format(self.categoria, instance)
@@ -50,7 +57,7 @@ class Receita(models.Model):
 
 	nome_receita = models.CharField(max_length=100, default="Receita")
 	#foto_da_receita = models.ImageField(upload_to=get_image_path, null=True)
-	foto_da_receita = models.ForeignKey(Foto_Receita, null=True, on_delete=models.CASCADE, default=1)
+	foto_da_receita = models.ForeignKey(Foto_Receita, null=True, on_delete=models.CASCADE, default=DEFAULT_FOTO_ID)
 	url_da_imagem = models.CharField(max_length=100, null=True)
 	subpartes = models.ManyToManyField(Parte_da_Receita)
 	categoria = models.CharField(max_length=100, default="Sem categoria")

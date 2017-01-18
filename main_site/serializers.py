@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita)
 from django.contrib.auth.models import User
 import json
 
@@ -35,19 +35,12 @@ class Parte_da_ReceitaSerializer(serializers.ModelSerializer):
 	# ingredientes = serializers.ListField(child=IngredienteSerializer(many=True))
 	# modo_de_preparo = serializers.ListField(child=Passo_da_ReceitaSerializer(many=True))
 	ingredientes = IngredienteSerializer(many=True)
+	#modo_de_preparo = Ordem_Passo_na_Parte_ReceitaSerializer(source='ordem_passo_na_parte_receita_set',many=True)
 	modo_de_preparo = Passo_da_ReceitaSerializer(many=True)
 
 	class Meta:
 		model = Parte_da_Receita
 		fields = ('id', 'nome_da_parte', 'ingredientes', 'modo_de_preparo')
-
-	# def validate(self, data):
-	# 	import pdb;
-	# 	pdb.set_trace();
-
-	# 	data = json.loads(data)
-	# 	return data
-
 
 	def create(self, validated_data):
 		
@@ -55,7 +48,6 @@ class Parte_da_ReceitaSerializer(serializers.ModelSerializer):
 		ingredientes_list = validated_data.pop('ingredientes')
 		modo_de_preparo_list = validated_data.pop('modo_de_preparo')
 		
-
 		parte_da_receita = Parte_da_Receita.objects.create(**validated_data)
 
 		# Salvando os ingredientes na lista de ingredientes dessa Parte
@@ -67,11 +59,27 @@ class Parte_da_ReceitaSerializer(serializers.ModelSerializer):
 			parte_da_receita.ingredientes.add(ingrediente)
 
 		# Salvando os passos na lista de passos(modo_de_preparo) dessa Parte
-		for passo in modo_de_preparo_list:
+		# Para acessar o index que vai servir para armazenar a ordem que o passo vai ta na receita
+		for ordemIndex, passo in enumerate(modo_de_preparo_list, start=1):
 			passo, created = Passo_da_Receita.objects.get_or_create(**passo)
-			parte_da_receita.modo_de_preparo.add(passo)
+			# import pdb;
+			# pdb.set_trace();
+
+			# Adicionar na Ordem_Passo pq ai adiciona no modo_de_preparo -> nao tem como fazer o modo_de_preparo.add(passo) mais
+			# parte_da_receita.modo_de_preparo.add(passo)
+			ordem = Ordem_Passo_na_Parte_Receita(passo=passo, parte_da_receita=parte_da_receita, ordem_passo_na_parte=ordemIndex)
+			ordem.save()
 
 		return parte_da_receita
+
+
+class Ordem_Passo_na_Parte_ReceitaSerializer(serializers.ModelSerializer):
+	parte_da_receita = serializers.ReadOnlyField(source='parte_da_receita.id')
+	passo = Passo_da_ReceitaSerializer()
+
+	class Meta:
+		model = Ordem_Passo_na_Parte_Receita
+		fields = ('passo', 'parte_da_receita', 'ordem_passo_na_parte')
 
 class Foto_ReceitaSerializer(serializers.ModelSerializer):
 
@@ -95,8 +103,8 @@ class ReceitaSerializer(serializers.ModelSerializer):
 		fields = ('id', 'nome_receita', 'foto_da_receita', 'url_da_imagem', 'subpartes', 'categoria', 'tempo_de_preparo', 'nivel_de_dificuldade')
 
 	def create(self, validated_data):
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 		subpartes_list = validated_data.pop('subpartes')
 
 		receita = Receita.objects.create(**validated_data)

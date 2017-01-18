@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita)
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
-	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer)
+	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
@@ -59,6 +59,16 @@ class Passo_da_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = Passo_da_ReceitaSerializer
 ######################################################################
 
+class Ordem_Passo_na_Parte_ReceitaList(generics.ListCreateAPIView):
+	queryset = Ordem_Passo_na_Parte_Receita.objects.all()
+	serializer_class = Ordem_Passo_na_Parte_ReceitaSerializer
+
+class Ordem_Passo_na_Parte_ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Ordem_Passo_na_Parte_Receita.objects.all()
+	serializer_class = Ordem_Passo_na_Parte_ReceitaSerializer
+######################################################################
+
+
 class Parte_da_ReceitaList(generics.ListCreateAPIView):
 	queryset = Parte_da_Receita.objects.all()
 	serializer_class = Parte_da_ReceitaSerializer
@@ -73,8 +83,8 @@ def parte_receita_list(request, format=None):
 		return Response(serializer.data)
 
 	elif request.method == 'POST':
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 		serializer = Parte_da_ReceitaSerializer(data=request.data)
 		if serializer.is_valid():
 			# Salvando o objeto no banco
@@ -99,13 +109,13 @@ def receita_list(request, format=None):
 	if request.method == 'GET':
 		# import pdb;
 		# pdb.set_trace();
-		partes_receita = Receita.objects.all()
-		serializer = ReceitaSerializer(partes_receita, many=True)
+		receitas = Receita.objects.all()
+		serializer = ReceitaSerializer(receitas, many=True)
 		return Response(serializer.data)
 
 	elif request.method == 'POST':
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 		serializer = ReceitaSerializer(data=request.data)
 		if serializer.is_valid():
 			# Salvando o objeto no banco

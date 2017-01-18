@@ -16,6 +16,8 @@ urlpatterns = [
 	#url(r'^api/partes_receitas/$', views.Parte_da_ReceitaList.as_view()),
 	url(r'^api/partes_receitas/$', views.parte_receita_list),
 	url(r'^api/partes_receitas/(?P<pk>[0-9]+)/$', views.Parte_da_ReceitaDetail.as_view()),
+	url(r'^api/ordens_partes_receitas/$', views.Ordem_Passo_na_Parte_ReceitaList.as_view()),
+	url(r'^api/ordens_partes_receitas/(?P<pk>[0-9]+)/$', views.Ordem_Passo_na_Parte_ReceitaDetail.as_view()),
 	#url(r'^api/receitas/$', views.ReceitaList.as_view()),
 	url(r'^api/receitas/$', views.receita_list),
 	url(r'^api/receitas/(?P<pk>[0-9]+)/$', views.ReceitaDetail.as_view()),

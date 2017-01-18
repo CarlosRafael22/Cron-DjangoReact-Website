@@ -30,6 +30,35 @@ export default class ReceitaForm extends React.Component{
 		reader.readAsDataURL(file);
 	}
 
+	_sendImage(){
+
+		const fileUpload = document.getElementById('inputFile');
+		console.log("fileUpload:");
+		console.log(fileUpload);
+
+		const foto = fileUpload.files[0];
+		console.log(foto);
+		console.log(foto.name);
+		// Criando o objeto que vai ser mandado com a foto
+		const foto_data = {
+			data_uri: this.state.data_uri,
+			filename: this.state.filename,
+			filetype: this.state.filetype
+		};
+		console.log(foto_data);
+
+		// Create a new FormData object.
+		var formData = new FormData();
+		formData.append('file', foto, foto.name);
+		console.log("FormData");
+		console.log(formData);
+		for (var [key, value] of formData.entries()) { 
+		  console.log(key, value);
+		}
+
+		return foto_data;
+	}
+
 	_handleSubmit(event){
 		// Then the page doesnt reaload when the form is submitted!!
 		event.preventDefault();
@@ -47,29 +76,7 @@ export default class ReceitaForm extends React.Component{
 		//console.log(foto_receita.value);
 		console.log(this.state);
 
-		// const fileUpload = document.getElementById('inputFile');
-		// console.log("fileUpload:");
-		// console.log(fileUpload);
-
-		// const foto = fileUpload.files[0];
-		// console.log(foto);
-		// console.log(foto.name);
-		// // Criando o objeto que vai ser mandado com a foto
-		// const foto_data = {
-		// 	data_uri: this.state.data_uri,
-		// 	filename: this.state.filename,
-		// 	filetype: this.state.filetype
-		// };
-		// console.log(foto_data);
-
-		// // Create a new FormData object.
-		// var formData = new FormData();
-		// formData.append('file', foto, foto.name);
-		// console.log("FormData");
-		// console.log(formData);
-		// for (var [key, value] of formData.entries()) { 
-		//   console.log(key, value);
-		// }
+		// foto = this._sendImage();
 
 		const lista_ingredientes = ingredientes.value.split('\n');
 		//console.log(lista_ingredientes);
@@ -77,6 +84,7 @@ export default class ReceitaForm extends React.Component{
 		const lista_modo_preparo = modo_preparo.value.split('\n');
 
 		this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, null);
+		// this.props.addReceita(tempo_preparo.value, nivel_dificuldade.value, nome_receita.value, lista_ingredientes, lista_modo_preparo, categoria.value, foto);
 		//this.props.addFoto(foto_data);
 		this._tempo_preparo.value = "";
 		this._nivel_dificuldade.value = "";

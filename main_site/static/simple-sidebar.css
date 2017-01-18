@@ -130,3 +130,8 @@
         margin-right: 0;
     }
 }
+
+/* ALGUNS STYLES ADICIONAIS */
+.route-active{
+    color: white;
+}

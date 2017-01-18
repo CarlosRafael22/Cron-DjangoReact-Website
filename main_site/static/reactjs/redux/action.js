@@ -197,7 +197,7 @@ function signUpError(message) {
 // dispatches actions along the way
 export function signUpUser(creds, signUpFirebase) {
 
-  console.log("Estamos no signup user")
+  console.log("Estamos no signup user");
   console.log(creds);
 
   return dispatch => {
@@ -242,5 +242,74 @@ export function signUpUser(creds, signUpFirebase) {
       dispatch(loginError(user.message))
 
     });
+  }
+}
+
+
+// There are three possible states for our login
+// process and we need actions for each of them
+export const RECIPES_REQUEST = 'RECIPES_REQUEST'
+export const RECIPES_SUCCESS = 'RECIPES_SUCCESS'
+export const RECIPES_FAILURE = 'RECIPES_FAILURE'
+
+function requestRecipes(){
+  console.log("Pegando as receitas no action!");
+  return {
+    type: RECIPES_REQUEST,
+    receitasList: [] 
+  }
+}
+
+function receiveRecipes(receitaList){
+  console.log("Pegou as receitas no action");
+  return {
+    type: RECIPES_SUCCESS,
+    receitasList: receitaList
+  }
+}
+
+function recipesError(errorMessage){
+  console.log("Deu merda na receitas no action");
+  return {
+    type: RECIPES_FAILURE,
+    errorMessage
+  }
+}
+
+export function getReceitas(){
+
+  console.log("getReceitas no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(requestRecipes());
+
+    jQuery.ajax({
+      type: 'GET',
+      url: '/api/receitas/'
+    }).done(receitas => {
+
+      console.log(receitas);
+
+      // No localStorage so salva se for String!!!!
+      // Tem q fazer gambiarra aqui pra salvar e pegar dps
+      let receitas_inString = JSON.stringify(receitas);
+      localStorage.setItem('receitas', receitas_inString);
+      console.log(localStorage);
+
+      // Dispatch the success action
+      dispatch(receiveRecipes(receitas));
+
+      //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(recipesError(error))
+
+    });
+
   }
 }

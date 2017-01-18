@@ -13,9 +13,7 @@ export default class App1Container extends React.Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-12 jumbotron">
-            <Headline>Aqui tem todos as receitas!</Headline>
-          </div>
+          
           <ReceitaList/>
         </div>
       </div>

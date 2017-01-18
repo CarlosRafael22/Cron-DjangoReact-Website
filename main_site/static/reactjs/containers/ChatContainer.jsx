@@ -83,12 +83,12 @@ export default class ChatContainer extends React.Component{
 				  <div id="user-container">
 					<div hidden id="user-pic"></div>
 					<div hidden id="user-name"></div>
-					<button hidden id="sign-out" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-					  Sign-out
-					</button>
-					<button id="sign-in" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white" >
-					  <i className="material-icons">account_circle</i>Sign-in with Google
-					</button>
+					{/*<button hidden id="sign-out" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+										  Sign-out
+										</button>
+										<button id="sign-in" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white" >
+										  <i className="material-icons">account_circle</i>Sign-in with Google
+										</button>*/}
 				  </div>
 				</div>
 			  </header>
@@ -138,61 +138,6 @@ export default class ChatContainer extends React.Component{
 	}
 
 
-
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	// render(){
-
-	// 	const ownStyle = {
-	// 		"paddingTop": "50px"
-	// 	};
-
-	// 	return(
-
-	// 		<div className="container" style={ownStyle}>
-	// 			<form>
-	// 			  <div className="form-group">
-	// 			    <label htmlFor="exampleInputEmail1">Email address</label>
-	// 			    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-	// 			    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-	// 			  </div>
-	// 			  <div className="form-group">
-	// 			    <label htmlFor="exampleInputPassword1">Password</label>
-	// 			    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
-	// 			  </div>
-	// 			</form>
-
-
-	// 			<button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-	// 			  Button
-	// 			</button>
-				
-	// 			<button className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-	// 			  <i className="material-icons">add</i>
-	// 			</button>
-
-
-	// 			<span className="mdl-chip mdl-chip--contact">
-	// 			    <span className="mdl-chip__contact mdl-color--teal mdl-color-text--white">A</span>
-	// 			    <span className="mdl-chip__text">Contact Chip</span>
-	// 			</span>
-				
-	// 			<span className="mdl-chip mdl-chip--contact mdl-chip--deletable">
-	// 			    <img className="mdl-chip__contact" src="/templates/dashboard/images/user.jpg"></img>
-	// 			    <span className="mdl-chip__text">Deletable Contact Chip</span>
-	// 			    <a href="#" className="mdl-chip__action"><i className="material-icons">cancel</i></a>
-	// 			</span>
-
-	// 			<span className="mdl-chip mdl-chip--deletable">
-	// 			    <span className="mdl-chip__text">Deletable Chip</span>
-	// 			    <button type="button" className="mdl-chip__action"><i className="material-icons">cancel</i></button>
-	// 			</span>
-	// 		</div>
-
-	// 	)
-	// }
-
-
 }
 
 
@@ -213,16 +158,16 @@ function FriendlyChat() {
   this.mediaCapture = document.getElementById('mediaCapture');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
-  this.signInButton = document.getElementById('sign-in');
+  //this.signInButton = document.getElementById('sign-in');
   console.log("Bindeou");
-  this.signOutButton = document.getElementById('sign-out');
+  //this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   console.log(this.signInSnackbar);
 
   // Saves message on form submit.
   this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
-  this.signOutButton.addEventListener('click', this.signOut.bind(this));
-  this.signInButton.addEventListener('click', this.signIn.bind(this));
+  //this.signOutButton.addEventListener('click', this.signOut.bind(this));
+  //this.signInButton.addEventListener('click', this.signIn.bind(this));
   console.log("Sign in button");
   console.log(this.signInButton);
 
@@ -286,6 +231,7 @@ FriendlyChat.prototype.saveMessage = function(e) {
 
 	// TODO(DEVELOPER): push new message to Firebase.
 	var currentUser = this.auth.currentUser;
+	console.log("Mandei msg");
 	console.log(currentUser);
 	console.log(this.messageInput.value);
 
@@ -394,6 +340,7 @@ FriendlyChat.prototype.signIn = function() {
 // Signs-out of Friendly Chat.
 FriendlyChat.prototype.signOut = function() {
   // TODO(DEVELOPER): Sign out of Firebase.
+  console.log("Signing out Firebase");
   this.auth.signOut();
 };
 
@@ -415,10 +362,10 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 	// Show user's profile and sign-out button.
 	this.userName.removeAttribute('hidden');
 	this.userPic.removeAttribute('hidden');
-	this.signOutButton.removeAttribute('hidden');
+	//this.signOutButton.removeAttribute('hidden');
 
 	// Hide sign-in button.
-	this.signInButton.setAttribute('hidden', 'true');
+	//this.signInButton.setAttribute('hidden', 'true');
 
 	// We load currently existing chant messages.
 	this.loadMessages();
@@ -427,10 +374,10 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 	console.log("Nao tem user");
 	this.userName.setAttribute('hidden', 'true');
 	this.userPic.setAttribute('hidden', 'true');
-	this.signOutButton.setAttribute('hidden', 'true');
+	//this.signOutButton.setAttribute('hidden', 'true');
 
 	// Show sign-in button.
-	this.signInButton.removeAttribute('hidden');
+	//this.signInButton.removeAttribute('hidden');
   }
 };
 
@@ -478,7 +425,7 @@ FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageU
 	this.messageList.appendChild(div);
   }
   if (picUrl) {
-  	// console.log("Viu a foto");
+  	console.log("Viu a foto");
   	// console.log(div);
 	div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }

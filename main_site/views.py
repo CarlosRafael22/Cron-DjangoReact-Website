@@ -144,8 +144,8 @@ def foto_list(request, format=None):
 		return Response(serializer.data)
 
 	elif request.method == 'POST':
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 		serializer = Foto_ReceitaSerializer(data=request.data)
 		if serializer.is_valid():
 			# Salvando o objeto no banco

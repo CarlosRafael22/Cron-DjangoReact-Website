@@ -2,16 +2,38 @@ import React from "react"
 import ReceitaBox from "./ReceitaBox"
 import ReceitaForm from "./ReceitaForm"
 
+import {getReceitas} from '../redux/action'
+import store from '../redux/store'
+
 export default class ReceitaList extends React.Component{
 
 	constructor(){
 		super();
 
 		console.log("Dando fetch receitas");
-		this._fetchReceitas();
+		// Setou as receitas do banco no localStorage
+		store.dispatch(getReceitas());
+
+		const receitas = this._getReceitasFromStorage();
+		//this._fetchReceitas();
 		this.state = {
-			receitas: []
+			receitas: receitas
 		};
+	}
+
+	_getReceitasFromStorage(){
+
+		// As receitas veem em string entao colocamos de volta em objetos
+		let receitas = localStorage.getItem('receitas');
+		if(receitas != "undefined"){
+			receitas = JSON.parse(receitas);
+		}else{
+			receitas = "Undefined";
+		}
+		console.log("Pegando receitas do getItem");
+		console.log(receitas);
+
+		return receitas;
 	}
 
 	_getReceitas(){
@@ -121,7 +143,8 @@ export default class ReceitaList extends React.Component{
 			console.log(newReceita);
 
 			// Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
-			this._fetchReceitas()
+			//this._fetchReceitas();
+			store.dispatch(getReceitas());
 			console.log("atualizar no Add");
 			this.setState({receitas: this.state.receitas.concat([newReceita]) });
 		})

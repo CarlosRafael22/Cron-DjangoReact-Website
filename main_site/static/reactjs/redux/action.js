@@ -43,41 +43,10 @@ export function loginUser(creds) {
 
   console.log("Estamos no login user")
   console.log(creds);
-  // let config = {
-  //   method: 'POST',
-  //   headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-  //   body: `username=${creds.username}&password=${creds.password}`
-  // }
-
-  let config = {
-    method: 'POST',
-    url: '/api-token-auth/',
-    body: creds
-  }
 
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(creds))
-
-    // return fetch('http://localhost:8000/api-token-auth/', config)
-    //   .then(response =>
-    //     response.json().then(user => ({ user, response }))
-    //         ).then(({ user, response }) =>  {
-    //     if (!response.ok) {
-    //       // If there was a problem, we want to
-    //       // dispatch the error condition
-    //       console.log(response);
-    //       dispatch(loginError(user.message))
-    //       return Promise.reject(user)
-    //     } else {
-    //       console.log(user);
-    //       console.log(response);
-    //       // If login was successful, set the token in local storage
-    //       localStorage.setItem('id_token', user.token)
-    //       // Dispatch the success action
-    //       dispatch(receiveLogin(user))
-    //     }
-    //   }).catch(err => console.log("Error: ", err))
 
     jQuery.ajax({
       type: 'POST',
@@ -93,17 +62,8 @@ export function loginUser(creds) {
       // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);
 
-
       // REGISTRANDO O USER NO FIREBASE SO AGORA PQ EU QUERO CRIA-LO NA TABELA COM A ID DO DJANGO
 
-
-      // If login was successful, set the token in local storage
-      localStorage.setItem('id_token', authInfo.token);
-      // the localStorage seems to be limited to handle only string key/value pairs.
-      // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
-      let user = JSON.stringify(authInfo.user);
-      localStorage.setItem('user', user);
-      console.log(localStorage);
       // Dispatch the success action
       dispatch(receiveLogin(authInfo));
 
@@ -149,10 +109,10 @@ function receiveLogout() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
-    dispatch(requestLogout())
-    localStorage.removeItem('id_token')
-    localStorage.removeItem('user')
-    dispatch(receiveLogout())
+    dispatch(requestLogout());
+    // localStorage.removeItem('id_token')
+    // localStorage.removeItem('user')
+    dispatch(receiveLogout());
   }
 }
 
@@ -256,7 +216,7 @@ function requestRecipes(){
   console.log("Pegando as receitas no action!");
   return {
     type: RECIPES_REQUEST,
-    receitasList: [] 
+    loading: true 
   }
 }
 
@@ -264,6 +224,7 @@ function receiveRecipes(receitaList){
   console.log("Pegou as receitas no action");
   return {
     type: RECIPES_SUCCESS,
+    loading: false,
     receitasList: receitaList
   }
 }
@@ -272,6 +233,7 @@ function recipesError(errorMessage){
   console.log("Deu merda na receitas no action");
   return {
     type: RECIPES_FAILURE,
+    loading: false,
     errorMessage
   }
 }
@@ -302,6 +264,69 @@ export function getReceitas(){
 
     });
 
+  }
+}
+
+
+// There are three possible states for our login
+// process and we need actions for each of them
+export const ADD_RECIPE_REQUEST = 'ADD_RECIPE_REQUEST'
+export const ADD_RECIPE_SUCCESS = 'ADD_RECIPE_SUCCESS'
+export const ADD_RECIPE_FAILURE = 'ADD_RECIPE_FAILURE'
+
+function addRecipeRequest(){
+  console.log("Request add receita no action!");
+  return {
+    type: ADD_RECIPE_REQUEST,
+    loading: true 
+  }
+}
+
+function addRecipeSuccess(newRecipe){
+  console.log("Adicionou receita no action");
+  return {
+    type: ADD_RECIPE_SUCCESS,
+    loading: false,
+    novaReceita: newRecipe
+  }
+}
+
+function addRecipeFailure(errorMessage){
+  console.log("Deu merda na add receita no action");
+  return {
+    type: ADD_RECIPE_FAILURE,
+    loading: false,
+    errorMessage
+  }
+}
+
+export function addReceita(receita){
+
+  console.log("addReceita no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(addRecipeRequest());
+
+    jQuery.ajax({
+      type: 'POST',
+      url: '/api/receitas/',
+      data: receita,
+      contentType: 'application/json'
+    }).done(newReceita => {
+      console.log("New recipe no action");
+      console.log(newReceita);
+
+      dispatch(addRecipeSuccess(newReceita));
+      // Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
+      //this._fetchReceitas();
+      dispatch(getReceitas());
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+      dispatch(addRecipeFailure());
+    });
   }
 }
 

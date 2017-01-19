@@ -3,7 +3,8 @@
 // import { combineReducers } from 'redux'
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
-  RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE
+  RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE,
+  ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE
 } from './action'
 
 import { combineReducers } from 'redux'
@@ -71,8 +72,25 @@ function receitaReducer(state = {
       })
     case RECIPES_FAILURE:
       return Object.assign({}, state, {
+        loading: false,
         error: action.errorMessage
       })
+    case ADD_RECIPE_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+    })
+    case ADD_RECIPE_SUCCESS:
+      console.log("State no Recipe_success");
+      console.log(state.receitasList);
+      return Object.assign({}, state, {
+        loading: false,
+        added_recipe: true
+      })
+    case ADD_RECIPE_FAILURE:
+      return Object.assign({}, state, {
+        loading: false,
+        error: action.errorMessage
+    })
     default:
       return state
   }

@@ -72,6 +72,15 @@ class NavHeader extends React.Component{
 		console.log(this.props);
 	}
 
+	componentWillReceiveProps(nextProps){
+		console.log("Vai atualizar props!");
+		console.log(nextProps);
+
+		if(this.props.isAuthenticated != nextProps.isAuthenticated){
+			this.setState(updateView:true);
+		}
+	}
+
 	componentDidMount(){
 		const usuariosRef = firebase.database().ref('usuarios');
 		console.log("NavHeader mounted");
@@ -330,15 +339,9 @@ class NavHeader extends React.Component{
 	}
 	
 	_showUserInfo(){
-		let user = localStorage.getItem('user');
-		if(user != "undefined"){
-			user = JSON.parse(user);
-		}else{
-			user = "Undefined";
-		}
-		console.log(user);
-
-		return user.username;
+		console.log("Props do Header logado");
+		console.log(this.props.user);
+		return this.props.user.username;
 	}
 
 	render(){
@@ -434,7 +437,7 @@ class NavHeader extends React.Component{
 		          <ul className="nav navbar-nav navbar-right">
 		          	<li><a href="#/home">{this.props.id_token}</a></li>
 		            <li><button type="button" className="btn btn-primary btn-lg">
-					  {localStorage.getItem('user') != null ? this._showUserInfo() : "Null"}
+					  {this.props.user != null ? this._showUserInfo() : "Null"}
 					</button>
 					</li>
 		            <li><a href="#" onClick={this._logout.bind(this)}>Log out</a></li>
@@ -452,10 +455,11 @@ class NavHeader extends React.Component{
 
 		// Criando o listener do Redux state
 		//let unsubscribe = store.subscribe(this._handleReduxStateChange);
-
+		console.log("Ta autenticado?");
+		console.log(this.props.usuario.isAuthenticated);
 		return (
 			<div>
-			{localStorage.getItem('user') == null ? headerUserLoggedOut : headerUserLoggedIn}
+			{this.props.usuario.isAuthenticated == true ? headerUserLoggedIn : headerUserLoggedOut}
 	    	{/* PRIMEIRA PARTE VE SE TA COM O showModal E DPS DENTRO DO PRIMEIRO () VE SE EH O DE LOGIN OU SIGNUP*/}
 	    	{this.state.showModal ? ( this.state.modalType==0 ? modalLogIn : modalSignUp ) : (null) }
 	    	</div>
@@ -477,6 +481,7 @@ function mapStateToProps(state) {
 
 	  return {
 	  	//state: state,
+	  	usuario: state.usuario,
 	 	user : state.usuario.user,
 		id_token : state.usuario.id_token
 		// user: state.usuario.get('user'),

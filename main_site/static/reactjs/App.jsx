@@ -40,9 +40,9 @@ class AppRouter extends React.Component{
 
 		// Qlqr mudanca de estado no store eu salvo isso no localStorage
 		this.store.subscribe(() => {
-			console.log("Subscribe");
-			console.log(store.getState());
-			saveState(store.getState());
+			console.log("Subscribe do App");
+			console.log(this.store.getState());
+			saveState(this.store.getState());
 		});
 	}
 

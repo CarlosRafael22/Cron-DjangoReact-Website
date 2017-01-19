@@ -3,7 +3,7 @@ import ReceitaBox from "./ReceitaBox"
 import ReceitaForm from "./ReceitaForm"
 
 import { connect } from 'react-redux';
-import {getReceitas} from '../redux/action'
+import {getReceitas, addReceita} from '../redux/action'
 import store from '../redux/store'
 import {loadState, saveState} from '../redux/localStorage'
 
@@ -24,6 +24,8 @@ class ReceitaList extends React.Component{
 			console.log("PEGANDO AS RECEITAS PELA PRIMEIRA VEZ!!");
 			store.dispatch(getReceitas());
 		}
+
+		//store.dispatch(getReceitas());
 
 		// Tenho que comecar vazio mesmo pq senao ele nao vai conseguir entrar na pagina
 		// ele vai fazer o _getReceitas e mapear do this.state.receitas sem as receitas terem sido pegas do servidor
@@ -138,29 +140,34 @@ class ReceitaList extends React.Component{
 		"foto_da_receita": foto_da_receita}
 		receita = JSON.stringify(receita);
 		console.log(receita);
-		jQuery.ajax({
-			type: 'POST',
-			url: '/api/receitas/',
-			data: receita,
-			contentType: 'application/json'
-		}).done(newReceita => {
-			console.log("New recipe posted");
-			console.log(typeof(newReceita));
-			console.log(newReceita);
 
-			// Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
-			//this._fetchReceitas();
-			store.dispatch(getReceitas());
-			console.log("atualizar no Add");
-			this.setState({receitas: this.state.receitas.concat([newReceita]) });
-		})
-		.fail(function(xhr, status, error){
-			console.log(error);
-			console.log(xhr);
-		})
-		.always(recipe => {
-			console.log(recipe);
-		});
+		this.props.dispatch(addReceita(receita));
+
+		// jQuery.ajax({
+		// 	type: 'POST',
+		// 	url: '/api/receitas/',
+		// 	data: receita,
+		// 	contentType: 'application/json'
+		// }).done(newReceita => {
+		// 	console.log("New recipe posted");
+		// 	console.log(typeof(newReceita));
+		// 	console.log(newReceita);
+
+		// 	// Vai fazer um fetch pra ver se ta pegando certinho com o que tem de mais atual no banco
+		// 	//this._fetchReceitas();
+		// 	store.dispatch(getReceitas());
+		// 	console.log("atualizar no Add");
+		// 	console.log("As receitas");
+		// 	console.log(this.props.receitas.receitasList);
+		// 	//this.setState({receitas: this.state.receitas.concat([newReceita]) });
+		// })
+		// .fail(function(xhr, status, error){
+		// 	console.log(error);
+		// 	console.log(xhr);
+		// })
+		// .always(recipe => {
+		// 	console.log(recipe);
+		// });
 
 	}
 

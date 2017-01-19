@@ -13,7 +13,9 @@ import { combineReducers } from 'redux'
 // we would also want a util to check if the token is expired
 function auth(state = {
     isFetching: false,
-    isAuthenticated: localStorage.getItem('id_token') ? true : false
+    isAuthenticated: localStorage.getItem('id_token') ? true : false,
+    user: localStorage.getItem('user') ? localStorage.getItem('user') : null,
+    id_token: localStorage.getItem('id_token') ? localStorage.getItem('id_token') : null
   }, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
@@ -26,6 +28,8 @@ function auth(state = {
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
+        id_token: action.id_token,
+        user: action.user,
         errorMessage: ''
       })
     case LOGIN_FAILURE:
@@ -37,7 +41,9 @@ function auth(state = {
     case LOGOUT_SUCCESS:
       return Object.assign({}, state, {
         isFetching: true,
-        isAuthenticated: false
+        isAuthenticated: false,
+        user: null,
+        id_token: null
       })
     default:
       return state
@@ -45,10 +51,17 @@ function auth(state = {
 }
 
 // Botaar receitaList = localStorage.getItem('receitas') no state
-function receitaReducer(state = {}, action){
+// Lembrando que no localStorage eh so string que eh salva
+function receitaReducer(state = {
+  loading: false,
+  //receitasList: localStorage.getItem('receitas') ? localStorage.getItem('receitas') : null
+  receitasList: []
+}, action){
+  console.log("Storage no Reducer");
+  console.log(localStorage);
   switch(action.type){
     case RECIPES_REQUEST:
-      return Object.assign({},state, {
+      return Object.assign({}, state, {
         loading: true
     })
     case RECIPES_SUCCESS:
@@ -71,20 +84,3 @@ var reducer = combineReducers({
 })
 
 export default reducer
-// // The quotes reducer
-// function quotes(state = {}, action) {
-//   switch (action.type) {
-
-//     default:
-//       return state
-//   }
-// }
-
-// // We combine the reducers here so that they
-// // can be left split apart above
-// const quotesApp = combineReducers({
-//   auth,
-//   quotes
-// })
-
-// export default quotesApp

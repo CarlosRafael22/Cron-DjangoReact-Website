@@ -290,6 +290,60 @@ export function getReceitas(){
     }).done(receitas => {
 
       console.log(receitas);
+      // Dispatch the success action
+      dispatch(receiveRecipes(receitas));
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(recipesError(error))
+
+    });
+
+  }
+}
+
+
+// There are three possible states for our login
+// process and we need actions for each of them
+export const DELETE_RECIPE_REQUEST = 'DELETE_RECIPE_REQUEST'
+export const DELETE_RECIPE_SUCCESS = 'DELETE_RECIPE_SUCCESS'
+export const DELETE_RECIPE_FAILURE = 'DELETE_RECIPE_FAILURE'
+
+function recipeDeletionRequest(){
+  return {
+    type: DELETE_RECIPE_REQUEST,
+    loading: true
+  }
+}
+
+function recipeDeletionSuccess(){
+  return {
+    type: DELETE_RECIPE_SUCCESS
+  }
+}
+
+function recipeDeletionFailure(errorMessage){
+  return {
+    type: DELETE_RECIPE_FAILURE,
+    error: errorMessage
+  }
+}
+
+export function deleteReceita(receitaId){
+  console.log("Deletando no action");
+  return dispatch => {
+
+    dispatch(recipeDeletionRequest());
+
+    jQuery.ajax({
+      method: 'DELETE',
+      url: '/api/receitas/'+receitaId.toString()
+    }).done(function(){
+      console.log("Deletou");
+      console.log("Vou ter q pegar as receitas");
 
       // No localStorage so salva se for String!!!!
       // Tem q fazer gambiarra aqui pra salvar e pegar dps
@@ -297,8 +351,21 @@ export function getReceitas(){
       localStorage.setItem('receitas', receitas_inString);
       console.log(localStorage);
 
-      // Dispatch the success action
-      dispatch(receiveRecipes(receitas));
+    // Mas nao vamos esperar ate que a request pra API termine antes de atualizar o component's state.
+    // We will give out user imediate visual feedback, which is known as optimistic update
+
+    // // Clonando o array existente com o Spread Operator
+    // const receitas = [...this.state.receitas];
+    // const receitaIndex = receitas.indexOf(deletedReceita);
+    // console.log(receitaIndex);
+    // // Remove the receita from the receita's array
+    // receitas.splice(receitaIndex, 1);
+
+    // // Updates state and the UI updates imediately
+    // this.setState({receitas});
+
+    //   // Dispatch the success action
+    //   dispatch(receiveRecipes(receitas));
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })
@@ -310,6 +377,7 @@ export function getReceitas(){
       dispatch(recipesError(error))
 
     });
+
 
   }
 }

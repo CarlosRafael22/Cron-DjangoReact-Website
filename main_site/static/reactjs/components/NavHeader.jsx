@@ -61,11 +61,15 @@ class NavHeader extends React.Component{
 		console.log("Estado ", this.state.showModal);
 		console.log(store.getState());
 
-		// Gambiarra para qd mudar o state eu fazer o setState e ele ter que render de novo
-		store.subscribe(() => {
-			console.log("Subscribed");
-			this.setState({updateView: true});
-		});
+		// // Gambiarra para qd mudar o state eu fazer o setState e ele ter que render de novo
+		// store.subscribe((state) => {
+		// 	console.log("Subscribed retornou isso");
+		// 	console.log(state);
+		// 	//this.setState({updateView: true});
+		// });
+
+		console.log("Props");
+		console.log(this.props);
 	}
 
 	componentDidMount(){
@@ -292,7 +296,7 @@ class NavHeader extends React.Component{
 
 	_logout(){
 		console.log("Logout Home");
-		store.dispatch(logoutUser());
+		this.props.dispatch(logoutUser());
 		this._signOutFirebase();
 	}
 
@@ -303,7 +307,7 @@ class NavHeader extends React.Component{
 		let email = this._email.value;
 
 		console.log("Dispatching SignUp");
-		store.dispatch(signUpUser({"username":username, "email":email, "password": password}, this._signUpFirebase.bind(this), this._addUserInFirebase.bind(this)));
+		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, this._signUpFirebase.bind(this), this._addUserInFirebase.bind(this)));
 		//this._signUpFirebase(email, password);
 
 		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE
@@ -320,7 +324,7 @@ class NavHeader extends React.Component{
 		let emailFirebase = usernameOrEmail;
 
 		console.log("Dispatching");
-		store.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}));
+		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}));
 		this._signInFirebase(emailFirebase, password);
 
 	}
@@ -399,6 +403,7 @@ class NavHeader extends React.Component{
 		        </div>
 		        <div id="navbar" className="navbar-collapse collapse">
 		          <ul className="nav navbar-nav navbar-right">
+		          	<li><a href="#/home">{this.props.id_token}</a></li>
 		            <li><button type="button" className="btn btn-primary btn-lg" onClick={this._handleShowModal.bind(this, 0)}
 		            data-toggle="modal" data-target="#myModal">
 					  Login
@@ -427,6 +432,7 @@ class NavHeader extends React.Component{
 		        </div>
 		        <div id="navbar" className="navbar-collapse collapse">
 		          <ul className="nav navbar-nav navbar-right">
+		          	<li><a href="#/home">{this.props.id_token}</a></li>
 		            <li><button type="button" className="btn btn-primary btn-lg">
 					  {localStorage.getItem('user') != null ? this._showUserInfo() : "Null"}
 					</button>
@@ -458,22 +464,26 @@ class NavHeader extends React.Component{
 
 
 }
-NavHeader.contextTypes = {
-	store: React.PropTypes.object.isRequired
-};
+// NavHeader.contextTypes = {
+// 	store: React.PropTypes.object.isRequired
+// };
 
 function mapStateToProps(state) {
-	  console.log("StateProps");
+	  console.log("StateProps mapeado");
 	  console.log(state); // state
+	  console.log(state.usuario);
+	  console.log(typeof(state.usuario));
+	  console.log(state.receitas);
 
 	  return {
-	  	state: state
-	  }
+	  	//state: state,
+	 	user : state.usuario.user,
+		id_token : state.usuario.id_token
+		// user: state.usuario.get('user'),
+		// id_token: state.usuario.get('id_token')
+		// user: state.getIn(['usuario', 'user']),
+		// id_token: state.getIn(['usuario', 'id_token'])
+	  };
 	}
+
 export default connect(mapStateToProps)(NavHeader)
-
-
-
-function FirebaseAccess(){
-
-}

@@ -15,6 +15,7 @@ import thunk from 'redux-thunk'
 import storeLocal from './redux/store'
 
 import {loginUser, logoutUser} from './redux/action'
+import {loadState, saveState} from './redux/localStorage'
 
 import * as firebase from 'firebase'
 
@@ -29,15 +30,28 @@ class AppRouter extends React.Component{
 	  document.getElementById('message-form').appendChild(button);
 	}
 
-	render(){
+	constructor(){
+		super();
 
-		const store = createStore(reducer, applyMiddleware(thunk));
-		console.log(storeLocal);
+		const persistedState = loadState();
+		this.store = createStore(reducer, persistedState, applyMiddleware(thunk));
+		console.log("Persisted data when creating store");
+		console.log(persistedState);
+
+		// Qlqr mudanca de estado no store eu salvo isso no localStorage
+		this.store.subscribe(() => {
+			console.log("Subscribe");
+			console.log(store.getState());
+			saveState(store.getState());
+		});
+	}
+
+	render(){
 
 		//store.dispatch(loginUser({}));
 		return (
 
-			<Provider store={store}>
+			<Provider store={this.store}>
 				<Router history={hashHistory}>
 					<Redirect from="/" to="/home"/>
 					<Route path="/" component={Layout}>

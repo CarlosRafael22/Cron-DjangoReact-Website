@@ -12,8 +12,7 @@ export default class App1Container extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="row">
-          
+        <div className="row">          
           <ReceitaList/>
         </div>
       </div>

@@ -22,10 +22,10 @@ class HomeContainer extends React.Component{
 		//console.log(localStorage.user.username);
 
 		// Gambiarra para qd mudar o state eu fazer o setState e ele ter que render de novo
-		store.subscribe(() => {
-			console.log("Subscribed");
-			this.setState({usuario: localStorage.getItem('user'), django_token: localStorage.getItem('id_token')});
-		});
+		// store.subscribe(() => {
+		// 	console.log("Subscribed");
+		// 	this.setState({usuario: localStorage.getItem('user'), django_token: localStorage.getItem('id_token')});
+		// });
 	}
 
 	componentWillUnmount(){

@@ -2,43 +2,49 @@ import React from "react"
 import ReceitaBox from "./ReceitaBox"
 import ReceitaForm from "./ReceitaForm"
 
+import { connect } from 'react-redux';
 import {getReceitas} from '../redux/action'
 import store from '../redux/store'
+import {loadState, saveState} from '../redux/localStorage'
 
-export default class ReceitaList extends React.Component{
+class ReceitaList extends React.Component{
 
 	constructor(){
 		super();
 
 		console.log("Dando fetch receitas");
 		// Setou as receitas do banco no localStorage
-		store.dispatch(getReceitas());
 
-		const receitas = this._getReceitasFromStorage();
+		//store.dispatch(getReceitas());
 		//this._fetchReceitas();
-		this.state = {
-			receitas: receitas
-		};
-	}
 
-	_getReceitasFromStorage(){
-
-		// As receitas veem em string entao colocamos de volta em objetos
-		let receitas = localStorage.getItem('receitas');
-		if(receitas != "undefined"){
-			receitas = JSON.parse(receitas);
-		}else{
-			receitas = "Undefined";
+		// SE TIVER COM NADA NO LOCALSTORAGE (QD TA ACESSANDO PELA PRIMEIRA VEZ) ELE VAI RETORNAR receitasList: []
+		// ENTAO TEM Q FAZER UMA REQUISICAO PARA POPULAR AS RECEITAS DESSA VEZ
+		if(localStorage.getItem('state') == null){
+			console.log("PEGANDO AS RECEITAS PELA PRIMEIRA VEZ!!");
+			store.dispatch(getReceitas());
 		}
-		console.log("Pegando receitas do getItem");
-		console.log(receitas);
 
-		return receitas;
+		// Tenho que comecar vazio mesmo pq senao ele nao vai conseguir entrar na pagina
+		// ele vai fazer o _getReceitas e mapear do this.state.receitas sem as receitas terem sido pegas do servidor
+		this.state = {
+			receitas: []
+		};
+
+		console.log("Props");
+		console.log(this.props);
+
+		// Qlqr mudanca de estado no store eu salvo isso no localStorage
+		store.subscribe(() => {
+			console.log("Subscribe");
+			console.log(store.getState());
+			saveState(store.getState());
+		});
 	}
 
 	_getReceitas(){
 
-		return this.state.receitas.map( (receita) => {
+		return this.props.receitas.receitasList.map( (receita) => {
 			return (
 				<ReceitaBox nome_receita= {receita.nome_receita} categoria= {receita.categoria}
 				tempo_de_preparo= {receita.tempo_de_preparo} nivel_de_dificuldade= {receita.nivel_de_dificuldade}
@@ -194,8 +200,11 @@ export default class ReceitaList extends React.Component{
 	render(){
 
 		// Pegando as receitas
+		console.log("Render");
+		console.log(this.props.receitas);
+		//this._getReceitasFromProps();
 		const receitas = this._getReceitas();
-		const qtdsReceitas = this.state.receitas.length;
+		const qtdsReceitas = this.props.receitas.receitasList.length;
 
 		return (
 			<div>
@@ -205,7 +214,6 @@ export default class ReceitaList extends React.Component{
 				<div className="panel panel-default col-md-6">
 					<div className="panel-heading">Existem {qtdsReceitas} receitas no banco:</div>
 					<div className="panel-body">
-						
 						{receitas}
 					</div>
 				</div>
@@ -214,3 +222,17 @@ export default class ReceitaList extends React.Component{
 		)
 	}
 }
+
+
+function mapStateToProps(state){
+	console.log("StateProps mapeado no Receita");
+	console.log(state);
+	console.log(state.receitas); // state
+
+	return {
+		receitas: state.receitas
+	};
+}
+
+
+export default connect(mapStateToProps)(ReceitaList)

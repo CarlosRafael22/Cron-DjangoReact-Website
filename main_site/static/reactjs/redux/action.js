@@ -111,7 +111,8 @@ export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout());
     // localStorage.removeItem('id_token')
-    // localStorage.removeItem('user')
+    
+    //localStorage.removeItem('user')
     dispatch(receiveLogout());
   }
 }
@@ -182,13 +183,13 @@ export function signUpUser(creds, signUpFirebase) {
       // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);
 
-      // If login was successful, set the token in local storage
-      localStorage.setItem('id_token', authInfo.token);
-      // the localStorage seems to be limited to handle only string key/value pairs.
-      // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
-      let user = JSON.stringify(authInfo.user);
-      localStorage.setItem('user', user);
-      console.log(localStorage);
+      // // If login was successful, set the token in local storage
+      // localStorage.setItem('id_token', authInfo.token);
+      // // the localStorage seems to be limited to handle only string key/value pairs.
+      // // A workaround can be to stringify your object before storing it, and later parse it when you retrieve it:
+      // let user = JSON.stringify(authInfo.user);
+      // localStorage.setItem('user', user);
+      // console.log(localStorage);
       // Dispatch the success action
       dispatch(receiveLogin(authInfo));
 
@@ -337,20 +338,25 @@ export const DELETE_RECIPE_REQUEST = 'DELETE_RECIPE_REQUEST'
 export const DELETE_RECIPE_SUCCESS = 'DELETE_RECIPE_SUCCESS'
 export const DELETE_RECIPE_FAILURE = 'DELETE_RECIPE_FAILURE'
 
-function recipeDeletionRequest(){
+function deleteRecipeRequest(){
+  console.log("Request delete receita no action");
   return {
     type: DELETE_RECIPE_REQUEST,
     loading: true
   }
 }
 
-function recipeDeletionSuccess(){
+function deleteRecipeSuccess(){
+  console.log("Deletou receita no action");
   return {
-    type: DELETE_RECIPE_SUCCESS
+    type: DELETE_RECIPE_SUCCESS,
+    loading: false,
+    deleted: true
   }
 }
 
-function recipeDeletionFailure(errorMessage){
+function deleteRecipeFailure(errorMessage){
+  console.log("delete receita falhou no action");
   return {
     type: DELETE_RECIPE_FAILURE,
     error: errorMessage
@@ -359,38 +365,29 @@ function recipeDeletionFailure(errorMessage){
 
 export function deleteReceita(receitaId){
   console.log("Deletando no action");
+  console.log(receitaId);
+  console.log(typeof(receitaId));
   return dispatch => {
 
-    dispatch(recipeDeletionRequest());
+    dispatch(deleteRecipeRequest());
 
     jQuery.ajax({
       method: 'DELETE',
       url: '/api/receitas/'+receitaId.toString()
     }).done(function(){
       console.log("Deletou");
-      console.log("Vou ter q pegar as receitas");
+      //console.log("Vou ter q pegar as receitas");
+
+      dispatch(deleteRecipeSuccess());
+      // VAI TER QUE FAZER O GETRECEITAS AQUI PRA O STORE.STATE FICAR COM AS RECEITAS ATUALIZADAS
+      // SENAO ELE VAI TER AS RECEITAS ANTIGAS AINDA SALVAS
+      dispatch(getReceitas());
 
       // No localStorage so salva se for String!!!!
       // Tem q fazer gambiarra aqui pra salvar e pegar dps
-      let receitas_inString = JSON.stringify(receitas);
-      localStorage.setItem('receitas', receitas_inString);
-      console.log(localStorage);
-
-    // Mas nao vamos esperar ate que a request pra API termine antes de atualizar o component's state.
-    // We will give out user imediate visual feedback, which is known as optimistic update
-
-    // // Clonando o array existente com o Spread Operator
-    // const receitas = [...this.state.receitas];
-    // const receitaIndex = receitas.indexOf(deletedReceita);
-    // console.log(receitaIndex);
-    // // Remove the receita from the receita's array
-    // receitas.splice(receitaIndex, 1);
-
-    // // Updates state and the UI updates imediately
-    // this.setState({receitas});
-
-    //   // Dispatch the success action
-    //   dispatch(receiveRecipes(receitas));
+      // let receitas_inString = JSON.stringify(receitas);
+      // localStorage.setItem('receitas', receitas_inString);
+      // console.log(localStorage);
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })

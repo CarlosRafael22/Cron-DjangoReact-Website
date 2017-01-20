@@ -3,11 +3,19 @@ import ReceitaBox from "./ReceitaBox"
 import ReceitaForm from "./ReceitaForm"
 
 import { connect } from 'react-redux';
-import {getReceitas, addReceita} from '../redux/action'
+import {getReceitas, addReceita, deleteReceita} from '../redux/action'
 import store from '../redux/store'
 import {loadState, saveState} from '../redux/localStorage'
 
 class ReceitaList extends React.Component{
+
+	//  React assigns props on the constructed instance right after the construction in addition to passing them to constructor.
+	// Entao this.props vai ser undefined dentro do constructor pq o React so passa ele dps
+	// Pra poder acessar o this.props dentro do constructor tem que fazer:
+	// constructor(props){
+	// 	super(props);
+	// 	console.log(this.props);
+	// }
 
 	constructor(){
 		super();
@@ -72,30 +80,39 @@ class ReceitaList extends React.Component{
 		console.log(receita);
 
 		const receitaID = receita.id;
+		console.log(receitaID);
+		console.log("O props eh: ", this.props);
 
 		// Vai procurar o receita que vai ser removido na lista de receitas
-		let deletedReceita = this.state.receitas.filter(receita => receita.id == receitaID)[0];
-		console.log(deletedReceita);
+		//let deletedReceita = this.props.receitas.receitasList.filter(receita => receita.id == receitaID)[0];
+		//console.log(deletedReceita);
 
-		jQuery.ajax({
-			method: 'DELETE',
-			url: `/api/receitas/${deletedReceita.id}`
-		}).done(function(){
-			console.log("Deletou");
-		});
+		// jQuery.ajax({
+		// 	method: 'DELETE',
+		// 	url: `/api/receitas/${deletedReceita.id}`
+		// }).done(function(){
+		// 	console.log("Deletou");
+		// });
 
 		// Mas nao vamos esperar ate que a request pra API termine antes de atualizar o component's state.
 		// We will give out user imediate visual feedback, which is known as optimistic update
 
-		// Clonando o array existente com o Spread Operator
-		const receitas = [...this.state.receitas];
-		const receitaIndex = receitas.indexOf(deletedReceita);
-		console.log(receitaIndex);
-		// Remove the receita from the receita's array
-		receitas.splice(receitaIndex, 1);
+		// Vou ver se atualizou o estado no store.state dizendo se o delete da receita deu certo ou nao
+		// Se tiver state.deleted_recipe
 
-		// Updates state and the UI updates imediately
-		this.setState({receitas});
+		// Clonando o array existente com o Spread Operator
+		// const receitas = [...this.state.receitas];
+		// const receitaIndex = receitas.indexOf(deletedReceita);
+		// console.log(receitaIndex);
+		// // Remove the receita from the receita's array
+		// receitas.splice(receitaIndex, 1);
+
+		// // Updates state and the UI updates imediately
+		// this.setState({receitas});
+
+
+		console.log("Mandei pro dispatch");
+		this.props.dispatch(deleteReceita(receitaID));
 	}
 
 	_addReceita(tempo_de_preparo, nivel_de_dificuldade, nome_receita, ingredientes, modo_preparo, categoria, foto_da_receita){

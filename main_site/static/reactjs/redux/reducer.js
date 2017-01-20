@@ -4,7 +4,8 @@
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
   RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE,
-  ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE
+  ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE,
+  DELETE_RECIPE_REQUEST, DELETE_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE
 } from './action'
 
 import { combineReducers } from 'redux'
@@ -55,6 +56,8 @@ function auth(state = {
 // Lembrando que no localStorage eh so string que eh salva
 function receitaReducer(state = {
   loading: false,
+  deleted_recipe: false,
+  added_recipe: false,
   //receitasList: localStorage.getItem('receitas') ? localStorage.getItem('receitas') : null
   receitasList: []
 }, action){
@@ -91,6 +94,21 @@ function receitaReducer(state = {
         loading: false,
         error: action.errorMessage
     })
+      case DELETE_RECIPE_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+    })
+    case DELETE_RECIPE_SUCCESS:
+      return Object.assign({}, state, {
+        // vai ser deleted_recipe: true
+        deleted_recipe: action.deleted, 
+        loading: false
+      })
+    case DELETE_RECIPE_FAILURE:
+      return Object.assign({}, state, {
+        loading: false,
+        error: action.errorMessage
+      })
     default:
       return state
   }

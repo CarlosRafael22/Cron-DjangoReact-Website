@@ -2,6 +2,7 @@ import React from "react"
 
 import Headline from "../components/Headline"
 import ReceitaList from "../components/ReceitaList"
+import ReceitaListContainer from "../containers/ReceitaListContainer"
 
 export default class App1Container extends React.Component {
 
@@ -13,7 +14,7 @@ export default class App1Container extends React.Component {
     return (
       <div className="container">
         <div className="row">          
-          <ReceitaList/>
+          <ReceitaListContainer/>
         </div>
       </div>
     )

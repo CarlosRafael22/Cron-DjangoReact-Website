@@ -4,6 +4,7 @@ import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import { connect } from 'react-redux'
 import store from '../redux/store'
 import reducer from '../redux/reducer'
+import {loadState, saveState} from '../redux/localStorage'
 
 class HomeContainer extends React.Component{
 
@@ -11,14 +12,18 @@ class HomeContainer extends React.Component{
 		super();
 
 		console.log(this.state);
+		const localStorageState = loadState();
 		this.state = {
 			django_token: localStorage.getItem('id_token'),
-			usuario: localStorage.getItem('user')
+			usuario: localStorage.getItem('user'),
+			localStorageState: localStorageState
 		};
 		console.log(this.state);
 		console.log("Home Local Storage");
 		console.log(localStorage);
 		console.log(this.context);
+
+		
 		//console.log(localStorage.user.username);
 
 		// Gambiarra para qd mudar o state eu fazer o setState e ele ter que render de novo
@@ -67,7 +72,7 @@ class HomeContainer extends React.Component{
 
 		let view;
 		// Vendo se o usuario esta logado. Se nao estiver vai mostrar o Login Form, se estiver mostra alguma outra coisa
-		if(localStorage.getItem('user') == null){
+		if(this.state.localStorageState.usuario.user == null){
 			view = 
 			<div className="container" style={ownStyle}>
 				<form onSubmit={this._loginSubmit.bind(this)}>

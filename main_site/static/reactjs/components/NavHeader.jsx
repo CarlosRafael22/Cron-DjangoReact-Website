@@ -440,7 +440,11 @@ class NavHeader extends React.Component{
 					  {this.props.user != null ? this._showUserInfo() : "Null"}
 					</button>
 					</li>
-		            <li><a href="#" onClick={this._logout.bind(this)}>Log out</a></li>
+		            <li>{/*<a href="#" onClick={this._logout.bind(this)}>Log out</a>*/}
+		            ><button type="button" className="btn btn-primary btn-lg" onClick={this._logout.bind(this)}
+		            data-toggle="modal" data-target="#myModal">
+					  Log out
+					</button></li>
 		            {/*<Link to="/home">Profile</Link>*/}
 		            <li><a href="#/home">Profile</a></li>
 		          </ul>

@@ -378,6 +378,8 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 
 	// Show sign-in button.
 	//this.signInButton.removeAttribute('hidden');
+	//Make sure we remove all previous listeners
+  	this.messagesRef.off();
   }
 };
 

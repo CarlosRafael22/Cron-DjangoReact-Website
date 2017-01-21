@@ -2,7 +2,6 @@ import React from "react"
 
 import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import { connect } from 'react-redux'
-import store from '../redux/store'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
 
@@ -39,7 +38,7 @@ class HomeContainer extends React.Component{
 
 	_logout(){
 		console.log("Logout Home");
-		store.dispatch(logoutUser());
+		this.props.dispatch(logoutUser());
 	}
 
 	_signup(){
@@ -49,7 +48,7 @@ class HomeContainer extends React.Component{
 		let email = this._email.value;
 
 		console.log("Dispatching SignUp");
-		store.dispatch(signUpUser({"username":username, "email":email, "password": password}));
+		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}));
 	}
 
 	_loginSubmit(event){
@@ -58,7 +57,7 @@ class HomeContainer extends React.Component{
 		let password = this._password.value;
 
 		console.log("Dispatching");
-		store.dispatch(loginUser({"email_or_username":username, "password": password}));
+		this.props.dispatch(loginUser({"email_or_username":username, "password": password}));
 
 	}
 
@@ -110,9 +109,7 @@ class HomeContainer extends React.Component{
 		)
 	}
 }
-HomeContainer.contextTypes = {
-	store: React.PropTypes.object.isRequired
-};
+
 
 function mapStateToProps(state){
 

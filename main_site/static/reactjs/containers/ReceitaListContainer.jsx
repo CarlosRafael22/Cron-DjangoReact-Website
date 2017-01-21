@@ -3,19 +3,20 @@ import React from "react"
 import ReceitaList from '../components/ReceitaList'
 import { connect } from 'react-redux'
 import {getReceitas, addReceita, deleteReceita} from '../redux/action'
-import store from '../redux/store'
 import {loadState, saveState} from '../redux/localStorage'
 
 class ReceitaListContainer extends React.Component{
 
-	constructor(){
-		super();
+	// To mandando o props pq mesmo sem eu ter setado nenhum props em <ReceitaListContainer> no ReceitaContainer
+	// ao receber o props aqui eu posso acessar o dispatch que eh passado por debaixo dos panos
+	constructor(props){
+		super(props);
 
 		// SE TIVER COM NADA NO LOCALSTORAGE (QD TA ACESSANDO PELA PRIMEIRA VEZ) ELE VAI RETORNAR receitasList: []
 		// ENTAO TEM Q FAZER UMA REQUISICAO PARA POPULAR AS RECEITAS DESSA VEZ
 		if(localStorage.getItem('state') == null){
 			console.log("PEGANDO AS RECEITAS PELA PRIMEIRA VEZ!!");
-			store.dispatch(getReceitas());
+			this.props.dispatch(getReceitas());
 		}
 	}
 

@@ -192,6 +192,7 @@ function FriendlyChat() {
 FriendlyChat.prototype.initFirebase = function() {
   // TODO(DEVELOPER): Initialize Firebase.
   // Shortcuts to Firebase SDK features
+  console.log("CONFIGURANDO FIREBASE");
   this.auth = firebase.auth();
   this.database = firebase.database();
   this.storage = firebase.storage();
@@ -379,7 +380,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
 	// Show sign-in button.
 	//this.signInButton.removeAttribute('hidden');
 	//Make sure we remove all previous listeners
-  	this.messagesRef.off();
+	this.messagesRef != null? this.messagesRef.off() : console.log("Ainda nao tem Referencia para o Banco");
   }
 };
 

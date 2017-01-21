@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from "react-router"
 import store from '../redux/store'
 import Modal from './Modal'
-
-
-
-
-
-
+import Header from './Header'
 
 export default class NavHeader extends React.Component{
 
@@ -112,19 +107,8 @@ export default class NavHeader extends React.Component{
 
 		// AGORA O HEADER VAI SER DIFERENTE BASEADO EM SE O USUARIO ESTA LOGADO OU NAO
 		let headerUserLoggedOut = (
-			<nav className="navbar navbar-inverse navbar-fixed-top">
-		      <div className="container-fluid">
-		        <div className="navbar-header">
-		          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-		            <span className="sr-only">Toggle navigation</span>
-		            <span className="icon-bar"></span>
-		            <span className="icon-bar"></span>
-		            <span className="icon-bar"></span>
-		          </button>
-		          <a className="navbar-brand" href="#">Eleve</a>
-		        </div>
-		        <div id="navbar" className="navbar-collapse collapse">
-		          <ul className="nav navbar-nav navbar-right">
+			<Header>
+				<ul className="nav navbar-nav navbar-right">
 		          	<li><a href="#/home">{this.props.id_token}</a></li>
 		            <li><button type="button" className="btn btn-primary btn-lg" onClick={this._handleShowModal.bind(this, 0)}
 		            data-toggle="modal" data-target="#myModal">
@@ -135,25 +119,12 @@ export default class NavHeader extends React.Component{
 		            {/*<Link to="/home">Profile</Link>*/}
 		            <li><a href="#/home">Profile</a></li>
 		          </ul>
-		        </div>
-		      </div>
-	    	</nav>
+			</Header>
 		)
 
 		let headerUserLoggedIn = (
-			<nav className="navbar navbar-inverse navbar-fixed-top">
-		      <div className="container-fluid">
-		        <div className="navbar-header">
-		          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-		            <span className="sr-only">Toggle navigation</span>
-		            <span className="icon-bar"></span>
-		            <span className="icon-bar"></span>
-		            <span className="icon-bar"></span>
-		          </button>
-		          <a className="navbar-brand" href="#">Eleve</a>
-		        </div>
-		        <div id="navbar" className="navbar-collapse collapse">
-		          <ul className="nav navbar-nav navbar-right">
+			<Header>
+				<ul className="nav navbar-nav navbar-right">
 		          	<li><a href="#/home">{this.props.id_token}</a></li>
 		            <li><button type="button" className="btn btn-primary btn-lg">
 					  {this.props.user != null ? this._showUserInfo() : "Null"}
@@ -166,10 +137,8 @@ export default class NavHeader extends React.Component{
 					</button></li>
 		            {/*<Link to="/home">Profile</Link>*/}
 		            <li><a href="#/home">Profile</a></li>
-		          </ul>
-		        </div>
-		      </div>
-	    	</nav>
+		        </ul>
+			</Header>
 		)
 
 		console.log("Storage no Header");

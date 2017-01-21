@@ -72,7 +72,7 @@ class HomeContainer extends React.Component{
 
 		let view;
 		// Vendo se o usuario esta logado. Se nao estiver vai mostrar o Login Form, se estiver mostra alguma outra coisa
-		if(this.state.localStorageState.usuario.user == null){
+		if(this.props.usuario.user == null){
 			view = 
 			<div className="container" style={ownStyle}>
 				<form onSubmit={this._loginSubmit.bind(this)}>
@@ -100,7 +100,7 @@ class HomeContainer extends React.Component{
 		}else{
 			view = 
 			<div className="alert alert-success" role="alert">
-			  <strong>Well done, {this.state.localStorageState.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.localStorageState.usuario.id_token}</a>.
+			  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
 			</div>
 		}
 
@@ -113,4 +113,12 @@ class HomeContainer extends React.Component{
 HomeContainer.contextTypes = {
 	store: React.PropTypes.object.isRequired
 };
-export default connect()(HomeContainer)
+
+function mapStateToProps(state){
+
+	return {
+		usuario : state.usuario
+	};
+}
+
+export default connect(mapStateToProps)(HomeContainer)

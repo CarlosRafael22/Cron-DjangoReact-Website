@@ -7,15 +7,9 @@ import * as firebaseAuth from '../util/firebase'
 
 class NavHeaderContainer extends React.Component{
 
-	constructor(){
-		super();
-
-		//Iniciando o objeto Firebase
-		// console.log("PEGUIE O FIREBASE");
-		// console.log(FirebaseObj);
-		// this.firebase = Object.create(FirebaseObj);
-		// console.log(this.firebase);
-	}
+	// constructor(){
+	// 	super();
+	// }
 
 	componentDidMount(){
 		const usuariosRef = firebase.database().ref('usuarios');
@@ -57,10 +51,6 @@ class NavHeaderContainer extends React.Component{
 	}
 
 	_signup(username, email, password){
-
-		// let username = this._username.value;
-		// let password = this._password.value;
-		// let email = this._email.value;
 
 		console.log("Dispatching SignUp");
 		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), firebaseAuth._addUserInFirebase.bind(this)));

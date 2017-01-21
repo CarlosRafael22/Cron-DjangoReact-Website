@@ -1,7 +1,7 @@
 import React from "react"
 
 import ReceitaList from '../components/ReceitaList'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {getReceitas, addReceita, deleteReceita} from '../redux/action'
 import store from '../redux/store'
 import {loadState, saveState} from '../redux/localStorage'

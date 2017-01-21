@@ -1,8 +1,12 @@
 import React from "react"
 import {loadState, saveState} from '../redux/localStorage'
+import {deleteReceita} from '../redux/action'
+import { hashHistory } from 'react-router'
+import { connect } from 'react-redux'
+
 import ReceitaBox from "./ReceitaBox"
 
-export default class ReceitaPage extends React.Component{
+class ReceitaPage extends React.Component{
 
 	constructor(props){
 		super(props);
@@ -18,13 +22,24 @@ export default class ReceitaPage extends React.Component{
 		console.log(listaReceitas[0]['id']);
 		for(let i=0;i<listaReceitas.length;i++){
 			if(listaReceitas[i]['id'] == receitaId)
-				return listaReceitas[i]
+				return listaReceitas[i];
 		}
 	}
 
-	fakeDelete(id){
-		alert("Nao vai deletar receita ", id);
+	_deleteReceita(receita){
+
+		console.log("Vou deletar receita no ReceitaPage");
+		console.log(receita);
+
+		const receitaID = receita.id;
+		console.log(receitaID);
+		console.log("O props eh: ", this.props);
+
+		console.log("Mandei pro dispatch");
+		this.props.dispatch(deleteReceita(receitaID));
+		hashHistory.push('/receitas');
 	}
+
 
 	render(){
 		return (
@@ -34,9 +49,11 @@ export default class ReceitaPage extends React.Component{
 				<ReceitaBox nome_receita= {this.receita.nome_receita} categoria= {this.receita.categoria}
 				tempo_de_preparo= {this.receita.tempo_de_preparo} nivel_de_dificuldade= {this.receita.nivel_de_dificuldade}
 				subpartes= {this.receita.subpartes}
-				key= {this.receita.id} id= {this.receita.id} onDelete={this.fakeDelete.bind(this)}/>
+				key= {this.receita.id} id= {this.receita.id} onDelete={this._deleteReceita.bind(this)}/>
 			</div>
 			
 		)
 	}
 }
+
+export default connect()(ReceitaPage)

@@ -100,7 +100,7 @@ class HomeContainer extends React.Component{
 		}else{
 			view = 
 			<div className="alert alert-success" role="alert">
-			  <strong>Well done, {this.state.usuario}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.django_token}</a>.
+			  <strong>Well done, {this.state.localStorageState.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alert-link">{this.state.localStorageState.usuario.id_token}</a>.
 			</div>
 		}
 

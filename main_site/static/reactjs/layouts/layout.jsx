@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Link } from "react-router"
-import NavHeader from "../components/NavHeader"
+import NavHeaderContainer from "../containers/NavHeaderContainer"
 
 
 
@@ -11,7 +11,7 @@ export default class Layout extends React.Component{
 		return(
 		<div id="wrapper">
 
-		<NavHeader />
+		<NavHeaderContainer />
         
         <div id="sidebar-wrapper">
            

@@ -17,16 +17,16 @@ export default class Layout extends React.Component{
            
             <ul className="sidebar-nav">
 				  <li role="presentation" activeClassName="active">
-				  	<Link to="home" activeStyle={{ color: 'red' }}>Home</Link>
+				  	<Link to="/home" activeStyle={{ color: 'red' }}>Home</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="ingredientes" activeStyle={{ color: 'green' }}>Ingredientes</Link>
+				  	<Link to="/ingredientes" activeStyle={{ color: 'green' }}>Ingredientes</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>
+				  	<Link to="/receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="chat" activeStyle={{ color: 'yellow' }}>Chat</Link>
+				  	<Link to="/chat" activeStyle={{ color: 'yellow' }}>Chat</Link>
 				  </li>
 				</ul>
         </div>

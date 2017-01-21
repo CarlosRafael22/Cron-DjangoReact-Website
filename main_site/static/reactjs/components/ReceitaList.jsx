@@ -44,7 +44,7 @@ export default class ReceitaList extends React.Component{
 			<div>
 				<div className="col-md-8 col-md-offset-2">
 					<ReceitaForm addReceita={this.props.addReceita.bind(this)} addFoto={this.props.addFoto.bind(this)}/>
-				</div>				
+				</div>			
 				<div className="panel panel-default col-md-6">
 					<div className="panel-heading">Existem {qtdsReceitas} receitas no banco:</div>
 					<div className="panel-body">

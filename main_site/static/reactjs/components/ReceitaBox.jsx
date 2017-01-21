@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from 'react-router'
 
 class IngredientesSubparte extends React.Component{
 		render(){
@@ -130,11 +131,15 @@ export default class ReceitaBox extends React.Component{
 
 		const ingredientes = this._getIngredientesView(subpartesArrays["nomes_partes"], subpartesArrays["listas_ingredientes"]);
 		const passos = this._getModoPreparoView(subpartesArrays["nomes_partes"], subpartesArrays["listas_modos_de_preparo"]);
+
+		const receitaId = this.props.id.toString();
+		const receitaLink = "/receitas/"+receitaId;
 		
 		return(
 			<div className="well">
 				<div className="row">
-					<h3 className="col-sm-6">{this.props.nome_receita} {this.props.id}</h3>
+					<Link to={receitaLink} params={this.props}><h3 className="col-sm-6">{this.props.nome_receita} {this.props.id}</h3></Link>
+					
 					<a href="#" className="col-sm-6 text-center"><span className="badge">{this.props.categoria}</span></a>
 				</div>
 				<p>{this.props.tempo_de_preparo} minutos </p>

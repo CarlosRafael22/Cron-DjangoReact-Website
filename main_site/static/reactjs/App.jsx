@@ -1,11 +1,12 @@
 import React from "react"
 import { render } from "react-dom"
-import {hashHistory, Router, Route, Redirect} from "react-router"
+import {hashHistory, Router, Route, Redirect, IndexRoute} from "react-router"
 
 import HomeContainer from "./containers/HomeContainer"
 import App1Container from "./containers/App1Container"
 import ReceitaContainer from "./containers/ReceitaContainer"
 import ChatContainer from "./containers/ChatContainer"
+import ReceitaPage from "./components/ReceitaPage"
 import Layout from "./layouts/layout"
 
 import {Provider} from 'react-redux'
@@ -53,12 +54,16 @@ class AppRouter extends React.Component{
 
 			<Provider store={this.store}>
 				<Router history={hashHistory}>
-					<Redirect from="/" to="/home"/>
+					{/*<Redirect from="/" to="/home"/>*/}
+
 					<Route path="/" component={Layout}>
-						<Route path="home" component={HomeContainer} />
-						<Route path="ingredientes" component={App1Container} />
-						<Route path="receitas" component={ReceitaContainer} />
-						<Route path="chat" component={ChatContainer}/>
+						<IndexRoute component={HomeContainer}/>
+						<Route path="/home" component={HomeContainer} />
+						<Route path="/ingredientes" component={App1Container} />
+						<Route path="/receitas" component={ReceitaContainer}>
+							<Route path="/receitas/:receitaId" component={ReceitaPage} />
+						</Route>
+						<Route path="/chat" component={ChatContainer}/>
 						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 					</Route>
 				</Router>

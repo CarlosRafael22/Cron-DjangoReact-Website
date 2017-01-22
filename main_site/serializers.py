@@ -169,12 +169,35 @@ class PerfilSerializer(serializers.ModelSerializer):
 		model = Perfil
 		fields = '__all__'
 
+	#def create(self, validated_data)
+
+# MODIFICAR ISSO QD ELE FOR RECEBER MAIS INFORMACOES
+# AQUI SO TO FAZENDO O CADASTRO COM 
+# username, email e password
 class PacienteSerializer(serializers.ModelSerializer):
 	perfil = PerfilSerializer()
 
 	class Meta:
 		model = Paciente
 		fields = '__all__'
+
+	# def create(self, validated_data):
+	# 	# Chamar o PerfilSerializer
+	# 	import pdb;
+	# 	pdb.set_trace();
+	# 	perfil = PerfilSerializer(**validated_data)
+
+	# 	paciente = None
+	# 	if perfil.is_valid():
+	# 		perfil.save()
+	# 		paciente = Paciente(perfil=perfil)
+	# 		paciente.save()
+	# 	else:
+	# 		print("Deu merda no perfil serializer")
+
+	# 	return paciente
+
+
 
 class CoachSerializer(serializers.ModelSerializer):
 	perfil = PerfilSerializer()

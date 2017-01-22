@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Unique identifier pra gerar o nome da imagem
 import uuid
-
+import datetime
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -86,20 +86,25 @@ class Perfil(models.Model):
 	imagem_perfil = models.ImageField(upload_to=get_image_path, null=True)
 	user = models.OneToOneField(User)
 	cpf = models.CharField(max_length=15, null=True)
-	data_nascimento = models.DateTimeField(null=True)
+	data_nascimento = models.DateField(null=True)
 
+	# A maioria do user nao vai ter os nomes, entao mostra o username
 	def __str__(self):
-		return self.user.first_name
+		return self.user.username
 
 # O MESMO MANAGER VAI SER USADO PARA CRIAR O PACIENTE OU COACH. POIS O QUE EH NECESSARIO NESSA HORA EH SO CRIAR O USUARIO E O PERFIL
 class PessoaManager(models.Manager):
-	def create_pessoa(self, username, email, password, first_name, last_name, cpf=None, data_nascimento=None):
+	def create_pessoa(self, username, email, password, first_name=None, last_name=None, cpf=None, data_nascimento=None):
 		#Criando o usuario primeiro
 		usuario = User.objects.create_user(username, email, password)
-		usuario.first_name = first_name
-		usuario.last_name = last_name
+		if (first_name != None) and (last_name != None):
+			usuario.first_name = first_name
+			usuario.last_name = last_name
 		usuario.save()
 
+		# Convertando para receber no formato dd/mm/yyyy e ja mandar o date
+		if data_nascimento:
+			data_nascimento = datetime.datetime.strptime(data_nascimento, "%d/%m/%Y").date()
 		perfil = Perfil(user=usuario, cpf=cpf, data_nascimento=data_nascimento)
 		perfil.save()
 
@@ -112,7 +117,7 @@ class Paciente(models.Model):
 	objects = PessoaManager()
 
 	def __str__(self):
-		return self.perfil.user.first_name
+		return self.perfil.user.username
 
 
 
@@ -123,4 +128,4 @@ class Coach(models.Model):
 	objects = PessoaManager()
 
 	def __str__(self):
-		return self.perfil.user.first_name
+		return self.perfil.user.username

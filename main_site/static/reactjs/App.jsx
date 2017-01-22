@@ -11,6 +11,7 @@ import Layout from "./layouts/layout"
 
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
+import createLogger from 'redux-logger'
 import reducer from './redux/reducer'
 import thunk from 'redux-thunk'
 import storeLocal from './redux/store'
@@ -34,17 +35,18 @@ class AppRouter extends React.Component{
 	constructor(){
 		super();
 
+		const logger = createLogger();
 		const persistedState = loadState();
-		this.store = createStore(reducer, persistedState, applyMiddleware(thunk));
+		this.store = createStore(reducer, persistedState, applyMiddleware(thunk, logger));
 		console.log("Persisted data when creating store");
 		console.log(persistedState);
 
-		// Qlqr mudanca de estado no store eu salvo isso no localStorage
-		this.store.subscribe(() => {
-			console.log("Subscribe do App");
-			console.log(this.store.getState());
-			saveState(this.store.getState());
-		});
+		// // Qlqr mudanca de estado no store eu salvo isso no localStorage
+		// this.store.subscribe(() => {
+		// 	console.log("Subscribe do App");
+		// 	console.log(this.store.getState());
+		// 	saveState(this.store.getState());
+		// });
 	}
 
 	render(){

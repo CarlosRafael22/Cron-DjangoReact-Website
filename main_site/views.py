@@ -218,6 +218,17 @@ class PacienteList(generics.ListCreateAPIView):
 	queryset = Paciente.objects.all()
 	serializer_class = PacienteSerializer
 
+	def create(self, serializer):
+
+		# import pdb;
+		# pdb.set_trace();
+		# Criando o paciente na mao com o metodo definido no model
+		# dps serializando para mandar o Response com o paciente como JSON
+		paciente = Paciente.objects.create_pessoa(username=self.request.data['username'], email=self.request.data['email'], password=self.request.data['password'])
+		serializer = PacienteSerializer(paciente)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Paciente.objects.all()
 	serializer_class = PacienteSerializer
@@ -227,6 +238,14 @@ class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
 class CoachList(generics.ListCreateAPIView):
 	queryset = Coach.objects.all()
 	serializer_class = CoachSerializer
+
+	def create(self, serializer):
+
+		# Criando o paciente na mao com o metodo definido no model
+		# dps serializando para mandar o Response com o paciente como JSON
+		coach = Coach.objects.create_pessoa(username=self.request.data['username'], email=self.request.data['email'], password=self.request.data['password'])
+		serializer = PacienteSerializer(coach)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Coach.objects.all()

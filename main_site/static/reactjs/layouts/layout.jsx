@@ -16,7 +16,7 @@ export default class Layout extends React.Component{
         <div id="sidebar-wrapper">
            
             <ul className="sidebar-nav">
-				  <li role="presentation" activeClassName="active">
+				  <li role="presentation">
 				  	<Link to="/home" activeStyle={{ color: 'red' }}>Home</Link>
 				  </li>
 				  <li role="presentation">

@@ -156,7 +156,7 @@ function signUpError(message) {
 
 // Calls the API to get a token and
 // dispatches actions along the way
-export function signUpUser(creds, signUpFirebase) {
+export function signUpUser(creds, signUpFirebase, tipo_de_user) {
 
   console.log("Estamos no signup user");
   console.log(creds);
@@ -165,9 +165,19 @@ export function signUpUser(creds, signUpFirebase) {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestSignUp(creds))
 
+    // AGORA EU TO MANDANDO DEPENDENDO DE SE A PESSOA Q TA CRIANDO A CONTA EH COACH OU PACIENTE
+
+    let url;
+    if(tipo_de_user == "coach"){
+      console.log("Vou pegar coach");
+      url = '/api/coaches/'
+    }else if(tipo_de_user == "paciente"){
+      console.log("Vou pegar paciente");
+      url = '/api/pacientes/'
+    }
     jQuery.ajax({
       type: 'POST',
-      url: '/api/usuarios/',
+      url: url,
       data: creds
     }).done(authInfo => {
 
@@ -178,6 +188,8 @@ export function signUpUser(creds, signUpFirebase) {
       console.log(authInfo);
 
       // CADASTRANDO NO FIREBASE
+      // AGORA TA RETORNANDO UM PACIENTE OU COACH, ENTAO PARA PEGAR O USER A GNT TEM QUE PEGA-LO DO PERFIL
+      //signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id);
       signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id);
 
       // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
@@ -200,7 +212,7 @@ export function signUpUser(creds, signUpFirebase) {
       console.log(xhr);
 
       // console.log(response);
-      dispatch(loginError(user.message))
+      dispatch(loginError(error))
 
     });
   }
@@ -383,20 +395,17 @@ export function deleteReceita(receitaId){
       // SENAO ELE VAI TER AS RECEITAS ANTIGAS AINDA SALVAS
       dispatch(getReceitas());
 
-      // No localStorage so salva se for String!!!!
-      // Tem q fazer gambiarra aqui pra salvar e pegar dps
-      // let receitas_inString = JSON.stringify(receitas);
-      // localStorage.setItem('receitas', receitas_inString);
-      // console.log(localStorage);
-
-      //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })
     .fail(function(xhr, status, error){
       console.log(error);
       console.log(xhr);
 
       // console.log(response);
-      dispatch(recipesError(error))
+      dispatch(recipesError(error));
+
+      // SE DER 'NOT FOUND' COMO RESPOSTA DO ERRO QUER DIZER QUE ESSA RECEITA NAO EXISTE MAIS NO BANCO E POR ALGUMA RAZAO EXISTE AQUI
+      // ENTAO SE FIZER O GETRECEITAS DE NOVO ELE VAI ATUALIZAR COM AS RECEITAS DO BANCO E ESSA Q DEU ERRO VAI SAIR
+      dispatch(getReceitas());
 
     });
 

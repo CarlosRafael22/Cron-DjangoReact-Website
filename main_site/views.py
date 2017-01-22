@@ -220,13 +220,33 @@ class PacienteList(generics.ListCreateAPIView):
 
 	def create(self, serializer):
 
-		# import pdb;
-		# pdb.set_trace();
+		import pdb;
+		pdb.set_trace();
 		# Criando o paciente na mao com o metodo definido no model
 		# dps serializando para mandar o Response com o paciente como JSON
 		paciente = Paciente.objects.create_pessoa(username=self.request.data['username'], email=self.request.data['email'], password=self.request.data['password'])
-		serializer = PacienteSerializer(paciente)
-		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+		# Pegando separado e retornando a Response como retorna no UserList() para nao precisar modificar no front-end
+		# Peguei o Objeto 
+		user = paciente.perfil.user
+		# Pegando token
+		token, created = Token.objects.get_or_create(user=user)
+		# PEGA O TOKEN LOGO AGORA PQ ELE SO ACEITA OBJECT E USER EH UM OBJECT NESSE MOMENTO
+		# QD SERIALIZARMOS ELE VAI VIRAR UM RETURNDICT, FAZENDO COM Q NAO POSSAMOS PEGAR O TOKEN ASSIM
+
+		# MAS PARA MANDAR PRO RESPONSE TEM QUE SERIALIZAAR, SEMPREEE!!!!!
+		user_serialized = UserSerializer(user)
+		user = user_serialized.data
+		print(user)
+
+		
+		# Serializando o paciente para mandar o JSON e nao object
+		# e pegando os dados, o JSON e nao o objeto PacienteSerializer
+		paciente_serializer = PacienteSerializer(paciente)
+		paciente = paciente_serializer.data
+		print(paciente)
+		#return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response({'token': token.key, 'user': user, 'paciente': paciente}, status=status.HTTP_201_CREATED)
 
 
 class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -244,8 +264,27 @@ class CoachList(generics.ListCreateAPIView):
 		# Criando o paciente na mao com o metodo definido no model
 		# dps serializando para mandar o Response com o paciente como JSON
 		coach = Coach.objects.create_pessoa(username=self.request.data['username'], email=self.request.data['email'], password=self.request.data['password'])
-		serializer = PacienteSerializer(coach)
-		return Response(serializer.data, status=status.HTTP_201_CREATED)
+		# Pegando separado e retornando a Response como retorna no UserList() para nao precisar modificar no front-end
+		# Peguei o Objeto 
+		user = coach.perfil.user
+		# Pegando token
+		token, created = Token.objects.get_or_create(user=user)
+		# PEGA O TOKEN LOGO AGORA PQ ELE SO ACEITA OBJECT E USER EH UM OBJECT NESSE MOMENTO
+		# QD SERIALIZARMOS ELE VAI VIRAR UM RETURNDICT, FAZENDO COM Q NAO POSSAMOS PEGAR O TOKEN ASSIM
+
+		# MAS PARA MANDAR PRO RESPONSE TEM QUE SERIALIZAAR, SEMPREEE!!!!!
+		user_serialized = UserSerializer(user)
+		user = user_serialized.data
+		print(user)
+
+		
+		# Serializando o paciente para mandar o JSON e nao object
+		# e pegando os dados, o JSON e nao o objeto PacienteSerializer
+		coach_serializer = CoachSerializer(coach)
+		coach = coach_serializer.data
+		print(coach)
+		#return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response({'token': token.key, 'user': user, 'coach': coach}, status=status.HTTP_201_CREATED)
 
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Coach.objects.all()

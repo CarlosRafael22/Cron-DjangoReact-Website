@@ -164,6 +164,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PerfilSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
+	data_nascimento = serializers.DateField()
 
 	class Meta:
 		model = Perfil

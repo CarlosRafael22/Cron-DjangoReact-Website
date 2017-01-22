@@ -50,10 +50,10 @@ class NavHeaderContainer extends React.Component{
 		firebaseAuth._signOutFirebase();
 	}
 
-	_signup(username, email, password){
+	_signup(username, email, password, tipo_de_user){
 
 		console.log("Dispatching SignUp");
-		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), firebaseAuth._addUserInFirebase.bind(this)));
+		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), tipo_de_user ));
 		//this._signUpFirebase(email, password);
 
 		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE

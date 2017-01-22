@@ -138,7 +138,7 @@ export default class ReceitaBox extends React.Component{
 		return(
 			<div className="well">
 				<div className="row">
-					<Link to={receitaLink} params={this.props}><h3 className="col-sm-6">{this.props.nome_receita} {this.props.id}</h3></Link>
+					<Link to={receitaLink}><h3 className="col-sm-6">{this.props.nome_receita} {this.props.id}</h3></Link>
 					
 					<a href="#" className="col-sm-6 text-center"><span className="badge">{this.props.categoria}</span></a>
 				</div>

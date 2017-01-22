@@ -3,6 +3,7 @@
 // import { combineReducers } from 'redux'
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
+  SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
   RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE,
   ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE,
   DELETE_RECIPE_REQUEST, DELETE_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE
@@ -20,6 +21,26 @@ function auth(state = {
     id_token: localStorage.getItem('id_token') ? localStorage.getItem('id_token') : null
   }, action) {
   switch (action.type) {
+    case SIGNUP_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true,
+        isAuthenticated: false,
+        user: action.creds
+      })
+    case SIGNUP_SUCCESS:
+    return Object.assign({}, state, {
+      isFetching: false,
+      isAuthenticated: true,
+      id_token: action.id_token,
+      user: action.user,
+      errorMessage: ''
+    })
+    case SIGNUP_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        isAuthenticated: false,
+        errorMessage: action.message
+      })
     case LOGIN_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,

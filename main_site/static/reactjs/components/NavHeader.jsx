@@ -17,7 +17,8 @@ export default class NavHeader extends React.Component{
 		this.state = {
 			showModal: false,
 			modalType: null,
-			updateView: false
+			updateView: false,
+			tipo_de_user: null
 		}
 		console.log("Estado ", this.state.showModal);
 		console.log(store.getState());
@@ -54,7 +55,18 @@ export default class NavHeader extends React.Component{
 	_handleSignup(event){
 		// Then the page doesnt reaload when the form is submitted!!
 		event.preventDefault();
-		this.props.signup(this._username.value, this._email.value, this._password.value);
+
+		// PROVISORIAMENTE PARA CRIAR CONTA DE PACIENTE OU COACH
+		console.log("TIPO DE USER");
+		console.log(this.state.tipo_de_user);
+		const tipo_de_user = this.state.tipo_de_user;
+		//console.log(this._paciente.value);
+		this.props.signup(this._username.value, this._email.value, this._password.value, tipo_de_user);
+	}
+
+	_handleOptionChange(event){
+		console.log("SETOU O TIPO DE USER");
+		this.setState({tipo_de_user: event.target.value});
 	}
 
 
@@ -83,7 +95,7 @@ export default class NavHeader extends React.Component{
 		let modalSignUp = (
 			<Modal handleHideModal={this._handleHideModal.bind(this)} title="Sign Up" buttonFunction={this._handleSignup.bind(this)}>
 				<div >
-					<form onSubmit={this._handleLogin.bind(this)}>
+					<form onSubmit={this._handleSignup.bind(this)}>
 					  <div className="form-group">
 					    <label htmlFor="inputUsername">Username</label>
 					    <input type="text" className="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter username" 
@@ -100,6 +112,26 @@ export default class NavHeader extends React.Component{
 					    <input type="password" className="form-control" id="inputPassword" placeholder="Password"
 					    ref={(input) => this._password = input}/>
 					  </div>
+
+					{/* USADO SO PRA TESTAR SE TA FUNCIONANDO AO CRIAR COACH OU PACIENTE */}
+					  <label className="custom-control custom-radio">
+						  <input id="radio1" name="radio" type="radio" className="custom-control-input"
+						  value="paciente"
+						  checked={this.state.tipo_de_user === 'paciente'}
+						  onChange={this._handleOptionChange.bind(this)}/>
+						  <span className="custom-control-indicator"></span>
+						  <span className="custom-control-description">Sou paciente</span>
+						</label>
+						<label className="custom-control custom-radio">
+						  <input id="radio2" name="radio" type="radio" className="custom-control-input"
+						  value="coach"
+						  checked={this.state.tipo_de_user === 'coach'}
+						  onChange={this._handleOptionChange.bind(this)}/>
+						  <span className="custom-control-indicator"></span>
+						  <span className="custom-control-description">Sou coach</span>
+						</label>
+
+
 					</form>
 				</div>
 			</Modal>

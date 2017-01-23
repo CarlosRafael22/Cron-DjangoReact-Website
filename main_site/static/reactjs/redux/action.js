@@ -221,64 +221,67 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
 
 // There are three possible states for our login
 // process and we need actions for each of them
-export const USERS_REQUEST = 'USERS_REQUEST'
-export const USERS_SUCCESS = 'USERS_SUCCESS'
-export const USERS_FAILURE = 'USERS_FAILURE'
+export const PROFILES_REQUEST = 'PROFILES_REQUEST'
+export const PROFILES_SUCCESS = 'PROFILES_SUCCESS'
+export const PROFILES_FAILURE = 'PROFILES_FAILURE'
 
-function usersRequest(){
-  console.log("Pegando os users no action!");
+function profilesRequest(){
+  console.log("Pegando os profiles no action!");
   return {
-    type: USERS_REQUEST,
+    type: PROFILES_REQUEST,
     loading: true 
   }
 }
 
-function usersSuccess(usuariosList){
-  console.log("Pegou os users no action");
+function profilesSuccess(profilesList){
+  console.log("Pegou os profiles no action");
   return {
-    type: USERS_SUCCESS,
+    type: PROFILES_SUCCESS,
     loading: false,
-    usuariosList: usuariosList
+    profilesList: profilesList
   }
 }
 
-function usersFailure(errorMessage){
-  console.log("Deu merda nos users no action");
+function profilesFailure(errorMessage){
+  console.log("Deu merda nos profiles no action");
   return {
-    type: USERS_FAILURE,
+    type: PROFILES_FAILURE,
     loading: false,
     errorMessage
   }
 }
 
-export function getReceitas(){
+export function getProfiles(){
 
-  console.log("getReceitas no action");
+  console.log("getProfiles no action");
   return dispatch => {
 
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(usersRequest());
+    dispatch(profilesRequest());
 
     jQuery.ajax({
       type: 'GET',
-      url: '/api/receitas/'
-    }).done(receitas => {
+      url: '/api/perfis/',
+      contentType: 'application/json'
+    }).done(perfis => {
 
-      console.log(receitas);
+      console.log(perfis);
       // Dispatch the success action
-      dispatch(usersSuccess(receitas));
+      dispatch(profilesSuccess(perfis));
     })
     .fail(function(xhr, status, error){
       console.log(error);
       console.log(xhr);
 
       // console.log(response);
-      dispatch(usersFailure(error))
+      dispatch(profilesFailure(error))
 
     });
 
   }
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

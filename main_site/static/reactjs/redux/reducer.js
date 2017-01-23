@@ -4,6 +4,7 @@
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
   SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
+  PROFILES_REQUEST, PROFILES_SUCCESS, PROFILES_FAILURE,
   RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE,
   ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE,
   DELETE_RECIPE_REQUEST, DELETE_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE
@@ -73,6 +74,32 @@ function auth(state = {
   }
 }
 
+
+function profileReducer(state= {
+  loading: false,
+  profilesList: []
+}, action){
+  switch(action.type){
+    case PROFILES_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+    })
+    case PROFILES_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        profilesList: action.profilesList
+    })
+    case PROFILES_FAILURE:
+      return Object.assign({}, state, {
+        loading: false,
+        error: action.errorMessage
+    })
+    default:
+      return state
+  }
+}
+
+
 // Botaar receitaList = localStorage.getItem('receitas') no state
 // Lembrando que no localStorage eh so string que eh salva
 function receitaReducer(state = {
@@ -137,7 +164,8 @@ function receitaReducer(state = {
 
 var reducer = combineReducers({
   usuario: auth,
-  receitas: receitaReducer
+  receitas: receitaReducer,
+  profiles: profileReducer
 })
 
 export default reducer

@@ -189,6 +189,31 @@ class PerfilSerializer(serializers.ModelSerializer):
 		model = Perfil
 		fields = '__all__'
 
+	# Vou overide aqui pra mudar o que ele manda de output dependendo se recebeu a request do browser ou Ajax
+	def to_representation(self, obj):
+		# import pdb;
+		# pdb.set_trace;
+
+		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, se tiver manda a com menos infos
+		special_representation = self.context.get("limited_representation")
+		if special_representation:
+
+			# Vendo se o perfil tem um coach ou paciente relacionado para colocar infos
+			if hasattr(obj, 'paciente'):
+				perfil = {"id": obj.id, "cpf": obj.cpf,
+				"username": obj.user.username, "email": obj.user.email, "paciente" : True}
+			else:
+				perfil = {"id": obj.id, "cpf": obj.cpf,
+				"username": obj.user.username, "email": obj.user.email, "coach": True}
+			ret = perfil
+		else:
+			# get the original representation
+			ret = super(PerfilSerializer, self).to_representation(obj)
+
+		return ret
+
+
+
 	#def create(self, validated_data)
 
 # MODIFICAR ISSO QD ELE FOR RECEBER MAIS INFORMACOES

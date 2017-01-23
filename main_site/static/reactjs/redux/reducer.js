@@ -5,6 +5,7 @@ import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
   SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
   PROFILES_REQUEST, PROFILES_SUCCESS, PROFILES_FAILURE,
+  COACH_PACIENTS_REQUEST, COACH_PACIENTS_SUCCESS, COACH_PACIENTS_FAILURE,
   RECIPES_REQUEST, RECIPES_SUCCESS, RECIPES_FAILURE,
   ADD_RECIPE_REQUEST, ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE,
   DELETE_RECIPE_REQUEST, DELETE_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE
@@ -90,6 +91,20 @@ function profileReducer(state= {
         profilesList: action.profilesList
     })
     case PROFILES_FAILURE:
+      return Object.assign({}, state, {
+        loading: false,
+        error: action.errorMessage
+    })
+    case COACH_PACIENTS_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+    })
+    case COACH_PACIENTS_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        profilesList: action.coachPacientsList
+    })
+    case COACH_PACIENTS_FAILURE:
       return Object.assign({}, state, {
         loading: false,
         error: action.errorMessage

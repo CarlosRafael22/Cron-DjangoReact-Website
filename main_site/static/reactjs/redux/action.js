@@ -39,7 +39,7 @@ function loginError(message) {
 
 // Calls the API to get a token and
 // dispatches actions along the way
-export function loginUser(creds) {
+export function loginUser(creds, signInFirebase) {
 
   console.log("Estamos no login user")
   console.log(creds);
@@ -61,9 +61,12 @@ export function loginUser(creds) {
 
       // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);
+      console.log("Era pra logar no fireabse agora");
 
       // REGISTRANDO O USER NO FIREBASE SO AGORA PQ EU QUERO CRIA-LO NA TABELA COM A ID DO DJANGO
-
+      console.log(creds.email_or_username);
+      console.log(creds.password);
+      signInFirebase(creds.email_or_username, creds.password);
       // Dispatch the success action
       dispatch(receiveLogin(authInfo));
 
@@ -72,7 +75,7 @@ export function loginUser(creds) {
     .fail(function(xhr, status, error){
       console.log(error);
       console.log(xhr);
-      dispatch(loginError(user.message))
+      dispatch(loginError(error))
 
     });
   }
@@ -280,6 +283,71 @@ export function getProfiles(){
 
   }
 }
+
+
+
+// There are three possible states for our login
+// process and we need actions for each of them
+export const COACH_PACIENTS_REQUEST = 'COACH_PACIENTS_REQUEST'
+export const COACH_PACIENTS_SUCCESS = 'COACH_PACIENTS_SUCCESS'
+export const COACH_PACIENTS_FAILURE = 'COACH_PACIENTS_FAILURE'
+
+function coachPacientsRequest(){
+  console.log("Pegando os pacientes do coach no action!");
+  return {
+    type: COACH_PACIENTS_REQUEST,
+    loading: true 
+  }
+}
+
+function coachPacientsSuccess(coachPacientsList){
+  console.log("Pegou os pacientes do coach no action");
+  return {
+    type: COACH_PACIENTS_SUCCESS,
+    loading: false,
+    coachPacientsList: coachPacientsList
+  }
+}
+
+function coachPacientsFailure(errorMessage){
+  console.log("Deu merda nos pacientes do coach no action");
+  return {
+    type: COACH_PACIENTS_FAILURE,
+    loading: false,
+    errorMessage
+  }
+}
+
+export function getCoachPatients(coachId){
+
+  console.log("getCoachPacients no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(coachPacientsRequest());
+
+    jQuery.ajax({
+      type: 'GET',
+      url: '/api/coaches/'+coachId.toString()+'/pacientes_supervisionados/',
+      contentType: 'application/json'
+    }).done(pacientes_supervisionados => {
+      console.log("PAC SUPERVISIONADOS");
+      console.log(pacientes_supervisionados);
+      // Dispatch the success action
+      dispatch(coachPacientsSuccess(pacientes_supervisionados));
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(coachPacientsFailure(error))
+
+    });
+
+  }
+}
+
 
 
 

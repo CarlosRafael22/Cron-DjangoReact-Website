@@ -67,8 +67,8 @@ class NavHeaderContainer extends React.Component{
 		let emailFirebase = usernameOrEmail;
 
 		console.log("Dispatching");
-		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}));
-		firebaseAuth._signInFirebase(emailFirebase, password);
+		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}, firebaseAuth._signInFirebase.bind(this)));
+		//firebaseAuth._signInFirebase(emailFirebase, password);
 
 	}
 	

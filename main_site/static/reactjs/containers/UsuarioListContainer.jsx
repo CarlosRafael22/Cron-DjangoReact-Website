@@ -9,6 +9,8 @@ class UsuarioListContainer extends React.Component{
 		super(props);
 		console.log("Profiles");
 		console.log(this.props.profiles);
+		console.log("User na sessao");
+		console.log(this.props.usuario);
 		this._getProfiles();
 	}
 
@@ -17,12 +19,19 @@ class UsuarioListContainer extends React.Component{
 		this.props.dispatch(getProfiles());
 	}
 
+	// Vou ver se ta logado, se tiver eu faco uma requisicao pegando so os perfis supervisionados e mando como props
+	// Metodo so vai ser chamado se o user logado for um coach!
+	_getSupervisonedProfilesOfCoach(){
+
+	}
+
 	render(){
 
 		console.log("Vou RENDER O UsuarioList");
 		console.log(this.props.profiles);
 		return(
 			<UsuarioList profiles={this.props.profiles} />
+			
 		)
 	}
 }
@@ -33,7 +42,9 @@ function mapStateToProps(state){
 
   	// O state.profiles vai retornar:
   	// {loading: false, profilesList: [array de Objetos]}
+  	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
+		usuario: state.usuario,
 		profiles: state.profiles.profilesList
 	};
 }

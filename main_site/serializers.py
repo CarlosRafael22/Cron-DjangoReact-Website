@@ -148,11 +148,26 @@ class UserSerializer(serializers.ModelSerializer):
 		# pdb.set_trace;
 
 		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, se tiver manda a com menos infos
+		# Mandando info tb pra saber se ele eh Coach, isso vai servir na hora de ver o tipo de user Logado
 		special_representation = self.context.get("limited_representation")
 		if special_representation:
-			user = {"username": obj.username, "email": obj.email,
-			"first_name": obj.first_name, "last_name": obj.last_name,
-			"id": obj.id}
+
+			# Vou botar se ele eh coach para dps poder pegar os pac_supervisionados no front-end
+			# se tem perfil associado olha, senao retorna normal
+			if hasattr(obj, 'perfil'):
+				if hasattr(obj.perfil, 'coach'):
+					user = {"username": obj.username, "email": obj.email,
+					"first_name": obj.first_name, "last_name": obj.last_name,
+					"id": obj.id, "isCoach": True, "coachId": obj.perfil.coach.id}
+				else:
+					user = {"username": obj.username, "email": obj.email,
+					"first_name": obj.first_name, "last_name": obj.last_name,
+					"id": obj.id, "isCoach": False}
+			else:
+				user = {"username": obj.username, "email": obj.email,
+					"first_name": obj.first_name, "last_name": obj.last_name,
+					"id": obj.id}
+		
 			ret = user
 		else:
 			# get the original representation
@@ -226,21 +241,31 @@ class PacienteSerializer(serializers.ModelSerializer):
 		model = Paciente
 		fields = '__all__'
 
-	# def create(self, validated_data):
-	# 	# Chamar o PerfilSerializer
-	# 	import pdb;
-	# 	pdb.set_trace();
-	# 	perfil = PerfilSerializer(**validated_data)
+	def to_representation(self, obj):
 
-	# 	paciente = None
-	# 	if perfil.is_valid():
-	# 		perfil.save()
-	# 		paciente = Paciente(perfil=perfil)
-	# 		paciente.save()
-	# 	else:
-	# 		print("Deu merda no perfil serializer")
+		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, se tiver manda a com menos infos
+		special_representation = self.context.get("limited_representation")
+		if special_representation:
 
-	# 	return paciente
+			# Para nao gerar: ValueError: The 'imagem_perfil' attribute has no file associated with it.
+			# To checando logo aqui
+			if obj.perfil.imagem_perfil:
+				print("Tem imagem")
+				imagem = obj.perfil.imagem_perfil
+			else:
+				print("Nao tem imagem")
+				imagem = None
+
+			paciente = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
+				"imagem_perfil": imagem, 
+				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
+        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email}
+			ret = paciente
+		else:
+			# get the original representation
+			ret = super(PacienteSerializer, self).to_representation(obj)
+
+		return ret
 
 
 

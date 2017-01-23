@@ -11,7 +11,7 @@ export default class UsuarioList extends React.Component{
 	_getProfiles(){
 		return this.props.profiles.map((profile) => {
 			return (
-				<div className="well well-sm">
+				<div className="well well-sm" key={profile.id}>
 					<h3>{profile.username}</h3>
 					<h4>{profile.id}</h4>
 					<h4>{profile.paciente? "Paciente" : "Coach"}</h4>

@@ -340,6 +340,19 @@ class CoachList(generics.ListCreateAPIView):
 		#return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response({'token': token.key, 'user': user, 'coach': coach}, status=status.HTTP_201_CREATED)
 
+@api_view(['GET', 'POST'])
+def get_pacientes_coach(request, pk, format=None):
+
+	if request.method == 'GET':
+		# import pdb;
+		# pdb.set_trace();
+		# pk eh a coachId entao vou pegar e retornar a lista de perfils de pacientes
+		pacientes_coach = Coach.objects.get(pk=pk).pacientes_supervisionados.all()
+
+		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
+
+		return Response(serializer.data)
+
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Coach.objects.all()
 	serializer_class = CoachSerializer
@@ -380,11 +393,26 @@ class CustomObtainAuthToken(APIView):
 		print(token)
 		user_serialized = UserSerializer(token.user)
 
+		# import pdb;
+		# pdb.set_trace();
+
 		# Nao vou dar todas as informacoes do User para o front-end!
 		# Aqui eu limito o que vou passar
-		user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
-		"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
-		"id": user_serialized.data['id']}
+
+		# Vou botar se ele eh coach para dps poder pegar os pac_supervisionados no front-end
+		# se tem perfil associado olha, senao retorna normal
+		if hasattr(user, 'perfil'):
+			if hasattr(user.perfil, 'coach'):
+				user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+				"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+				"id": user_serialized.data['id'], "isCoach": True, "coachId": user.perfil.coach.id}
+			else:
+				user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+				"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+				"id": user_serialized.data['id'], "isCoach": False}
+		# user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+		# "first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+		# "id": user_serialized.data['id']}
 		return Response({'token': token.key, 'user': user})
 
 #########################################################################

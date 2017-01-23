@@ -20,7 +20,7 @@ export default class Layout extends React.Component{
 				  	<Link to="/home" activeStyle={{ color: 'red' }}>Home</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="/ingredientes" activeStyle={{ color: 'green' }}>Ingredientes</Link>
+				  	<Link to="/usuarios" activeStyle={{ color: 'green' }}>Usuarios</Link>
 				  </li>
 				  <li role="presentation">
 				  	<Link to="/receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>

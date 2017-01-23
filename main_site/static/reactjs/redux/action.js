@@ -221,6 +221,69 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
 
 // There are three possible states for our login
 // process and we need actions for each of them
+export const USERS_REQUEST = 'USERS_REQUEST'
+export const USERS_SUCCESS = 'USERS_SUCCESS'
+export const USERS_FAILURE = 'USERS_FAILURE'
+
+function usersRequest(){
+  console.log("Pegando os users no action!");
+  return {
+    type: USERS_REQUEST,
+    loading: true 
+  }
+}
+
+function usersSuccess(usuariosList){
+  console.log("Pegou os users no action");
+  return {
+    type: USERS_SUCCESS,
+    loading: false,
+    usuariosList: usuariosList
+  }
+}
+
+function usersFailure(errorMessage){
+  console.log("Deu merda nos users no action");
+  return {
+    type: USERS_FAILURE,
+    loading: false,
+    errorMessage
+  }
+}
+
+export function getReceitas(){
+
+  console.log("getReceitas no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(usersRequest());
+
+    jQuery.ajax({
+      type: 'GET',
+      url: '/api/receitas/'
+    }).done(receitas => {
+
+      console.log(receitas);
+      // Dispatch the success action
+      dispatch(usersSuccess(receitas));
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(usersFailure(error))
+
+    });
+
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// There are three possible states for our login
+// process and we need actions for each of them
 export const RECIPES_REQUEST = 'RECIPES_REQUEST'
 export const RECIPES_SUCCESS = 'RECIPES_SUCCESS'
 export const RECIPES_FAILURE = 'RECIPES_FAILURE'

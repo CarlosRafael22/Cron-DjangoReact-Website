@@ -171,7 +171,7 @@ class UserList(generics.ListCreateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-	def create(self, serializer):
+	def create(self, request):
 		
 		serializer = UserSerializer(data=self.request.data)
 		if serializer.is_valid(raise_exception=True):
@@ -196,6 +196,34 @@ class UserList(generics.ListCreateAPIView):
 		"id": user_serialized.data['id']}
 		headers = self.get_success_headers(serializer.data)
 		return Response({'token': token.key, 'user': user}, status=status.HTTP_201_CREATED, headers=headers)
+
+	# Vou modificar o list tb pra mandar so algumas infos sobre o usuario e nao tudo
+	def list(self, request):
+		
+		queryset = User.objects.all()
+		# Codigo padrao que tava na classe: https://github.com/tomchristie/django-rest-framework/blob/master/rest_framework/mixins.py
+		page = self.paginate_queryset(queryset)
+		if page is not None:
+			serializer = self.get_serializer(page, many=True)
+			return self.get_paginated_response(serializer.data)
+
+		# Vou checar e ver se a request ta vindo do browser ou do Ajax
+		# Se vinher do Browser o content_type = text/plain e ai dou o Response padrao pra ficar do mesmo jeito
+		# Se vinher de uma request Ajax o content_type = application/json e assim indica que to acessando pelo front-end
+		# com isso eu limito o Response para mandar so alguns dados dos Users
+		# import pdb;
+		# pdb.set_trace();
+
+		if request.content_type == 'text/plain':
+			serializer = self.get_serializer(queryset, many=True)
+			return Response(serializer.data)
+		elif request.content_type == 'application/json':
+			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
+			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = UserSerializer(queryset, many=True, context={"limited_representation" : True})
+			return Response(serializer.data)
+
+
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 	# permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

@@ -142,6 +142,24 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = '__all__'
 
+	# Vou overide aqui pra mudar o que ele manda de output dependendo se recebeu a request do browser ou Ajax
+	def to_representation(self, obj):
+		# import pdb;
+		# pdb.set_trace;
+
+		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, se tiver manda a com menos infos
+		special_representation = self.context.get("limited_representation")
+		if special_representation:
+			user = {"username": obj.username, "email": obj.email,
+			"first_name": obj.first_name, "last_name": obj.last_name,
+			"id": obj.id}
+			ret = user
+		else:
+			# get the original representation
+			ret = super(UserSerializer, self).to_representation(obj)
+
+		return ret
+
 	# TEM QUE FAZER O OVERRIDE DESSES METODOS PARA SALVAR A SENHA COM HASH
 	# PQ SENAO ELE VAI SALVAR COMO PLAIN TEXT
 	def create(self, validated_data):
@@ -161,6 +179,7 @@ class UserSerializer(serializers.ModelSerializer):
 				setattr(instance, attr, value)
 		instance.save()
 		return instance
+
 
 class PerfilSerializer(serializers.ModelSerializer):
 	user = UserSerializer()

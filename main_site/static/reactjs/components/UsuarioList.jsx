@@ -1,4 +1,5 @@
 import React from "react"
+import UsuarioInfoBox from "./UsuarioInfoBox"
 
 export default class UsuarioList extends React.Component{
 
@@ -11,11 +12,7 @@ export default class UsuarioList extends React.Component{
 	_getProfiles(){
 		return this.props.profiles.map((profile) => {
 			return (
-				<div className="well well-sm" key={profile.id}>
-					<h3>{profile.username}</h3>
-					<h4>{profile.id}</h4>
-					<h4>{profile.paciente? "Paciente" : "Coach"}</h4>
-				</div>
+				<UsuarioInfoBox profile={profile} key={profile.id} />
 			)
 		});
 	}

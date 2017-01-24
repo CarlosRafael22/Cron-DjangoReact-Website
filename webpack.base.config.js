@@ -18,8 +18,11 @@ module.exports = {
       filename: "[name]-[hash].js"
   },
 
-  externals: [
-  ], // add all vendor libs
+  externals: {
+  'react/addons': true,
+  'react/lib/ExecutionEnvironment': true,
+  'react/lib/ReactContext': true
+  }, // add all vendor libs
 
   //It uses the CommonsChunksPlugin, this makes sure that ReactJS will be saved as a different file (vendors.js), 
   //so that our actual app-bundle doesn't become too big.

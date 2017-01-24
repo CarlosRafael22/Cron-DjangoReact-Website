@@ -259,7 +259,8 @@ class PacienteSerializer(serializers.ModelSerializer):
 			paciente = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
 				"imagem_perfil": imagem, 
 				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
-        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email}
+        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": True}
+        	# Botei "paciente": True pq no front-end no UsuarioInfoBox ele checa isso
 			ret = paciente
 		else:
 			# get the original representation

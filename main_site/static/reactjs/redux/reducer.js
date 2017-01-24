@@ -95,20 +95,40 @@ function profileReducer(state= {
         loading: false,
         error: action.errorMessage
     })
+    default:
+      return state
+  }
+}
+
+function pacienteSupervisionadoReducer(state={
+  loading:false,
+  pacientesList: []
+}, action){
+
+  switch(action.type){
     case COACH_PACIENTS_REQUEST:
+    // Gambiarra aqui para limpar antigas pacientesList de outro coaches logados
+    // Como ao deslogar eu nao posso limpar pacientesList ja q ta em outro reducer, assim q ele pede pra pegar os pacientes
+    // eu limpo qlqr lista de pacientes q tinha
       return Object.assign({}, state, {
-        loading: true
+        loading: true,
+        pacientesList: []
     })
     case COACH_PACIENTS_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
-        profilesList: action.coachPacientsList
+        pacientesList: action.coachPacientsList
     })
     case COACH_PACIENTS_FAILURE:
       return Object.assign({}, state, {
         loading: false,
         error: action.errorMessage
     })
+    case LOGOUT_SUCCESS:
+      console.log("TIRANDO A LISTA DE PACIENTES!!!!!");
+      return Object.assign({}, state, {
+        pacientesList: []
+      })
     default:
       return state
   }
@@ -180,7 +200,8 @@ function receitaReducer(state = {
 var reducer = combineReducers({
   usuario: auth,
   receitas: receitaReducer,
-  profiles: profileReducer
+  profiles: profileReducer,
+  pacientes: pacienteSupervisionadoReducer
 })
 
 export default reducer

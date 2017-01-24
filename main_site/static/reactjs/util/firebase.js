@@ -27,7 +27,7 @@
 			// };
 			// console.log("Info");
 			// console.log(info);
-		  }).catch(function(error) {
+		  	}).catch(function(error) {
 			  // Handle Errors here.
 			  var errorCode = error.code;
 			  var errorMessage = error.message;

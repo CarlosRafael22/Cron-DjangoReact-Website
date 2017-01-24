@@ -8,9 +8,9 @@ class PacientesSupervisionadosContainer extends React.Component{
 
 	constructor(props){
 		super(props);
-		console.log("Profiles no HomeCointaer qd Coach logado");
-		console.log(this.props.profiles);
-		this._getProfiles();
+		console.log("Pacientes no HomeCointaer qd Coach logado");
+		console.log(this.props.pacientes);
+		this._getPacientes();
 	}
 
 	// // Usado para qd ele for logar e ja estiver na view de Usuarios
@@ -33,7 +33,7 @@ class PacientesSupervisionadosContainer extends React.Component{
 	//     }
  //    }
 
-	_getProfiles(){
+	_getPacientes(){
 		console.log("PEGANDO OS Pacientes Superv");
 
 		// VOU TER QUE CHECAR PRA VER SE ELE JA TA LOGADO E SE TIVER SE ELE EH UM COACH
@@ -54,12 +54,12 @@ class PacientesSupervisionadosContainer extends React.Component{
 				  <li role="presentation"><a href="#">Profile</a></li>
 				  <li role="presentation"><a href="#">Messages</a></li>
 				</ul>
-				<UsuarioList profiles={this.props.profiles} />
+				<UsuarioList profiles={this.props.pacientes} />
 			</div>
 		);
 
 		const standardView = (
-			<UsuarioList profiles={this.props.profiles} />
+			<UsuarioList profiles={this.props.pacientes} />
 		);
 
 		let usuarioListView;
@@ -83,12 +83,12 @@ class PacientesSupervisionadosContainer extends React.Component{
 				  <li role="presentation" className="active"><a href="#">Home</a></li>
 				  <li role="presentation"><a href="#">Messages</a></li>
 				</ul>
-				<UsuarioList profiles={this.props.profiles} />
+				<UsuarioList profiles={this.props.pacientes} />
 			</div>
 		);
 
 		const standardView = (
-			<UsuarioList profiles={this.props.profiles} />
+			<UsuarioList profiles={this.props.pacientes} />
 		);
 
 		let usuarioListView;
@@ -99,14 +99,14 @@ class PacientesSupervisionadosContainer extends React.Component{
 		}
 
 		console.log("Vou RENDER O UsuarioList");
-		console.log(this.props.profiles);
+		console.log(this.props.pacientes);
 		const view = this._getView();
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
 		// Dentro da div
 		return(
 			<div>				
-				<UsuarioList profiles={this.props.profiles} />
+				<UsuarioList profiles={this.props.pacientes} />
 			</div>
 						
 		)
@@ -123,7 +123,7 @@ function mapStateToProps(state){
   	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
 		usuario: state.usuario,
-		profiles: state.profiles.profilesList
+		pacientes: state.pacientes.pacientesList
 	};
 }
 

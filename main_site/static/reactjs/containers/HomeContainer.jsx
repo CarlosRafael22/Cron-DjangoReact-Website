@@ -4,6 +4,7 @@ import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import { connect } from 'react-redux'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
+import UsuarioListContainer from "./UsuarioListContainer"
 
 class HomeContainer extends React.Component{
 
@@ -96,11 +97,26 @@ class HomeContainer extends React.Component{
 				  <button type="button" className="btn btn-danger" onClick={this._logout.bind(this)}>Logout</button>
 				</form>
 			</div>
+		}else if(this.props.usuario.user.isCoach == true){
+			view = (
+				<div>
+					<div className="alert alert-success" role="alert">
+					  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
+					</div>
+					<div>
+						<UsuarioListContainer />
+					</div>
+				</div>
+			)
+			
 		}else{
-			view = 
-			<div className="alert alert-success" role="alert">
-			  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-			</div>
+			view = (
+				<div>
+					<div className="alert alert-success" role="alert">
+					  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
+					</div>
+				</div>
+			)
 		}
 
 

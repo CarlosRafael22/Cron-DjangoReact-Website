@@ -62,7 +62,7 @@ class AppRouter extends React.Component{
 					<Route path="/" component={Layout}>
 						<IndexRoute component={HomeContainer}/>
 						<Route path="/home" component={HomeContainer} />
-						<Route path="/usuarios" component={UsuarioListContainer} />
+						<Route path="/usuarios" component={UsuarioListContainer}/>
 						<Route path="/receitas" component={ReceitaContainer}>
 							<Route path="/receitas/:receitaId" component={ReceitaPage} />
 						</Route>

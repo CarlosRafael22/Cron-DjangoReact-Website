@@ -2,6 +2,7 @@ import React from "react"
 import UsuarioList from "../components/UsuarioList"
 import {getProfiles, getCoachPatients} from "../redux/action"
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 class UsuarioListContainer extends React.Component{
 
@@ -14,6 +15,7 @@ class UsuarioListContainer extends React.Component{
 		this._getProfiles();
 	}
 
+	// Usado para qd ele for logar e ja estiver na view de Usuarios
 	componentWillReceiveProps(nextProps) {
 	    if (this.props.usuario.isAuthenticated !== nextProps.usuario.isAuthenticated) {
 	    	console.log("TO INDO ATUALIZAR O PROPS");
@@ -56,27 +58,75 @@ class UsuarioListContainer extends React.Component{
 		//return 
 	}
 
-	_renderUsuarioList(){
+	_getView(){
+		const coachLoggedView = (
+
+			<div>
+				<ul class="nav nav-tabs">
+				  <li role="presentation" class="active"><a href="#">Home</a></li>
+				  <li role="presentation"><a href="#">Profile</a></li>
+				  <li role="presentation"><a href="#">Messages</a></li>
+				</ul>
+				<UsuarioList profiles={this.props.profiles} />
+			</div>
+		);
+
+		const standardView = (
+			<UsuarioList profiles={this.props.profiles} />
+		);
+
+		let usuarioListView;
 		if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
-			this._getSupervisonedProfilesOfCoach.bind(this);
+			usuarioListView = coachLoggedView;
+		}else{
+			usuarioListView = standardView;
 		}
 
-		return (
-			<UsuarioList profiles={this.props.profiles} />
-		)
+		return usuarioListView;
+
 	}
 
 	render(){
 
+
+		const coachLoggedView = (
+
+			<div>
+				<ul className="nav nav-tabs">
+				  <li role="presentation" className="active"><a href="#">Home</a></li>
+				  <li role="presentation"><a href="#">Messages</a></li>
+				</ul>
+				<UsuarioList profiles={this.props.profiles} />
+			</div>
+		);
+
+		const standardView = (
+			<UsuarioList profiles={this.props.profiles} />
+		);
+
+		let usuarioListView;
+		if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
+			usuarioListView = coachLoggedView;
+		}else{
+			usuarioListView = standardView;
+		}
+
 		console.log("Vou RENDER O UsuarioList");
 		console.log(this.props.profiles);
+		const view = this._getView();
+		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
+		// {coachRender ? coachLoggedView : standardView}
+		// Dentro da div
 		return(
-			<UsuarioList profiles={this.props.profiles} />
-		
-			
+			<div>
+				
+				<UsuarioList profiles={this.props.profiles} />
+			</div>
+						
 		)
 	}
 }
+
 
 function mapStateToProps(state){
 	console.log("StateProps mapeado UsuarioList");

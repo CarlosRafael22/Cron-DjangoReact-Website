@@ -4,7 +4,7 @@ import {loginUser, logoutUser, signUpUser} from '../redux/action'
 import { connect } from 'react-redux'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
-import UsuarioListContainer from "./UsuarioListContainer"
+import PacientesSupervisionadosContainer from "./PacientesSupervisionadosContainer"
 
 class HomeContainer extends React.Component{
 
@@ -104,7 +104,7 @@ class HomeContainer extends React.Component{
 					  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
 					</div>
 					<div>
-						<UsuarioListContainer />
+						<PacientesSupervisionadosContainer />
 					</div>
 				</div>
 			)

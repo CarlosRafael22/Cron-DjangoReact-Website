@@ -84,9 +84,9 @@ class CoachListContainer extends React.Component{
 			<div>
 				{ this.props.usuario.user != null ? 
 				<UsuarioList profiles={this.props.coaches} userLogado={this.props.usuario.user} addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
-				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} />
+				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} tipoUsuario="coaches" />
 				:
-				<UsuarioList profiles={this.props.coaches} />
+				<UsuarioList profiles={this.props.coaches} tipoUsuario="coaches" />
 				}
 			</div>
 						

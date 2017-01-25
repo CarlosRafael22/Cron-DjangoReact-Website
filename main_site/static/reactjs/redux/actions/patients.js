@@ -73,12 +73,12 @@ function getPatientRequest(){
   }
 }
 
-function getPatientSuccess(pacientesList){
+function getPatientSuccess(paciente){
   console.log("Pegou os profiles no action");
   return {
     type: GET_PATIENT_SUCCESS,
     loading: false,
-    pacientesList: pacientesList
+    pacienteVisto: paciente
   }
 }
 

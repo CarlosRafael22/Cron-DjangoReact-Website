@@ -96,9 +96,9 @@ class PacienteListContainer extends React.Component{
 			<div>
 				{ this.props.usuario.user != null ? 
 				<UsuarioList profiles={this.props.pacientes} userLogado={this.props.usuario.user} addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
-				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} />
+				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} tipoUsuario="pacientes" />
 				:
-				<UsuarioList profiles={this.props.pacientes} />
+				<UsuarioList profiles={this.props.pacientes} tipoUsuario="pacientes" />
 				}
 			</div>
 						

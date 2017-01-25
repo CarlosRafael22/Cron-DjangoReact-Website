@@ -77,7 +77,7 @@ class AppRouter extends React.Component{
 							<Route path="/usuarios/:userId" component={UsuarioPageContainer} />
 						</Route>
 						<Route path="/pacientes" component={PacienteContainer}>
-							<Route path="/pacientes/:pacienteId" component={UsuarioPageContainer} />
+							<Route path="/pacientes/:pacienteId" component={PacientePageContainer} />
 						</Route>
 						<Route path="/coaches" component={CoachContainer}>
 							<Route path="/coaches/:coachId" component={UsuarioPageContainer} />

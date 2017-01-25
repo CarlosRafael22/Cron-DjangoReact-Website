@@ -17,7 +17,8 @@ export default class UsuarioList extends React.Component{
 			return (
 				<UsuarioInfoBox profile={profile} key={profile.userId} userLogado={this.props.userLogado}
 				addPacienteNosSupervisionados={this.props.addPacienteNosSupervisionados != null ? this.props.addPacienteNosSupervisionados.bind(this) : null} 
-				deletePacienteDosSupervisionados={this.props.deletePacienteDosSupervisionados != null ? this.props.deletePacienteDosSupervisionados.bind(this) : null} />
+				deletePacienteDosSupervisionados={this.props.deletePacienteDosSupervisionados != null ? this.props.deletePacienteDosSupervisionados.bind(this) : null} 
+				tipoUsuario={this.props.tipoUsuario} />
 			)
 		});
 	}

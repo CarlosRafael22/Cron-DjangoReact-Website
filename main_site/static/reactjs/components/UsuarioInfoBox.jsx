@@ -71,13 +71,15 @@ export default class UsuarioInfoBox extends React.Component{
 					)
 		}
 
-		const userId = this.props.profile.userId.toString();
-		const usuarioLink = "/usuarios/"+userId;
+		// Vai ver qual eh o tipo de usuario que esta mostrando para gerar o link certo
+		const tipoUsuarioId = this.props.profile.id.toString();
+
+		const link = "/"+this.props.tipoUsuario+"/"+tipoUsuarioId;
 
 		return (
 			<div className="well well-sm col-md-6">
 				<div className="row">
-					<Link to={usuarioLink}><h3 className="col-sm-4">{this.props.profile.username}</h3></Link>
+					<Link to={link}><h3 className="col-sm-4">{this.props.profile.username}</h3></Link>
 					<h6 className="col-md-8">
 						<span className="label label-primary">ID</span><span className="badge">{this.props.profile.id}</span>
 						<span className="label label-primary">userID</span><span className="badge">{this.props.profile.userId}</span>

@@ -2,6 +2,10 @@ import {
   PATIENTS_REQUEST, PATIENTS_SUCCESS, PATIENTS_FAILURE
 } from '../actions/patients'
 
+// import {
+//   ADD_COACH_PATIENTS_SUCCESS, DELETE_COACH_PATIENTS_SUCCESS
+// } from "../actions/coachPatients"
+
 
 export default function pacienteReducer(state={
   loading:false,

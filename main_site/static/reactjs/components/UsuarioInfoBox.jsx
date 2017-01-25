@@ -6,9 +6,23 @@ export default class UsuarioInfoBox extends React.Component{
 	// 	super(props);
 	// }
 
-	_handleDelete(event){
+	_handleClick(event){
 		event.preventDefault();
 		alert("Clicou");
+
+
+	}
+
+	_tirarPacienteDosSupervisionados(){
+		//alert("Vou tirar");
+		console.log("InfoBox para mandar o DELETE")
+		this.props.deletePacienteDosSupervisionados(this.props.userLogado.coachId, this.props.profile.id);
+	}
+
+	_addPacienteNosSupervisionados(){
+		//alert("Vou add");
+		console.log("InfoBox para mandar o ADD");
+		this.props.addPacienteNosSupervisionados(this.props.userLogado.coachId, this.props.profile.id);
 	}
 
 	render(){
@@ -35,11 +49,11 @@ export default class UsuarioInfoBox extends React.Component{
 				// Returns -1 if the item is not found.
 				else if( (this.props.profile.coaches != null) && (this.props.profile.coaches.indexOf(this.props.userLogado.username) >= 0) ){
 					buttonLine = (
-						<h4>{this.props.profile.paciente? "Paciente" : "Coach"} <button className="btn btn-danger" onClick={this._handleDelete.bind(this)}>Nao supervisionar</button></h4>
+						<h4>{this.props.profile.paciente? "Paciente" : "Coach"} <button className="btn btn-danger" onClick={this._tirarPacienteDosSupervisionados.bind(this)}>Nao supervisionar</button></h4>
 					)
 				}else{
 					buttonLine = (
-						<h4>{this.props.profile.paciente? "Paciente" : "Coach"} <button className="btn btn-primary" onClick={this._handleDelete.bind(this)}>Supervisionar</button></h4>
+						<h4>{this.props.profile.paciente? "Paciente" : "Coach"} <button className="btn btn-primary" onClick={this._addPacienteNosSupervisionados.bind(this)}>Supervisionar</button></h4>
 					)
 				}
 

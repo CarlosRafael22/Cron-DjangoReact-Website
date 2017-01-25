@@ -3,6 +3,7 @@ import UsuarioList from "../components/UsuarioList"
 import {getCoachPatients} from "../redux/actions/coachPatients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import {addCoachPatient, deleteCoachPatient} from "../redux/actions/coachPatients"
 
 class PacientesSupervisionadosContainer extends React.Component{
 
@@ -45,62 +46,26 @@ class PacientesSupervisionadosContainer extends React.Component{
 		
 	}
 
-	_getView(){
-		const coachLoggedView = (
 
-			<div>
-				<ul class="nav nav-tabs">
-				  <li role="presentation" class="active"><a href="#">Home</a></li>
-				  <li role="presentation"><a href="#">Profile</a></li>
-				  <li role="presentation"><a href="#">Messages</a></li>
-				</ul>
-				<UsuarioList profiles={this.props.pacientes} />
-			</div>
-		);
-
-		const standardView = (
-			<UsuarioList profiles={this.props.pacientes} />
-		);
-
-		let usuarioListView;
-		if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
-			usuarioListView = coachLoggedView;
-		}else{
-			usuarioListView = standardView;
-		}
-
-		return usuarioListView;
-
+	_tirarPacienteDosSupervisionados(coachId, paciente){
+		//alert("Vou tirar");
+		console.log("VOU TIRAR PACIENTE DA LISTA DOS SUPERVISONADOS DE COACH ", coachId);
+		this.props.dispatch(deleteCoachPatient(coachId, paciente));
+		console.log("VOLTOU DO DISPATCH");
 	}
+
+	_addPacienteNosSupervisionados(coachId, paciente){
+		//alert("Vou add");
+		console.log("VOU COLOCAR PACIENTE DA LISTA DOS SUPERVISONADOS DE COACH ", coachId);
+		this.props.dispatch(addCoachPatient(coachId, paciente));
+		console.log("VOLTOU DO DISPATCH");
+	}
+
 
 	render(){
 
-
-		const coachLoggedView = (
-
-			<div>
-				<ul className="nav nav-tabs">
-				  <li role="presentation" className="active"><a href="#">Home</a></li>
-				  <li role="presentation"><a href="#">Messages</a></li>
-				</ul>
-				<UsuarioList profiles={this.props.pacientes} />
-			</div>
-		);
-
-		const standardView = (
-			<UsuarioList profiles={this.props.pacientes} />
-		);
-
-		let usuarioListView;
-		if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
-			usuarioListView = coachLoggedView;
-		}else{
-			usuarioListView = standardView;
-		}
-
 		console.log("Vou RENDER O UsuarioList");
 		console.log(this.props.pacientes);
-		const view = this._getView();
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
 		// Dentro da div
@@ -109,7 +74,9 @@ class PacientesSupervisionadosContainer extends React.Component{
 		console.log(this.props.pacientes);
 		return(
 			<div>				
-				<UsuarioList profiles={this.props.pacientes} userLogado={this.props.usuario.user} />
+				<UsuarioList profiles={this.props.pacientes} userLogado={this.props.usuario.user}
+				addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
+				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} />
 			</div>
 						
 		)

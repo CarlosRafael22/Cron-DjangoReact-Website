@@ -410,8 +410,10 @@ def pacientes_coach(request, pk, format=None):
 
 	elif request.method == 'POST':
 
+		# import pdb;
+		# pdb.set_trace();
 		# No post eu vou mandar o ID do Paciente, com isso eu adiciono na lista de pacientes do Coach
-		paciente = Paciente.objects.get(pk=request.data['id'])
+		paciente = Paciente.objects.get(pk=request.data['idPaciente'])
 
 		coach = Coach.objects.get(pk=pk)
 		coach.pacientes_supervisionados.add(paciente)
@@ -427,7 +429,7 @@ def pacientes_coach(request, pk, format=None):
 
 	elif request.method == 'DELETE':
 		# No delete eu vou mandar o ID do Paciente, com isso eu removo na lista de pacientes do Coach
-		paciente = Paciente.objects.get(pk=request.data['id'])
+		paciente = Paciente.objects.get(pk=request.data['idPaciente'])
 
 		coach = Coach.objects.get(pk=pk)
 		coach.pacientes_supervisionados.remove(paciente)

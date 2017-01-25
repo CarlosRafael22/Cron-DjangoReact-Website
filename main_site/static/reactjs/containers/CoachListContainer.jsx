@@ -7,71 +7,33 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import {addCoachPatient, deleteCoachPatient} from "../redux/actions/coachPatients"
 
-class UsuarioListContainer extends React.Component{
+class CoachListContainer extends React.Component{
 
 	constructor(props){
 		super(props);
-		console.log("Profiles");
-		console.log(this.props.profiles);
 		console.log("User na sessao");
 		console.log(this.props.usuario);
 		this._getProfiles();
 
-		this.state = {
-			all_profiles: []
-		}
 	}
 
 	// Usado para qd ele for logar e ja estiver na view de Usuarios
 	componentWillReceiveProps(nextProps) {
-	    // if (this.props.usuario.isAuthenticated !== nextProps.usuario.isAuthenticated) {
-	    // 	console.log("TO INDO ATUALIZAR O PROPS");
-
-	    // 	// Se eu tiver logado e for um coach eu pego os pacientes
-	    // 	if(nextProps.usuario.isAuthenticated && nextProps.usuario.user.isCoach){
-	    // 		this.props.dispatch(getCoachPatients(nextProps.usuario.user.coachId));
-	    // 	}else if(!nextProps.usuario.isAuthenticated){
-	    // 		// Se tiver deslogando entao eu mostro todos os perfis
-	    // 		this.props.dispatch(getProfiles());
-	    // 	}
-
+	   
 	    // MUDOU O PROPS ENTAO EU ATUALIZO TODOS OS PROFILES
 	    console.log("MUDOU O PROPS");
 	    // Vou ter que pegar o proximo estado do Redux e ja passar para que ele possa atualizar o state
-	    this._atualizandoStateComNextProps(nextProps);
-	    	
-	      	//nextProps.load();
-	      	
-	      	//this._getSupervisonedProfilesOfCoach(nextProps.usuario.coachId);
+	    //this._atualizandoStateComNextProps(nextProps);
+	    
     }
 
 	_getProfiles(){
-		console.log("PEGANDO OS PERFIS");
-		this.props.dispatch(getProfiles());
-
-		console.log("PEGANDO OS PACIENTES");
-		this.props.dispatch(getPatients());
 
 		console.log("PEGANDO OS COACHES");
 		this.props.dispatch(getCoaches());
-
-		// // VOU TER QUE CHECAR PRA VER SE ELE JA TA LOGADO E SE TIVER SE ELE EH UM COACH
-		// // TENHO Q FAZER AQUI TB PARA O CASO DE ELE LOGAR EM OUTRA TELA ASSIM O componentWillReceiveProps NAO VAI RODAR
-		// // Se eu tiver logado e for um coach eu pego os pacientes
-  //   	if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
-  //   		this.props.dispatch(getCoachPatients(this.props.usuario.user.coachId));
-  //   	}else if( (!this.props.usuario.isAuthenticated) || (!this.props.usuario.user.isCoach) ){
-  //   		// Se tiver deslogando entao eu mostro todos os perfis
-  //   		this.props.dispatch(getProfiles());
-  //   	}
 		
 	}
 
-	componentDidMount(){
-
-		this._atualizandoStateComProfiles();
-
-	}
 
 	_atualizandoStateComProfiles(){
 		// JUNTANDO TODOS OS TIPOS DE USER PARA MANDAR PARA O USUARIOLIST
@@ -106,26 +68,11 @@ class UsuarioListContainer extends React.Component{
 		console.log("VOLTOU DO DISPATCH");
 	}
 
-	// Vou ver se ta logado, se tiver eu faco uma requisicao pegando so os perfis supervisionados e mando como props
-	// Metodo so vai ser chamado se o user logado for um coach!
-	// _getSupervisonedProfilesOfCoach(coachId){
-	// 	console.log("MANDANDO REQUST PEGAR PACIENTES");
-	// 	this.props.dispatch(getCoachPatients(coachId));
-	// 	//return 
-	// }
-
 
 	render(){
 
 		console.log("Vou RENDER O UsuarioList");
-		console.log(this.props.pacientes);
-		console.log(this.state.all_profiles);
-
-		// Quando mudar o props ele vai vir Render de novo, porem todos os profiles estao em this.state.all_profiles
-		// e como nao atualizei o state ele vai pegar e mostrar os botoes de forma desatualizada
-		// Aqui eu tenho que atualizar o state tb
-		//this._atualizandoStateComProfiles();
-		console.log("ATUALIZEI O STATE");
+		console.log(this.props.coaches);
 
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
@@ -136,10 +83,10 @@ class UsuarioListContainer extends React.Component{
 		return(
 			<div>
 				{ this.props.usuario.user != null ? 
-				<UsuarioList profiles={this.state.all_profiles} userLogado={this.props.usuario.user} addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
+				<UsuarioList profiles={this.props.coaches} userLogado={this.props.usuario.user} addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
 				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} />
 				:
-				<UsuarioList profiles={this.state.all_profiles} />
+				<UsuarioList profiles={this.props.coaches} />
 				}
 			</div>
 						
@@ -157,10 +104,8 @@ function mapStateToProps(state){
   	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
 		usuario: state.usuario,
-		profiles: state.profiles.profilesList,
-		coaches: state.coaches.coachesList,
-		pacientes: state.pacientes.pacientesList
+		coaches: state.coaches.coachesList
 	};
 }
 
-export default connect(mapStateToProps)(UsuarioListContainer)
+export default connect(mapStateToProps)(CoachListContainer)

@@ -22,6 +22,12 @@ export default class Layout extends React.Component{
 				  <li role="presentation">
 				  	<Link to="/usuarios" activeStyle={{ color: 'green' }}>Usuarios</Link>
 				  </li>
+				   <li role="presentation">
+				  	<Link to="/pacientes" activeStyle={{ color: 'green' }}>Pacientes</Link>
+				  </li>
+				   <li role="presentation">
+				  	<Link to="/coaches" activeStyle={{ color: 'green' }}>Coaches</Link>
+				  </li>
 				  <li role="presentation">
 				  	<Link to="/receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>
 				  </li>

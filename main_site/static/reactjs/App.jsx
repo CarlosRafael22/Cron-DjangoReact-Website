@@ -8,8 +8,18 @@ import ReceitaContainer from "./containers/ReceitaContainer"
 import ChatContainer from "./containers/ChatContainer"
 import ReceitaPage from "./components/ReceitaPage"
 import Layout from "./layouts/layout"
+
 import UsuarioContainer from "./containers/UsuarioContainer"
 import UsuarioPageContainer from "./containers/UsuarioPageContainer"
+
+import PacienteContainer from "./containers/PacienteContainer"
+import PacientePageContainer from "./containers/PacientePageContainer"
+
+import CoachContainer from "./containers/CoachContainer"
+import CoachPageContainer from "./containers/CoachPageContainer"
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
@@ -65,6 +75,12 @@ class AppRouter extends React.Component{
 						<Route path="/home" component={HomeContainer} />
 						<Route path="/usuarios" component={UsuarioContainer}>
 							<Route path="/usuarios/:userId" component={UsuarioPageContainer} />
+						</Route>
+						<Route path="/pacientes" component={PacienteContainer}>
+							<Route path="/pacientes/:pacienteId" component={UsuarioPageContainer} />
+						</Route>
+						<Route path="/coaches" component={CoachContainer}>
+							<Route path="/coaches/:coachId" component={UsuarioPageContainer} />
 						</Route>
 						<Route path="/receitas" component={ReceitaContainer}>
 							<Route path="/receitas/:receitaId" component={ReceitaPage} />

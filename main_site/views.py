@@ -334,6 +334,22 @@ class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Paciente.objects.all()
 	serializer_class = PacienteSerializer
 
+	# Vou modificar o list tb pra mandar so algumas infos sobre o usuario e nao tudo
+	def retrieve(self, request, *args, **kwargs):
+		# import pdb;
+		# pdb.set_trace();
+		
+		instance = self.get_object()
+
+		if request.content_type == 'text/plain':
+			serializer = self.get_serializer(instance)
+			return Response(serializer.data)
+		elif request.content_type == 'application/json':
+			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
+			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = PacienteSerializer(instance, context={"limited_representation" : True})
+			return Response(serializer.data)
+
 ########################################################################
 
 class CoachList(generics.ListCreateAPIView):
@@ -446,11 +462,28 @@ class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Coach.objects.all()
 	serializer_class = CoachSerializer
 
-#########################################################################
+	# Vou modificar o list tb pra mandar so algumas infos sobre o usuario e nao tudo
+	def retrieve(self, request, *args, **kwargs):
+		# import pdb;
+		# pdb.set_trace();
+		
+		instance = self.get_object()
+
+		if request.content_type == 'text/plain':
+			serializer = self.get_serializer(instance)
+			return Response(serializer.data)
+		elif request.content_type == 'application/json':
+			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
+			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = CoachSerializer(instance, context={"limited_representation" : True})
+			return Response(serializer.data)
+
+
+######################################################################################################################################
 #
 #	OVERRIDING ObtainAuthToken PARA QUE ELE RETORNE O USUARIO TB E NAO SO O TOKEN AO LOGAR
 #
-
+######################################################################################################################################
 
 ## ANTES FAZIA OVERRIDE DE ObtainAuthToken E SO MUDAVA O POST MAS AGORA EU MUDEI O SERIALIZER
 ## TB, ENTAO EH COMO SE FOSSE UMA CLASSE NOVA E NAO HERDA MAIS

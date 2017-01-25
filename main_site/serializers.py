@@ -124,12 +124,6 @@ class ReceitaSerializer(serializers.ModelSerializer):
 		return receita
 
 
-# data2 = {
-# 	'ingredientes': [{'nome_ingrediente': "150 g de farinha de trigo (1 xícara cheia)"}, {'nome_ingrediente': "1 colher de chá de fermento em pó"}],
-# 	'modo_de_preparo': [{'descricao': "Misturar a manteiga, levar por mais 30 segundos"},
-# 	{'descricao': "Misture"}]
-# }
-
 #################################################################
 #
 # SERIALIZERS DOS MODELOS DO USUARIO
@@ -304,10 +298,21 @@ class CoachSerializer(serializers.ModelSerializer):
 				print("Nao tem imagem")
 				imagem = None
 
+			# Pegando os pacientes dele
+			pacientes_coach = Coach.objects.get(pk=obj.pk).pacientes_supervisionados.all()
+			pacientes_coaches_ids = []
+			if len(pacientes_coach)> 0:
+				for paciente in pacientes_coach:
+					pacientes_coaches_ids.append(paciente.id)
+			else:
+				pacientes_coach_ids = None
+
+			serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
+
 			coach = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
 				"imagem_perfil": imagem, 
 				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
-        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": False}
+        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": False, "pacientes_supervisionados_ids": pacientes_coaches_ids}
         	# Botei "paciente": True pq no front-end no UsuarioInfoBox ele checa isso
 			ret = coach
 		else:

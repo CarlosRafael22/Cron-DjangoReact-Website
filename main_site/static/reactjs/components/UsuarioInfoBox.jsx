@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from 'react-router'
 
 export default class UsuarioInfoBox extends React.Component{
 
@@ -70,11 +71,13 @@ export default class UsuarioInfoBox extends React.Component{
 					)
 		}
 
+		const userId = this.props.profile.userId.toString();
+		const usuarioLink = "/usuarios/"+userId;
 
 		return (
 			<div className="well well-sm col-md-6">
 				<div className="row">
-					<h3 className="col-md-4">{this.props.profile.username}</h3>
+					<Link to={usuarioLink}><h3 className="col-sm-4">{this.props.profile.username}</h3></Link>
 					<h6 className="col-md-8">
 						<span className="label label-primary">ID</span><span className="badge">{this.props.profile.id}</span>
 						<span className="label label-primary">userID</span><span className="badge">{this.props.profile.userId}</span>

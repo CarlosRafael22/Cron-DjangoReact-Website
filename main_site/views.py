@@ -406,7 +406,8 @@ def pacientes_coach(request, pk, format=None):
 
 		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
 
-		return Response(serializer.data)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
 	elif request.method == 'POST':
 
 		# No post eu vou mandar o ID do Paciente, com isso eu adiciono na lista de pacientes do Coach
@@ -415,8 +416,14 @@ def pacientes_coach(request, pk, format=None):
 		coach = Coach.objects.get(pk=pk)
 		coach.pacientes_supervisionados.add(paciente)
 
-		response = {"idCoach" : coach.id, "idPaciente adicionado a lista": paciente.id}
-		return Response(response, status=status.HTTP_201_CREATED)
+		#response = {"idCoach" : coach.id, "idPaciente adicionado a lista": paciente.id}
+		
+		# Na verdade ja eh melhor eu retornar a lista de Pacientes supervisionados, para assim nao precisar fazer outra requisicao no Front-end 
+		# para pegar a lista mais nova
+		pacientes_coach = coach.pacientes_supervisionados.all()
+		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
+
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 	elif request.method == 'DELETE':
 		# No delete eu vou mandar o ID do Paciente, com isso eu removo na lista de pacientes do Coach
@@ -425,9 +432,12 @@ def pacientes_coach(request, pk, format=None):
 		coach = Coach.objects.get(pk=pk)
 		coach.pacientes_supervisionados.remove(paciente)
 
-		response = {"idCoach" : coach.id, "idPaciente removido da lista": paciente.id}
+		#response = {"idCoach" : coach.id, "idPaciente removido da lista": paciente.id}
+		
+		pacientes_coach = coach.pacientes_supervisionados.all()
+		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
 		# Respondendo dizendo que a mudanca foi aceita
-		return Response(response, status=status.HTTP_202_ACCEPTED)
+		return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):

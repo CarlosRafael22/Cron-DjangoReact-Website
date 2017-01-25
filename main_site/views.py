@@ -395,8 +395,8 @@ class CoachList(generics.ListCreateAPIView):
 			return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
-def get_pacientes_coach(request, pk, format=None):
+@api_view(['GET', 'POST', 'DELETE'])
+def pacientes_coach(request, pk, format=None):
 
 	if request.method == 'GET':
 		# import pdb;
@@ -407,6 +407,28 @@ def get_pacientes_coach(request, pk, format=None):
 		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
 
 		return Response(serializer.data)
+	elif request.method == 'POST':
+
+		# No post eu vou mandar o ID do Paciente, com isso eu adiciono na lista de pacientes do Coach
+		paciente = Paciente.objects.get(pk=request.data['id'])
+
+		coach = Coach.objects.get(pk=pk)
+		coach.pacientes_supervisionados.add(paciente)
+
+		response = {"idCoach" : coach.id, "idPaciente adicionado a lista": paciente.id}
+		return Response(response, status=status.HTTP_201_CREATED)
+
+	elif request.method == 'DELETE':
+		# No delete eu vou mandar o ID do Paciente, com isso eu removo na lista de pacientes do Coach
+		paciente = Paciente.objects.get(pk=request.data['id'])
+
+		coach = Coach.objects.get(pk=pk)
+		coach.pacientes_supervisionados.remove(paciente)
+
+		response = {"idCoach" : coach.id, "idPaciente removido da lista": paciente.id}
+		# Respondendo dizendo que a mudanca foi aceita
+		return Response(response, status=status.HTTP_202_ACCEPTED)
+
 
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Coach.objects.all()

@@ -36,7 +36,7 @@ urlpatterns = [
 	url(r'^api/pacientes/(?P<pk>[0-9]+)/$', views.PacienteDetail.as_view()),
 	url(r'^api/coaches/$', views.CoachList.as_view()),
 	url(r'^api/coaches/(?P<pk>[0-9]+)/$', views.CoachDetail.as_view()),
-	url(r'^api/coaches/(?P<pk>[0-9]+)/pacientes_supervisionados/$', views.get_pacientes_coach),
+	url(r'^api/coaches/(?P<pk>[0-9]+)/pacientes_supervisionados/$', views.pacientes_coach),
 
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),

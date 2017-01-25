@@ -6,11 +6,6 @@ import { connect } from 'react-redux'
 
 export default class PacientePage extends React.Component{
 
-	// constructor(props){
-	// 	super(props);
-	// 	console.log("PACIENTE PAGE");
-	// }
-
 	render(){
 		return (
 			<div className="well well-sm col-md-6">

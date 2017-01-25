@@ -13,7 +13,7 @@ import UsuarioListContainer from "./containers/UsuarioListContainer"
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
 import createLogger from 'redux-logger'
-import reducer from './redux/reducer'
+import reducer from './redux/reducers/reducer'
 import thunk from 'redux-thunk'
 import storeLocal from './redux/store'
 

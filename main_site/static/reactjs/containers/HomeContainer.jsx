@@ -1,6 +1,6 @@
 import React from "react"
 
-import {loginUser, logoutUser, signUpUser} from '../redux/action'
+import {loginUser, logoutUser, signUpUser} from '../redux/actions/auth'
 import { connect } from 'react-redux'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'

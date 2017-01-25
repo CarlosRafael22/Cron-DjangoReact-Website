@@ -1,6 +1,6 @@
 import React from "react"
 import UsuarioList from "../components/UsuarioList"
-import {getProfiles, getCoachPatients} from "../redux/action"
+import getProfiles from "../redux/actions/profiles"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
@@ -53,11 +53,11 @@ class UsuarioListContainer extends React.Component{
 
 	// Vou ver se ta logado, se tiver eu faco uma requisicao pegando so os perfis supervisionados e mando como props
 	// Metodo so vai ser chamado se o user logado for um coach!
-	_getSupervisonedProfilesOfCoach(coachId){
-		console.log("MANDANDO REQUST PEGAR PACIENTES");
-		this.props.dispatch(getCoachPatients(coachId));
-		//return 
-	}
+	// _getSupervisonedProfilesOfCoach(coachId){
+	// 	console.log("MANDANDO REQUST PEGAR PACIENTES");
+	// 	this.props.dispatch(getCoachPatients(coachId));
+	// 	//return 
+	// }
 
 	_getView(){
 		const coachLoggedView = (

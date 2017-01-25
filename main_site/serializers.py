@@ -243,7 +243,8 @@ class PacienteSerializer(serializers.ModelSerializer):
 
 	def to_representation(self, obj):
 
-		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, se tiver manda a com menos infos
+		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, 
+		# se tiver quer dizer que estou requisitando do site entao manda a com menos infos
 		special_representation = self.context.get("limited_representation")
 		if special_representation:
 
@@ -256,10 +257,20 @@ class PacienteSerializer(serializers.ModelSerializer):
 				print("Nao tem imagem")
 				imagem = None
 
+			# Tb vou botar a informacao de que coaches estao supervisionando esse paciente! Isso vai ser usado na hora de mostrar esse paciente no site
+			# Se for um paciente do coach logado vai haver um botao para ele dessupervisionar
+			coaches = obj.coach_set.all()
+			if len(coaches) > 0:
+				coaches_usernames = []
+				for coach in coaches:
+					coaches_usernames.append(coach.perfil.user.username)
+			else:
+				coaches_usernames = None
+
 			paciente = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
 				"imagem_perfil": imagem, 
 				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
-        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": True}
+        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": True, "coaches": coaches_usernames}
         	# Botei "paciente": True pq no front-end no UsuarioInfoBox ele checa isso
 			ret = paciente
 		else:

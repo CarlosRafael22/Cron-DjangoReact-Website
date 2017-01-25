@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import {loginUser, logoutUser, signUpUser} from '../redux/action'
+import {loginUser, logoutUser, signUpUser} from '../redux/actions/auth'
 import NavHeader from '../components/NavHeader'
 import * as firebaseAuth from '../util/firebase'
 

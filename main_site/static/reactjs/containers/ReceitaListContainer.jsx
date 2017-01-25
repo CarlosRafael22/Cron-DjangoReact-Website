@@ -2,7 +2,7 @@ import React from "react"
 
 import ReceitaList from '../components/ReceitaList'
 import { connect } from 'react-redux'
-import {getReceitas, addReceita, deleteReceita} from '../redux/action'
+import {getReceitas, addReceita, deleteReceita} from '../redux/actions/receitas'
 import {loadState, saveState} from '../redux/localStorage'
 
 class ReceitaListContainer extends React.Component{

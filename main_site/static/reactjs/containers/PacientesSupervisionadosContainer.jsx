@@ -1,6 +1,6 @@
 import React from "react"
 import UsuarioList from "../components/UsuarioList"
-import {getProfiles, getCoachPatients} from "../redux/action"
+import getCoachPatients from "../redux/actions/coachPatients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
@@ -104,6 +104,9 @@ class PacientesSupervisionadosContainer extends React.Component{
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
 		// Dentro da div
+		const buttonText = "Quero nao!";
+		console.log("A PORRA DO PROPS COM OS PACIENTES");
+		console.log(this.props.pacientes);
 		return(
 			<div>				
 				<UsuarioList profiles={this.props.pacientes} />
@@ -123,7 +126,7 @@ function mapStateToProps(state){
   	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
 		usuario: state.usuario,
-		pacientes: state.pacientes.pacientesList
+		pacientes: state.pacientes_supervisionados.coachPatientsList
 	};
 }
 

@@ -201,7 +201,7 @@ var reducer = combineReducers({
   usuario: auth,
   receitas: receitaReducer,
   profiles: profileReducer,
-  pacientes: pacienteSupervisionadoReducer
+  pacientes_supervisionados: pacienteSupervisionadoReducer
 })
 
 export default reducer

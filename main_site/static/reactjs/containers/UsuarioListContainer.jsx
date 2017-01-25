@@ -138,10 +138,16 @@ class UsuarioListContainer extends React.Component{
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
 		// Dentro da div
+
+		// Passo o usuario logado pq ai qd for fazer o UsuarioInfoBox, cada caixa vai ver se quem ta logado eh um coach e se eh o coach do Paciente 
+		// que ela representa. Assim o botao vai ser renderizado de acordo.
 		return(
 			<div>
-				
+				{ this.props.usuario.user != null ? 
+				<UsuarioList profiles={this.state.all_profiles} userLogado={this.props.usuario.user} />
+				:
 				<UsuarioList profiles={this.state.all_profiles} />
+				}
 			</div>
 						
 		)

@@ -30,7 +30,7 @@ function coachPatientsFailure(errorMessage){
   }
 }
 
-export default function getCoachPatients(coachId){
+export function getCoachPatients(coachId){
 
   console.log("getCoachPatients no action");
   return dispatch => {
@@ -91,7 +91,7 @@ function addCoachPatientsFailure(errorMessage){
   }
 }
 
-export default function getCoachPatients(coachId){
+export function addCoachPatient(coachId, paciente){
 
   console.log("getCoachPatients no action");
   return dispatch => {
@@ -100,11 +100,12 @@ export default function getCoachPatients(coachId){
     dispatch(addCoachPatientsRequest());
 
     jQuery.ajax({
-      type: 'GET',
+      type: 'POST',
       url: '/api/coaches/'+coachId.toString()+'/pacientes_supervisionados/',
+      data: paciente,
       contentType: 'application/json'
     }).done(pacientes_supervisionados => {
-      console.log("PAC SUPERVISIONADOS");
+      console.log("NOVOS PAC SUPERVISIONADOS");
       console.log(pacientes_supervisionados);
       // Dispatch the success action
       dispatch(addCoachPatientsSuccess(pacientes_supervisionados));

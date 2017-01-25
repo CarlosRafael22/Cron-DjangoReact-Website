@@ -1,6 +1,6 @@
 import React from "react"
 import UsuarioList from "../components/UsuarioList"
-import getCoachPatients from "../redux/actions/coachPatients"
+import {getCoachPatients} from "../redux/actions/coachPatients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
@@ -109,7 +109,7 @@ class PacientesSupervisionadosContainer extends React.Component{
 		console.log(this.props.pacientes);
 		return(
 			<div>				
-				<UsuarioList profiles={this.props.pacientes} />
+				<UsuarioList profiles={this.props.pacientes} userLogado={this.props.usuario.user} />
 			</div>
 						
 		)

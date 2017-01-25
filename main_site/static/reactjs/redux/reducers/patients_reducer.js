@@ -1,9 +1,9 @@
 import {
   PATIENTS_REQUEST, PATIENTS_SUCCESS, PATIENTS_FAILURE
-} from '../actions/coachPatients'
+} from '../actions/patients'
 
 
-export default function pacienteSupervisionadoReducer(state={
+export default function pacienteReducer(state={
   loading:false,
   pacientesList: []
 }, action){
@@ -16,7 +16,7 @@ export default function pacienteSupervisionadoReducer(state={
     case PATIENTS_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
-        pacientesList: action.coachPatientsList
+        pacientesList: action.pacientesList
     })
     case PATIENTS_FAILURE:
       return Object.assign({}, state, {

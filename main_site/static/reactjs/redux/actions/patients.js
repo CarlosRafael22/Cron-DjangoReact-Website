@@ -12,12 +12,12 @@ function patientsRequest(){
   }
 }
 
-function patientsSuccess(profilesList){
+function patientsSuccess(pacientesList){
   console.log("Pegou os profiles no action");
   return {
     type: PATIENTS_SUCCESS,
     loading: false,
-    profilesList: profilesList
+    pacientesList: pacientesList
   }
 }
 

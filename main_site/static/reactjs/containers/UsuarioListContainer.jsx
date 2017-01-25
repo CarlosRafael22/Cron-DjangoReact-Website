@@ -1,6 +1,8 @@
 import React from "react"
 import UsuarioList from "../components/UsuarioList"
 import getProfiles from "../redux/actions/profiles"
+import getCoaches from "../redux/actions/coaches"
+import getPatients from "../redux/actions/patients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
@@ -13,6 +15,10 @@ class UsuarioListContainer extends React.Component{
 		console.log("User na sessao");
 		console.log(this.props.usuario);
 		this._getProfiles();
+
+		this.state = {
+			all_profiles: []
+		}
 	}
 
 	// // Usado para qd ele for logar e ja estiver na view de Usuarios
@@ -38,7 +44,13 @@ class UsuarioListContainer extends React.Component{
 	_getProfiles(){
 		console.log("PEGANDO OS PERFIS");
 		this.props.dispatch(getProfiles());
-		
+
+		console.log("PEGANDO OS PACIENTES");
+		this.props.dispatch(getPatients());
+
+		console.log("PEGANDO OS COACHES");
+		this.props.dispatch(getCoaches());
+
 		// // VOU TER QUE CHECAR PRA VER SE ELE JA TA LOGADO E SE TIVER SE ELE EH UM COACH
 		// // TENHO Q FAZER AQUI TB PARA O CASO DE ELE LOGAR EM OUTRA TELA ASSIM O componentWillReceiveProps NAO VAI RODAR
 		// // Se eu tiver logado e for um coach eu pego os pacientes
@@ -49,6 +61,15 @@ class UsuarioListContainer extends React.Component{
   //   		this.props.dispatch(getProfiles());
   //   	}
 		
+	}
+
+	componentDidMount(){
+
+		// JUNTANDO TODOS OS TIPOS DE USER PARA MANDAR PARA O USUARIOLIST
+		const all_profiles = this.props.pacientes.concat(this.props.coaches);
+		console.log("ATUALIZANDO TODO O STATE COM OS PERFIS");
+		this.setState({all_profiles:all_profiles});
+
 	}
 
 	// Vou ver se ta logado, se tiver eu faco uma requisicao pegando so os perfis supervisionados e mando como props
@@ -114,14 +135,13 @@ class UsuarioListContainer extends React.Component{
 
 		console.log("Vou RENDER O UsuarioList");
 		console.log(this.props.profiles);
-		const view = this._getView();
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}
 		// Dentro da div
 		return(
 			<div>
 				
-				<UsuarioList profiles={this.props.profiles} />
+				<UsuarioList profiles={this.state.all_profiles} />
 			</div>
 						
 		)
@@ -138,7 +158,9 @@ function mapStateToProps(state){
   	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
 		usuario: state.usuario,
-		profiles: state.profiles.profilesList
+		profiles: state.profiles.profilesList,
+		coaches: state.coaches.coachesList,
+		pacientes: state.pacientes.pacientesList
 	};
 }
 

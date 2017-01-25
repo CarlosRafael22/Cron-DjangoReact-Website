@@ -288,6 +288,34 @@ class CoachSerializer(serializers.ModelSerializer):
 		model = Coach
 		fields = '__all__'
 
+	def to_representation(self, obj):
+
+		# Checando se mandou o context, se nao tiver mandado retorna a representacao normal, 
+		# se tiver quer dizer que estou requisitando do site entao manda a com menos infos
+		special_representation = self.context.get("limited_representation")
+		if special_representation:
+
+			# Para nao gerar: ValueError: The 'imagem_perfil' attribute has no file associated with it.
+			# To checando logo aqui
+			if obj.perfil.imagem_perfil:
+				print("Tem imagem")
+				imagem = obj.perfil.imagem_perfil
+			else:
+				print("Nao tem imagem")
+				imagem = None
+
+			coach = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
+				"imagem_perfil": imagem, 
+				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
+        		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": False}
+        	# Botei "paciente": True pq no front-end no UsuarioInfoBox ele checa isso
+			ret = coach
+		else:
+			# get the original representation
+			ret = super(CoachSerializer, self).to_representation(obj)
+
+		return ret
+
 #############################################################
 ##
 #

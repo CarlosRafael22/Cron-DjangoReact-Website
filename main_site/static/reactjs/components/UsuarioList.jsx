@@ -12,7 +12,7 @@ export default class UsuarioList extends React.Component{
 	_getProfiles(){
 		return this.props.profiles.map((profile) => {
 			return (
-				<UsuarioInfoBox profile={profile} key={profile.id} />
+				<UsuarioInfoBox profile={profile} key={profile.userId} />
 			)
 		});
 	}

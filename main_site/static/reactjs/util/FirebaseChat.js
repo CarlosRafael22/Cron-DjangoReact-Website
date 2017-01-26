@@ -252,7 +252,7 @@ FriendlyChat.prototype.checkSignedInWithMessage = function() {
 	message: 'You must sign-in first',
 	timeout: 2000
   };
-  this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
+  //this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };
 

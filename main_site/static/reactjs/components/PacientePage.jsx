@@ -11,6 +11,10 @@ import ChatContainer from "../containers/ChatContainer"
 import MDLite from "material-design-lite/material"
 //import componentHandler from "exports?componentHandler&MaterialRipple!material-design-lite/material.js"
 import componentHandler from "exports?componentHandler!material-design-lite/material.js"
+import {Button} from "react-mdl"
+
+import ChatMDL from "./ChatMDL"
+import ChatMDLContainer from "../containers/ChatMDLContainer"
 
 export default class PacientePage extends React.Component{
 
@@ -22,17 +26,17 @@ export default class PacientePage extends React.Component{
 	}
 
 
-	componentDidMount(){
-		this.FriendlyChat = new FriendlyChat();
-		//this.Chat.getElements();
+	// componentDidMount(){
+	// 	this.FriendlyChat = new FriendlyChat();
+	// 	//this.Chat.getElements();
 		
-		// TENTANDO CRIAR OS ELEMENTOS DINAMICAMENTE
-		// this._loadLabel();
-		// this._loadElements();
+	// 	// TENTANDO CRIAR OS ELEMENTOS DINAMICAMENTE
+	// 	// this._loadLabel();
+	// 	// this._loadElements();
 
-		console.log("Atributos");
-		console.log(this.FriendlyChat.userPic);
-	}
+	// 	console.log("Atributos");
+	// 	console.log(this.FriendlyChat.userPic);
+	// }
 
 	// componentDidUpdate(){
 	// 	console.log("UPGRADING DOM");
@@ -50,6 +54,7 @@ export default class PacientePage extends React.Component{
 						<h6 className="col-md-8">
 							<span className="label label-primary">ID</span><span className="badge">{this.props.paciente.id}</span>
 							<span className="label label-primary">userID</span><span className="badge">{this.props.paciente.userId}</span>
+							<Button raised ripple>Button</Button>
 						</h6>
 					</div>
 					
@@ -57,7 +62,7 @@ export default class PacientePage extends React.Component{
 				</div>
 				<div className="row">
 					<div className="col-md-6">
-						<ChatContainer />
+						<ChatMDL />
 					</div>
 				</div>
 				

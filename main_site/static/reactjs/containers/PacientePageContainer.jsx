@@ -16,6 +16,18 @@ class PacientePageContainer extends React.Component{
 		this.paciente = this.getPacienteFromStore(this.props.params.pacienteId);
 	}
 
+	// Para que ele atualize a pagina mesmo se so for mudar o id fdo Paciente na url
+	// componentWillMount(){
+	// 	console.log("ATUALIZANDO NO WILLMOUNT");
+	// 	this._getPaciente();
+	// 	this.paciente = this.getPacienteVistoFromStore(this.props.params.pacienteId);
+	// }
+	// componentWillUpdate(nextProps, nextState){
+	// 	console.log("ATUALIZANDO NO WILLMOUNT");
+	// 	this._getPaciente();
+	// 	this.paciente = this.getPacienteVistoFromStore(this.props.params.pacienteId);
+	// }
+
 	componentWillReceiveProps(nextProps) {
 	    
 	    // MUDOU O PROPS ENTAO EU ATUALIZO TODOS OS PROFILES
@@ -87,8 +99,22 @@ class PacientePageContainer extends React.Component{
 				<PacientePage paciente={this.paciente} />
 			</div>
 		);
+
+		let viewVisto = (
+			<div>
+				{	this.state.gettingPatient ? 
+					<div>Loading ... </div>
+					:
+					<div>
+					<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
+					<PacientePage paciente={this.props.paciente} />
+					</div>
+				}
+			</div>
+		);
+
 		console.log("A VIEW");
-		console.log(localView);
+		console.log(this.paciente);
 
 		return(
 			<div>{localView}</div>

@@ -1,7 +1,7 @@
 import React from "react"
 import UsuarioList from "../components/UsuarioList"
 import getProfiles from "../redux/actions/profiles"
-import getCoaches from "../redux/actions/coaches"
+import {getCoaches} from "../redux/actions/coaches"
 import {getPatients} from "../redux/actions/patients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'

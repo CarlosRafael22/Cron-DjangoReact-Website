@@ -38,7 +38,8 @@ module.exports = {
         'file?hash=sha512&digest=hex&name=img-[hash].[ext]',
         'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
       ]
-    }
+    },
+    { test: /\.js$/, loader: 'exports-loader' }
     ] // add all common loaders here
   },
 

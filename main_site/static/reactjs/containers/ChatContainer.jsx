@@ -27,6 +27,11 @@ export default class ChatContainer extends React.Component{
 		console.log("Terminando Chat");
 	}
 
+	// componentDidUpdate(){
+	// 	console.log("UPGRADING DOM CHATCONTINER");
+	// 	componentHandler.upgradeAllRegistered();
+	// }
+
 //  AQUI PODE SER USADO AO CRIAR-MOS OS ELEMENTOS DINAMICAMENTE SE O CHAT NAO FOR A PAGINA INICIAL DO ROUTER!
 	_loadElements(){
 	  let button = document.createElement('button');
@@ -73,7 +78,6 @@ export default class ChatContainer extends React.Component{
 		
 		return(
 
-			<div >
 			<div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
 			  <header className="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
@@ -97,7 +101,7 @@ export default class ChatContainer extends React.Component{
 			  <ChatBox />
 			  
 			</div>
-			</div>
+
 
 
 		)

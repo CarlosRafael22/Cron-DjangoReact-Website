@@ -40,6 +40,7 @@ urlpatterns = [
 
 	url(r'^api/chats/$', views.ChatList.as_view()),
 	url(r'^api/chats/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
+	url(r'^api/chat_exists/(?P<chatNameID>[\w]+)/$', views.chat_exists),
 
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),

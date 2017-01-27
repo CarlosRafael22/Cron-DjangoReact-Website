@@ -4,6 +4,7 @@ import profilesReducer from "./profiles_reducer"
 import receitasReducer from "./receitas_reducer"
 import patientsReducer from "./patients_reducer"
 import coachesReducer from "./coaches_reducer"
+import chatsReducer from "./chats_reducer"
 
 import { combineReducers } from 'redux'
 
@@ -13,7 +14,8 @@ var reducer = combineReducers({
   profiles: profilesReducer,
   pacientes_supervisionados: coachPatients,
   pacientes: patientsReducer,
-  coaches: coachesReducer
+  coaches: coachesReducer,
+  chats: chatsReducer
 })
 
 export default reducer

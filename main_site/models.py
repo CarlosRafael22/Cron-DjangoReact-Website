@@ -139,6 +139,8 @@ class Coach(models.Model):
 
 class Chat(models.Model):
 	chatNameID = models.CharField(max_length=50)
+	# So pra facilitar na hora de popular e colocar no Redux state
+	coachUsername = models.CharField(max_length=50, default="Coach")
 	coachParticipante = models.ForeignKey(Coach, null=True)
 	pacientesParticipantes = models.ManyToManyField(Paciente)
 

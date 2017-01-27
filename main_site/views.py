@@ -489,12 +489,38 @@ class ChatList(generics.ListCreateAPIView):
 	queryset = Chat.objects.all()
 	serializer_class = ChatSerializer
 
+	def create(self, serializer):
+
+		# Criando o paciente na mao com o metodo definido no model
+		# dps serializando para mandar o Response com o paciente como JSON
+		chat = Chat(chatNameID=self.request.data['chatNameID'], coachUsername=self.request.data['coachUsername'])
+		chat.save()
+
+		# Pegar todos os chats e retornar so com os ids
+		chats = Chat.objects.all()
+
+		# Vou pegar so os chatNameIDs e retornar
+		chatsInfo = []
+		for chat in chats:
+			chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername})
+
+		#return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(chatsInfo, status=status.HTTP_201_CREATED)
+
 class ChatDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Chat.objects.all()
 	serializer_class = ChatSerializer
 
 
+@api_view(['GET', 'POST', 'DELETE'])
+def chat_exists(request, chatNameID, format=None):
 
+	if request.method == 'GET':
+		chat = Chat.objects.get(chatNameID=chatNameID)
+		if chat != None:
+			return Response({"chat_existe":True}, status=status.HTTP_200_OK)
+		else:
+			return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
 
 
 ######################################################################################################################################

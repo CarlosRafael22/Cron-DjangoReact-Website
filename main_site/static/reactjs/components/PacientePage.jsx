@@ -16,12 +16,14 @@ import {Button} from "react-mdl"
 import ChatMDL from "./ChatMDL"
 import ChatMDLContainer from "../containers/ChatMDLContainer"
 
-import {createChat, checkChatExists} from "../util/firebaseChatHandler"
+import {createChat} from "../util/firebaseChatHandler"
 
-export default class PacientePage extends React.Component{
+import {checkChatExists, addChat} from "../redux/actions/chats"
 
-	constructor(){
-		super();
+class PacientePage extends React.Component{
+
+	constructor(props){
+		super(props);
 
 		this._criarChatPaciente = this._criarChatPaciente.bind(this);
 		//this.componentHandler = MDLite.componentHandler;
@@ -30,25 +32,56 @@ export default class PacientePage extends React.Component{
 			chatCriado: false,
 			chatExists: false
 		};
+
+		this.chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.props.paciente.id.toString();
 	}
 
+
+	//Com o ID da Receita eu pego essa Receita direto do Store ja que eu nao posso passar parametros para o objeto Link que dps acessaria aqui
+	_getChatFromStore(chatNameID){
+		const localState = loadState();
+		const listaChats = localState.chats.chats;
+		console.log(listaChats[0]);
+		console.log(listaChats[0]['chatNameID']);
+		for(let i=0;i<listaChats.length;i++){
+			if(listaChats[i]['chatNameID'] == chatNameID){
+				console.log(listaChats[i]);
+				return listaChats[i];
+			}
+		}
+	}
 
 	componentDidMount(){
 		console.log("Vendo se ja tem chat criado");
-		const chatExists = checkChatExists(this.props.usuario.user.coachId, this.props.paciente.id);
-		console.log(chatExists);
-		this.setState({chatExists: true});
-	}
+		// //const chatExists = checkChatExists(this.props.usuario.user.coachId, this.props.paciente.id);
+		// const chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.props.paciente.id.toString();
+		// checkChatExists(chatID);
+		// console.log("Atualizei o props no PacientePage");
+		// console.log(this.props.chat);
 
-	// componentDidUpdate(){
-	// 	console.log("UPGRADING DOM");
-	// 	componentHandler.upgradeAllRegistered();
-	// }
+		// this.setState({chatExists: true});
+
+		// Pegando o chat do state
+		console.log(this.chatID);
+		const chat = this._getChatFromStore(this.chatID);
+		console.log(chat);
+
+		// Se tiver o chat com essa ID a gnt mostra o ChatMDL
+		if(chat != null){
+			this.setState({chatExists: true});
+		}
+	}
 
 	_criarChatPaciente(){
 		console.log("VOU CRIAR O CHAT");
-		this.chatID = createChat(this.props.usuario.user.coachId, this.props.paciente.id);
-		console.log(this.chatID);
+		
+
+		createChat(this.props.usuario.user.coachId, this.props.paciente.id);
+		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username));
+
+		console.log("ATUALIZEI O PROPS DE CHAT");
+		console.log(this.props.chats);
+
 		this.setState({chatCriado: true, chatExists: true});
 
 	}
@@ -56,6 +89,8 @@ export default class PacientePage extends React.Component{
 	render(){
 		console.log("CHAT PACIENTE");
 		console.log(this.props);
+
+		const ButtonCondition = (this.props.usuario.user.isCoach && !this.state.chatExists );
 		return (
 			<div>
 				<div className="well well-sm">
@@ -64,7 +99,7 @@ export default class PacientePage extends React.Component{
 						<h6 className="col-md-8">
 							<span className="label label-primary">ID</span><span className="badge">{this.props.paciente.id}</span>
 							<span className="label label-primary">userID</span><span className="badge">{this.props.paciente.userId}</span>
-							{	this.props.usuario.user.isCoach ?
+							{	ButtonCondition ?
 								<Button raised ripple onClick={this._criarChatPaciente}>Criar conversa</Button>
 								: null
 							}
@@ -88,3 +123,12 @@ export default class PacientePage extends React.Component{
 		)
 	}
 }
+
+function mapStateToProps(state){
+
+	return {
+		chats: state.chats
+	};
+}
+
+export default connect(mapStateToProps)(PacientePage)

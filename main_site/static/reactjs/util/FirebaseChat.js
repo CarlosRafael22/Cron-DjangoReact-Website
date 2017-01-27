@@ -1,5 +1,5 @@
 // Initializes FriendlyChat.
-export default function FriendlyChat() {
+export default function FriendlyChat(referencePath) {
   this.checkSetup();
 
   //Shortcuts to DOM Elements.
@@ -40,6 +40,8 @@ export default function FriendlyChat() {
   }.bind(this));
   this.mediaCapture.addEventListener('change', this.saveImageMessage.bind(this));
 
+  // Definindo o path que vamos escutar as mensagens
+  this.chatMsgsPath = referencePath;
   this.initFirebase();
   console.log(this);
 }
@@ -63,7 +65,7 @@ FriendlyChat.prototype.initFirebase = function() {
 FriendlyChat.prototype.loadMessages = function() {
   // TODO(DEVELOPER): Load and listens for new messages.
   // Reference to the /messages/ database path
-  this.messagesRef = this.database.ref('messages');
+  this.messagesRef = this.database.ref(this.chatMsgsPath);
 
   //Make sure we remove all previous listeners
   this.messagesRef.off();
@@ -71,7 +73,7 @@ FriendlyChat.prototype.loadMessages = function() {
   //Loads the last 12 messages and listen for new ones
   var setMessage = function(data){
 	var val = data.val();
-	this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
+	this.displayMessage(data.key, val.nameSender, val.text, val.photoUrl, val.imageUrl);
   }.bind(this);
 
 
@@ -93,10 +95,14 @@ FriendlyChat.prototype.saveMessage = function(e) {
 	console.log(currentUser);
 	console.log(this.messageInput.value);
 
+  console.log("ChatMessage ref, ",this.messagesRef);
+
 	// Add a new message entry to the Firebase Database
 	this.messagesRef.push({
-	  name: currentUser.displayName,
+    idSender: currentUser.uid,
+	  nameSender: currentUser.displayName,
 	  text: this.messageInput.value,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
 	  photoUrl: currentUser.photoURL || '/images/profile_placeholder.png'
 	}).then(function(){
 	  // Clear message text field and SEND button state

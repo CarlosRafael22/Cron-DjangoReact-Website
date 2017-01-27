@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat)
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
-	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer)
+	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
@@ -477,6 +477,24 @@ class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 			# ele de um overide no to_representation e mande a resposta de outro jeito
 			serializer = CoachSerializer(instance, context={"limited_representation" : True})
 			return Response(serializer.data)
+
+
+####################################################################################################################################################
+#
+#	CRIACAO DOS MODELS DOS USUARIOS
+#
+####################################################################################################################################################
+
+class ChatList(generics.ListCreateAPIView):
+	queryset = Chat.objects.all()
+	serializer_class = ChatSerializer
+
+class ChatDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Chat.objects.all()
+	serializer_class = ChatSerializer
+
+
+
 
 
 ######################################################################################################################################

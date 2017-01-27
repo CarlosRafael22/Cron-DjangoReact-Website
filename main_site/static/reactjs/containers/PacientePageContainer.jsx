@@ -87,7 +87,7 @@ class PacientePageContainer extends React.Component{
 					:
 					<div>
 					<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-					<PacientePage paciente={this.props.paciente} />
+					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario} />
 					</div>
 				}
 			</div>
@@ -96,7 +96,7 @@ class PacientePageContainer extends React.Component{
 		let localView = (
 			<div>
 				<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-				<PacientePage paciente={this.paciente} />
+				<PacientePage paciente={this.paciente} usuario={this.props.usuario} />
 			</div>
 		);
 
@@ -107,7 +107,7 @@ class PacientePageContainer extends React.Component{
 					:
 					<div>
 					<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-					<PacientePage paciente={this.props.paciente} />
+					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario} />
 					</div>
 				}
 			</div>

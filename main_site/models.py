@@ -73,11 +73,12 @@ class Receita(models.Model):
 	# 	super(Receita, self).save(*args, **kw)
 
 
-###################################################################################################
+####################################################################################################################################################
 #
 #	CRIACAO DOS MODELS DOS USUARIOS
 #
-###################################################################################################
+####################################################################################################################################################
+
 class Perfil(models.Model):
 	def get_image_path(self, instance):
 		self.url_da_imagem = '/media/' + 'perfil/{0}/{1}'.format(self.categoria, instance)
@@ -129,3 +130,17 @@ class Coach(models.Model):
 
 	def __str__(self):
 		return self.perfil.user.username
+
+####################################################################################################################################################
+#
+#	CRIACAO DOS MODELS DOS CHATS
+#
+####################################################################################################################################################
+
+class Chat(models.Model):
+	chatNameID = models.CharField(max_length=50)
+	coachParticipante = models.ForeignKey(Coach, null=True)
+	pacientesParticipantes = models.ManyToManyField(Paciente)
+
+	def __str__(self):
+		return self.chatNameID

@@ -38,6 +38,9 @@ urlpatterns = [
 	url(r'^api/coaches/(?P<pk>[0-9]+)/$', views.CoachDetail.as_view()),
 	url(r'^api/coaches/(?P<pk>[0-9]+)/pacientes_supervisionados/$', views.pacientes_coach),
 
+	url(r'^api/chats/$', views.ChatList.as_view()),
+	url(r'^api/chats/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
+
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),
 	

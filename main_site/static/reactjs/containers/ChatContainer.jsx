@@ -12,7 +12,7 @@ export default class ChatContainer extends React.Component{
 	}
 
 	componentDidMount(){
-		this.FriendlyChat = new FriendlyChat();
+		this.FriendlyChat = new FriendlyChat("messages");
 		//this.Chat.getElements();
 		
 		// TENTANDO CRIAR OS ELEMENTOS DINAMICAMENTE

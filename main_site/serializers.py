@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat)
 from django.contrib.auth.models import User
 import json
 
@@ -320,6 +320,23 @@ class CoachSerializer(serializers.ModelSerializer):
 			ret = super(CoachSerializer, self).to_representation(obj)
 
 		return ret
+
+####################################################################################################################################################
+#
+#	CRIACAO DOS MODELS DOS CHATS
+#
+####################################################################################################################################################
+
+class ChatSerializer(serializers.ModelSerializer):
+	coachParticipante = CoachSerializer(required=False)
+	pacientesParticipantes = PacienteSerializer(many=True, required=False)
+
+	class Meta:
+		model = Chat
+		fields = '__all__'
+
+
+
 
 #############################################################
 ##

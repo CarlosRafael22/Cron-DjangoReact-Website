@@ -15,12 +15,10 @@ export default class ChatMDL extends React.Component{
 	}
 
 	componentDidMount(){
-		this.FriendlyChat = new FriendlyChat();
-		//this.Chat.getElements();
-		
-		// TENTANDO CRIAR OS ELEMENTOS DINAMICAMENTE
-		// this._loadLabel();
-		// this._loadElements();
+		// Passando o chatID para montar a referencia do chat
+		const chatRefPath = "chatMessages/"+this.props.chatID;
+		this.FriendlyChat = new FriendlyChat(chatRefPath);
+		console.log("FriendlyChat com ref: ", chatRefPath);
 
 		console.log("Atributos");
 		console.log(this.FriendlyChat.userPic);

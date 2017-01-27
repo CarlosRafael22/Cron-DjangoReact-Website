@@ -30,10 +30,11 @@ class PacientePage extends React.Component{
 		//this.componentHandler = require('exports?componentHandler!material-design-lite/material');
 		this.state = {
 			chatCriado: false,
-			chatExists: false
+			chatExists: false,
+			specialRender: false
 		};
 
-		this.chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.props.paciente.id.toString();
+					
 	}
 
 
@@ -52,24 +53,39 @@ class PacientePage extends React.Component{
 	}
 
 	componentDidMount(){
-		console.log("Vendo se ja tem chat criado");
-		// //const chatExists = checkChatExists(this.props.usuario.user.coachId, this.props.paciente.id);
-		// const chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.props.paciente.id.toString();
-		// checkChatExists(chatID);
-		// console.log("Atualizei o props no PacientePage");
-		// console.log(this.props.chat);
 
-		// this.setState({chatExists: true});
-
-		// Pegando o chat do state
-		console.log(this.chatID);
-		const chat = this._getChatFromStore(this.chatID);
-		console.log(chat);
-
-		// Se tiver o chat com essa ID a gnt mostra o ChatMDL
-		if(chat != null){
-			this.setState({chatExists: true});
+		// Checar pra ver se usuario ta logado e se eh coach
+		// So se cumprir essas duas condicoes eh que eu boto o botao de CriarChat e o ChatMDL
+		//const CoachRender = this.props.usuario != null && this.props.usuario.user.isCoach;
+		let CoachRender = false;
+		if(this.props.usuario.user != null){
+			if(this.props.usuario.user.isCoach){
+				CoachRender = true;
+			}
 		}
+		console.log("COACH RENDER NO MOUNT");
+		console.log(CoachRender);
+		if(CoachRender){
+			this.setState({specialRender:true});
+			this.chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.props.paciente.id.toString();
+		}
+
+		// Se for logado e coach entao a gnt tenta pegar o chat, senao nao faz nada
+		console.log("DIDMOUNT RENDER");
+		console.log(this.state.specialRender);
+		if(CoachRender){
+			console.log("Vendo se ja tem chat criado");
+			// Pegando o chat do state
+			console.log(this.chatID);
+			const chat = this._getChatFromStore(this.chatID);
+			console.log(chat);
+
+			// Se tiver o chat com essa ID a gnt mostra o ChatMDL
+			if(chat != null){
+				this.setState({chatExists: true});
+			}
+		}
+		
 	}
 
 	_criarChatPaciente(){
@@ -90,7 +106,7 @@ class PacientePage extends React.Component{
 		console.log("CHAT PACIENTE");
 		console.log(this.props);
 
-		const ButtonCondition = (this.props.usuario.user.isCoach && !this.state.chatExists );
+		const ButtonCondition = ( (this.props.usuario.user !=null) && (this.props.usuario.user.isCoach) && !this.state.chatExists );
 		return (
 			<div>
 				<div className="well well-sm">

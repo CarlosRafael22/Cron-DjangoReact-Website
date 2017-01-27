@@ -1,5 +1,5 @@
 
-export function createChat(coachId, pacienteId){
+export function createChat(coachId, pacienteId, coachUsername, pacienteUsername){
 	console.log("CRIANDO UM NOVO CHAT");
 
 	const chatID = "c"+coachId.toString()+"p"+pacienteId.toString();
@@ -12,23 +12,33 @@ export function createChat(coachId, pacienteId){
 		created_At: firebase.database.ServerValue.TIMESTAMP,
 		last_message: null
 	}).then(function(){
+		
+		// No retorno do chat criado eu crio um novo node na arvore com chatUsers com os users desse chat como indices
+		console.log("CRIANDO UM CHATUSERS ID ", chatID);
+		const chatUsersRef = firebase.database().ref('chatUsers');
+		chatUsersRef.child(chatID+"/"+coachUsername).set(true);
+		chatUsersRef.child(chatID+"/"+pacienteUsername).set(true);
+
+
+		console.log("CRIANDO UM CHATMESSAGE ID ", chatID);
+		const chatMsgRef = firebase.database().ref('chatMessages');
+		chatMsgRef.child(chatID).set({});
+
 		console.log("Criou o novo chat no Firebase de id: ", chatID);
 	}).catch(function(error){
 		console.error(error);
 	});
 
 	// Criando nova entrada na arvore de chatMessages/
-	console.log("CRIANDO UM CHATMESSAGE ID ", chatID);
-	const chatMsgRef = firebase.database().ref('chatMessages');
-	chatMsgRef.child(chatID).set({
-		id: chatID
-	}).then(function(){
-		console.log("ChatMessage no Firebase de id: ", chatID);
-	}).catch(function(error){
-		console.error(error);
-	});
-
-	return chatID;
+	// console.log("CRIANDO UM CHATMESSAGE ID ", chatID);
+	// const chatMsgRef = firebase.database().ref('chatMessages');
+	// chatMsgRef.child(chatID).set({
+	// 	id: chatID
+	// }).then(function(){
+	// 	console.log("ChatMessage no Firebase de id: ", chatID);
+	// }).catch(function(error){
+	// 	console.error(error);
+	// });
 }
 
 

@@ -105,9 +105,23 @@ FriendlyChat.prototype.saveMessage = function(e) {
     timestamp: firebase.database.ServerValue.TIMESTAMP,
 	  photoUrl: currentUser.photoURL || '/images/profile_placeholder.png'
 	}).then(function(){
+
+    // Vou atualizar a arvore chats/ para botar o atributo last_message com a mensagem criada agora
+    const chatRef = firebase.database().ref('chats');
+
+    //Pegando o chatID
+    const chatID = this.chatMsgsPath.split("/")[1];
+    console.log("CHATID NO FRIENDLYCHAT", chatID);
+
+    chatRef.child(chatID+"/last_Message").set({
+      text: this.messageInput.value,
+      nameSender: currentUser.displayName
+    });
+
 	  // Clear message text field and SEND button state
 	  FriendlyChat.resetMaterialTextfield(this.messageInput);
 	  this.toggleButton();
+
 	}.bind(this)).catch(function(error){
 	  console.error('Error writing new message to Firebase Database', error);
 	});

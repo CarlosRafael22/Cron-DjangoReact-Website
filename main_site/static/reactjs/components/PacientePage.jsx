@@ -92,7 +92,7 @@ class PacientePage extends React.Component{
 		console.log("VOU CRIAR O CHAT");
 		
 
-		createChat(this.props.usuario.user.coachId, this.props.paciente.id);
+		createChat(this.props.usuario.user.coachId, this.props.paciente.id, this.props.usuario.user.username, this.props.paciente.username);
 		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username));
 
 		console.log("ATUALIZEI O PROPS DE CHAT");

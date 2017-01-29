@@ -28,17 +28,32 @@ export function createChat(coachId, pacienteId, coachUsername, pacienteUsername)
 	}).catch(function(error){
 		console.error(error);
 	});
+}
 
-	// Criando nova entrada na arvore de chatMessages/
-	// console.log("CRIANDO UM CHATMESSAGE ID ", chatID);
-	// const chatMsgRef = firebase.database().ref('chatMessages');
-	// chatMsgRef.child(chatID).set({
-	// 	id: chatID
-	// }).then(function(){
-	// 	console.log("ChatMessage no Firebase de id: ", chatID);
-	// }).catch(function(error){
-	// 	console.error(error);
-	// });
+
+export function getCoachChats(coachUsername, thisState, callbackFunction){
+
+	let listaChatsDoCoach = [];
+
+	const chatUsersRef = firebase.database().ref('chatUsers');
+	chatUsersRef.once("value").then(function(snapshot){
+		console.log("PEGANDO OS CHATS DO COACH NO FIREBASE");
+		snapshot.forEach(function(chatIDChildSnapshot){
+			// Se nesse chatID que a gnt ta olhando tem o coach como um dos participantes
+			// pegamos o id do chat e o paciente
+			if(chatIDChildSnapshot.child(coachUsername)){
+				const data = chatIDChildSnapshot.val();
+				
+				const key_chatID = chatIDChildSnapshot.key;
+				console.log(key_chatID);
+				console.log(data);
+				const participantes = Object.keys(data);
+				listaChatsDoCoach.push({"chatID":key_chatID, "participantes":participantes});
+			}
+		});
+		console.log(listaChatsDoCoach);
+		callbackFunction(listaChatsDoCoach, thisState);
+	});
 }
 
 

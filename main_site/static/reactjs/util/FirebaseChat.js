@@ -1,7 +1,14 @@
 // Initializes FriendlyChat.
 export default function FriendlyChat(referencePath) {
+  // Para o Singleton
+  var chatInstance;
+
+  // if(!chatInstance){
+   
+
   this.checkSetup();
 
+  //function initiateChat(referencePath){
   //Shortcuts to DOM Elements.
   this.messageList = document.getElementById('messages');
   console.log(this.messageList);
@@ -41,11 +48,44 @@ export default function FriendlyChat(referencePath) {
   this.mediaCapture.addEventListener('change', this.saveImageMessage.bind(this));
 
   // Definindo o path que vamos escutar as mensagens
+  console.log("CRIANDO NOVO FRIENDLYCHAT");
+  console.log(referencePath);
   this.chatMsgsPath = referencePath;
   this.initFirebase();
   console.log(this);
+
+  // Deletando todas as divs de mensagens das conversas anteriores
+  console.log("REMOVENDO DIVS");
+  $('#messages').empty();
+
+  // }else{
+  //   console.log("JA TEM FRIENDLYCHAT");
+  //   chatInstance.chatMsgsPath = referencePath;
+  // }
+
+  // return chatInstance;
+  // return this;
+  // }
+  // let chat;
+  // if(!chatInstance){
+  //   chat = initiateChat.bind(this,referencePath);
+  // }
+  //   chat = initiateChat.bind(this,referencePath);
+  //   return chat;
 }
 
+FriendlyChat.prototype.updateChatReference = function(chatRef){
+  console.log("ATUALIZANDO REF DO CHAT");
+  console.log(chatRef);
+  this.chatMsgsPath = chatRef;
+  console.log(this.chatMsgsPath);
+  
+  console.log("REMOVENDO DIVS");
+  $('#messages').empty();
+  console.log("ATUALIZANDO MSGS DO CHAT");
+  this.loadMessages();
+
+}
 
 // Sets up shortcuts to Firebase features and initiate firebase auth.
 FriendlyChat.prototype.initFirebase = function() {
@@ -55,16 +95,26 @@ FriendlyChat.prototype.initFirebase = function() {
   this.auth = firebase.auth();
   this.database = firebase.database();
   this.storage = firebase.storage();
+
+  // this.messagesRef = this.database.ref(this.chatMsgsPath);
+
+  // //Make sure we remove all previous listeners
+  // this.messagesRef.off();
+
   // Initiates Firebase auth and listen to auth state changes
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 
   this.imageFile = require('../../images/profile_placeholder.png');
+
+
 };
 
 // Loads chat messages history and listens for upcoming ones.
 FriendlyChat.prototype.loadMessages = function() {
   // TODO(DEVELOPER): Load and listens for new messages.
   // Reference to the /messages/ database path
+  console.log("CARREGANDO MSGS FRIENDLYCHAT");
+  console.log(this.chatMsgsPath);
   this.messagesRef = this.database.ref(this.chatMsgsPath);
 
   //Make sure we remove all previous listeners
@@ -85,6 +135,7 @@ FriendlyChat.prototype.loadMessages = function() {
 FriendlyChat.prototype.saveMessage = function(e) {
   e.preventDefault();
   console.log("Save message");
+  console.log(this.chatMsgsPath);
   console.log(this);
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
@@ -296,6 +347,9 @@ FriendlyChat.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 // Displays a Message in the UI.
 FriendlyChat.prototype.displayMessage = function(key, name, text, picUrl, imageUri) {
   var div = document.getElementById(key);
+  console.log("VENDO NO DISPLAY MSG");
+  console.log(key);
+  console.log(this.chatMsgsPath);
   // If an element for that message does not exists yet we create it.
   if (!div) {
 	var container = document.createElement('div');

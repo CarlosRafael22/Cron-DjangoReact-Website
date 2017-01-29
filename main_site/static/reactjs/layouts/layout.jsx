@@ -29,7 +29,7 @@ export default class Layout extends React.Component{
 				  	<Link to="/receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>
 				  </li>
 				  <li role="presentation">
-				  	<Link to="/chat" activeStyle={{ color: 'yellow' }}>Chat</Link>
+				  	<Link to="/chats" activeStyle={{ color: 'yellow' }}>Chats</Link>
 				  </li>
 				</ul>
         </div>

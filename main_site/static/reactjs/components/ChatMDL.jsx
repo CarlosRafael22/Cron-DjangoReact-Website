@@ -11,17 +11,57 @@ export default class ChatMDL extends React.Component{
 
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
 		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
-		this.state = { isSnackbarActive: false };
+		this.state = { 
+			isSnackbarActive: false,
+			updateChatFromChatContainer: false
+		};
+
 	}
 
 	componentDidMount(){
-		// Passando o chatID para montar a referencia do chat
-		const chatRefPath = "chatMessages/"+this.props.chatID;
+
+		// No caso de ter vindo pelo ChatContainer q tem todos os chats
+		// ele vai receber this.props.params.chatID e nao this.props.chatID
+		let chatRefPath;
+		if(this.props.params != null){
+			console.log("CRIOU O MDL COM PARAMS");
+			chatRefPath = "chatMessages/"+this.props.params.chatID;
+		}else{
+			console.log("CRIOU O MDL COM PROPS");
+			// Passando o chatID para montar a referencia do chat
+			chatRefPath = "chatMessages/"+this.props.chatID;
+		}
+		
 		this.FriendlyChat = new FriendlyChat(chatRefPath);
 		console.log("FriendlyChat com ref: ", chatRefPath);
 
-		console.log("Atributos");
-		console.log(this.FriendlyChat.userPic);
+	}
+
+	componentWillReceiveProps(nextProps){
+
+		console.log("RECEBI PROPS NOVO");
+
+		if(this.props.chatID != nextProps.chatID){
+
+			console.log(this.props.chatID);
+			console.log(nextProps.chatID);
+			// Gambiarra pra fazer o rendeer de novo
+			this.setState({updateChatFromChatContainer: true});
+
+			const chatRefPath = "chatMessages/"+nextProps.chatID;
+			console.log("PEGANDO NOVA REFERENCIA DO FIREBASE");
+			// this.FriendlyChat = null;
+			// console.log(this.FriendlyChat);
+			// this.FriendlyChat = new FriendlyChat(chatRefPath);
+			this.FriendlyChat.updateChatReference(chatRefPath);
+			console.log(this.FriendlyChat.chatMsgsPath);
+			console.log("FriendlyChat com ref: ", chatRefPath);
+		}
+	}
+
+	componentWillUnmount(){
+		console.log("UNMOUNTING O CHATMDL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		this.FriendlyChat = null;
 	}
 
 
@@ -38,6 +78,7 @@ export default class ChatMDL extends React.Component{
 
 	render(){
 
+		console.log("RENDERIZANDO CHATMDL");
 		return(
 
 			<main className="mdl-layout__content mdl-color--grey-100">

@@ -18,6 +18,8 @@ import PacientePageContainer from "./containers/PacientePageContainer"
 import CoachContainer from "./containers/CoachContainer"
 import CoachPageContainer from "./containers/CoachPageContainer"
 
+import ChatMDL from "./components/ChatMDL"
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +84,9 @@ class AppRouter extends React.Component{
 						<Route path="/receitas" component={ReceitaContainer}>
 							<Route path="/receitas/:receitaId" component={ReceitaPage} />
 						</Route>
-						<Route path="/chat" component={ChatContainer}/>
+						<Route path="/chats" component={ChatContainer}>
+							{/*<Route path="/chats/:chatID" {...ChatMDL} />*/}
+						</Route>
 						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 					</Route>
 				</Router>

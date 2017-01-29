@@ -404,3 +404,45 @@
 [info] Public Directory: public
 [info] 
 [info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\CarlosRafael\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     win32
+[debug] Node Version: v6.9.1
+[debug] Time:         Fri Jan 27 2017 21:09:01 GMT-0200 (E. South America Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\CarlosRafael\Documents\Projetos\Cron\Django-server\cronWebsite
+[info] Public Directory: public
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\CarlosRafael\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     win32
+[debug] Node Version: v6.9.1
+[debug] Time:         Sat Jan 28 2017 21:29:44 GMT-0200 (E. South America Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\CarlosRafael\Documents\Projetos\Cron\Django-server\cronWebsite
+[info] Public Directory: public
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\CarlosRafael\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     win32
+[debug] Node Version: v6.9.1
+[debug] Time:         Sun Jan 29 2017 08:56:46 GMT-0200 (E. South America Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\CarlosRafael\Documents\Projetos\Cron\Django-server\cronWebsite
+[info] Public Directory: public
+[info] 
+[info] Server listening at: http://localhost:5000

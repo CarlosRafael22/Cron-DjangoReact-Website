@@ -75,6 +75,7 @@ class PacientesSupervisionadosContainer extends React.Component{
 		return(
 			<div>				
 				<UsuarioList profiles={this.props.pacientes} userLogado={this.props.usuario.user}
+				tipoUsuario="pacientes"
 				addPacienteNosSupervisionados={this._addPacienteNosSupervisionados.bind(this)}
 				deletePacienteDosSupervisionados={this._tirarPacienteDosSupervisionados.bind(this)} />
 			</div>

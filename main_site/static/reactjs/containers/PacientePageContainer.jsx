@@ -4,6 +4,10 @@ import {getPatient} from "../redux/actions/patients"
 import PacientePage from "../components/PacientePage"
 import {loadState, saveState} from '../redux/localStorage'
 
+import {createChat} from "../util/firebaseChatHandler"
+
+import {checkChatExists, addChat} from "../redux/actions/chats"
+
 class PacientePageContainer extends React.Component{
 
 	constructor(props){
@@ -11,7 +15,10 @@ class PacientePageContainer extends React.Component{
 
 		this._getPaciente();
 		this.state = {
-			"gettingPatient" : true
+			gettingPatient : true,
+			chatExiste: false,
+			chatCriado: false,
+			specialRender: false
 		}
 		this.paciente = this.getPacienteFromStore(this.props.params.pacienteId);
 	}
@@ -27,6 +34,42 @@ class PacientePageContainer extends React.Component{
 	// 	this._getPaciente();
 	// 	this.paciente = this.getPacienteVistoFromStore(this.props.params.pacienteId);
 	// }
+
+	componentDidMount(){
+
+		// Checar pra ver se usuario ta logado e se eh coach
+		// So se cumprir essas duas condicoes eh que eu boto o botao de CriarChat e o ChatMDL
+		//const CoachRender = this.props.usuario != null && this.props.usuario.user.isCoach;
+		let CoachRender = false;
+		if(this.props.usuario.user != null){
+			if(this.props.usuario.user.isCoach){
+				CoachRender = true;
+			}
+		}
+		console.log("COACH RENDER NO MOUNT");
+		console.log(CoachRender);
+		if(CoachRender){
+			this.setState({specialRender:true});
+			this.chatID = "c"+this.props.usuario.user.coachId.toString()+"p"+this.paciente.id.toString();
+		}
+
+		// Se for logado e coach entao a gnt tenta pegar o chat, senao nao faz nada
+		console.log("DIDMOUNT RENDER");
+		console.log(this.state.specialRender);
+		if(CoachRender){
+			console.log("Vendo se ja tem chat criado");
+			// Pegando o chat do state
+			console.log(this.chatID);
+			const chat = this._getChatFromStore(this.chatID);
+			console.log(chat);
+
+			// Se tiver o chat com essa ID a gnt mostra o ChatMDL
+			if(chat != null){
+				this.setState({chatExiste: true});
+			}
+		}
+		
+	}
 
 	componentWillReceiveProps(nextProps) {
 	    
@@ -74,6 +117,53 @@ class PacientePageContainer extends React.Component{
 	}
 
 
+	// Vendo se o paciente ta na lista de pacientes supervisionados pelo coach
+	// Se tiver entao ele vai poder criar o chat com esse paciente
+	checkPacienteSupervisionadoFromProps(pacienteUsername){
+		const listaPacientes = this.props.pacientes_supervisionados;
+		console.log(listaPacientes);
+		console.log(listaPacientes[0]['id']);
+		for(let i=0;i<listaPacientes.length;i++){
+			if(listaPacientes[i]['username'] == pacienteUsername){
+				console.log(listaPacientes[i]);
+				return listaPacientes[i];
+			}
+		}
+		// se nao tiver entao retorna null para nao retornar undefined
+		return null;
+	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Com o ID da Receita eu pego essa Receita direto do Store ja que eu nao posso passar parametros para o objeto Link que dps acessaria aqui
+	_getChatFromStore(chatNameID){
+		const localState = loadState();
+		const listaChats = localState.chats.chats;
+		console.log(listaChats[0]);
+		console.log(listaChats[0]['chatNameID']);
+		for(let i=0;i<listaChats.length;i++){
+			if(listaChats[i]['chatNameID'] == chatNameID){
+				console.log(listaChats[i]);
+				return listaChats[i];
+			}
+		}
+	}
+
+
+	_criarChatPaciente(){
+		console.log("VOU CRIAR O CHAT");
+		
+
+		createChat(this.props.usuario.user.coachId, this.props.paciente.id, this.props.usuario.user.username, this.props.paciente.username);
+		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username));
+
+		console.log("ATUALIZEI O PROPS DE CHAT");
+		console.log(this.props.chats);
+
+		this.setState({chatCriado: true, chatExiste: true});
+
+	}
+
 	render(){
 
 		console.log("RENDER DO PPCONTAINER");
@@ -87,16 +177,10 @@ class PacientePageContainer extends React.Component{
 					:
 					<div>
 					<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario} />
+					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario}
+					criarChat={this._criarChatPaciente.bind(this)} />
 					</div>
 				}
-			</div>
-		);
-
-		let localView = (
-			<div>
-				<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-				<PacientePage paciente={this.paciente} usuario={this.props.usuario} />
 			</div>
 		);
 
@@ -107,11 +191,61 @@ class PacientePageContainer extends React.Component{
 					:
 					<div>
 					<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
-					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario} />
+					<PacientePage paciente={this.props.paciente} usuario={this.props.usuario}
+					criarChat={this._criarChatPaciente.bind(this)} />
 					</div>
 				}
 			</div>
 		);
+
+		// Vou verificar aqui se vai ter o botao de criar o chat na pagina do paciente, isso depende de:
+		// Usuario logado eh coach
+		// coach ja tem esse paciente na lista de supervisionados
+
+		// Pegando pra ver se paciente eh supervisionado
+		console.log(this.paciente);
+
+		// Se quem tiver logado for coach eu vou ver se ele tem esse paciente como supervisionado
+		let paciente = null;
+		if((this.props.usuario.user !=null) && (this.props.usuario.user.isCoach)){
+			paciente = this.checkPacienteSupervisionadoFromProps(this.paciente.username);
+		}
+		
+		console.log(paciente);
+		const ButtonCondition = ( (this.props.usuario.user !=null) && (this.props.usuario.user.isCoach) && (paciente != null) && !this.state.chatExiste );
+		console.log("CONDICAO DO BOTAO");
+		console.log(ButtonCondition);
+		console.log(this.state.chatExiste);
+		let localView;
+
+		if(ButtonCondition){
+			console.log("VOU MANDAR COM CRIARCHAT");
+			localView = (
+			<div>
+				<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
+				<PacientePage paciente={this.paciente} usuario={this.props.usuario} 
+				criarChat={this._criarChatPaciente.bind(this)}/>
+			</div>
+			);
+		}else{
+			console.log("VOU MANDAR SEM BOTAO");
+			localView = (
+			<div>
+				<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
+				<PacientePage paciente={this.paciente} usuario={this.props.usuario}
+				chatExiste={this.state.chatExiste} />
+			</div>
+			);
+		}
+		// let localView = (
+		// 	<div>
+		// 		<div>PacientePageContainer com id {this.props.params.pacienteId}</div>
+		// 		<PacientePage paciente={this.paciente} usuario={this.props.usuario} 
+		// 		criarChat={this._criarChatPaciente.bind(this)}/>
+		// 	</div>
+		// );
+
+		
 
 		console.log("A VIEW");
 		console.log(this.paciente);
@@ -128,7 +262,9 @@ function mapStateToProps(state){
 	return {
 		usuario: state.usuario,
 		paciente: state.pacientes.pacienteVisto,
-		loading: state.pacientes.loading
+		loading: state.pacientes.loading,
+		chats: state.chats,
+		pacientes_supervisionados: state.pacientes_supervisionados.coachPatientsList
 	};
 }
 

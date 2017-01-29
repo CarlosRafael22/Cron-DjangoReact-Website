@@ -3,10 +3,6 @@ import { Link } from 'react-router'
 
 export default class UsuarioInfoBox extends React.Component{
 
-	// constructor(props){
-	// 	super(props);
-	// }
-
 	_handleClick(event){
 		event.preventDefault();
 		alert("Clicou");
@@ -15,13 +11,11 @@ export default class UsuarioInfoBox extends React.Component{
 	}
 
 	_tirarPacienteDosSupervisionados(){
-		//alert("Vou tirar");
 		console.log("InfoBox para mandar o DELETE")
 		this.props.deletePacienteDosSupervisionados(this.props.userLogado.coachId, this.props.profile.id);
 	}
 
 	_addPacienteNosSupervisionados(){
-		//alert("Vou add");
 		console.log("InfoBox para mandar o ADD");
 		this.props.addPacienteNosSupervisionados(this.props.userLogado.coachId, this.props.profile.id);
 	}

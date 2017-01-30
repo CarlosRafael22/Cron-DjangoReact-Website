@@ -155,7 +155,7 @@ class PacientePageContainer extends React.Component{
 		
 		console.log(this.props);
 		createChat(this.props.usuario.user.coachId, this.props.paciente.id, this.props.usuario.user.username, this.props.paciente.username);
-		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username));
+		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username, this.props.paciente.username));
 
 		console.log("ATUALIZEI O PROPS DE CHAT");
 		console.log(this.props.chats);

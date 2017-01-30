@@ -78,7 +78,7 @@ function addChatSuccess(chatsInfo){
   }
 }
 
-export function addChat(chatNameID, coachUsername){
+export function addChat(chatNameID, coachUsername, pacienteUsername){
 
   console.log("checando se chat existe no action");
   return dispatch => {
@@ -86,7 +86,7 @@ export function addChat(chatNameID, coachUsername){
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(chatExistsRequest());
 
-    const data = {"chatNameID":chatNameID, "coachUsername":coachUsername}
+    const data = {"chatNameID":chatNameID, "coachUsername":coachUsername, "pacienteUsername": pacienteUsername}
     jQuery.ajax({
       type: 'POST',
       url: '/api/chats/',

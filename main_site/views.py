@@ -516,6 +516,14 @@ class ChatList(generics.ListCreateAPIView):
 		chat = Chat(chatNameID=self.request.data['chatNameID'], coachUsername=self.request.data['coachUsername'])
 		chat.save()
 
+		# AGORA VOU PEGAR O OBJETO DO COACH E O PACIENTE PARA ADICIONAR NO CHAT
+		coach_participante = Coach.objects.get(perfil__user__username=self.request.data['coachUsername'])
+		paciente_participante = Paciente.objects.get(perfil__user__username=self.request.data['pacienteUsername'])
+
+		chat.pacientesParticipantes.add(paciente_participante)
+		chat.coachParticipante = coach_participante
+		#chat.save()
+
 		# Pegar todos os chats e retornar so com os ids
 		chats = Chat.objects.all()
 

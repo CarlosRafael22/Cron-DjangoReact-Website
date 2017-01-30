@@ -1,6 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
-import GrupoList from "../components/GrupoList"
+import GrupoListContainer from "./GrupoListContainer"
 import GrupoForm from "../components/GrupoForm"
 
 class GrupoContainer extends React.Component{
@@ -12,7 +12,7 @@ class GrupoContainer extends React.Component{
 		return (
 			<div>
 				<GrupoForm pacientes_supervisionados={this.props.pacientes} />
-				<GrupoList />
+				<GrupoListContainer />
 			</div>
 		)
 	}

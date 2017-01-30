@@ -21,7 +21,7 @@ export default class GrupoForm extends React.Component{
 		const pacientes = this._renderCheckBoxesPacientes();
 
 		return (
-			<div className="col-md-8 col-md-offset-2">
+			<div className="col-md-8 col-md-offset-2 well">
 			<form >
 				<div className="form-group">
 					<label>Crie um grupo</label>

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo)
 from django.contrib.auth.models import User
 import json
 
@@ -335,6 +335,14 @@ class ChatSerializer(serializers.ModelSerializer):
 		model = Chat
 		fields = '__all__'
 
+class GrupoSerializer(serializers.ModelSerializer):
+	coach = CoachSerializer()
+	pacientes = PacienteSerializer(required=False)
+	chat = ChatSerializer(required=False)
+	
+	class Meta:
+		model = Grupo
+		fields = '__all__'
 
 
 

@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo)
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
-	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer)
+	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer, GrupoSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
@@ -575,6 +575,15 @@ def get_coach_chats(request, coachUsername, format=None):
 		# else:
 		# 	return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
 
+
+
+class GrupoList(generics.ListCreateAPIView):
+	queryset = Grupo.objects.all()
+	serializer_class = GrupoSerializer
+
+class GrupoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Grupo.objects.all()
+	serializer_class = GrupoSerializer
 
 ######################################################################################################################################
 #

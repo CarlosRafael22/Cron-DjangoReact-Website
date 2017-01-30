@@ -23,7 +23,7 @@ class PacientePageContainer extends React.Component{
 		this.paciente = this.getPacienteFromStore(this.props.params.pacienteId);
 
 		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
-		if(this.props.usuario.user != null){
+		if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
 			console.log("DISPACHANDO GET CHATS");
 			this.props.dispatch(getCoachChats(this.props.usuario.user.username));
 		}

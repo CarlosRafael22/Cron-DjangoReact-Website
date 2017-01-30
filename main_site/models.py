@@ -146,3 +146,13 @@ class Chat(models.Model):
 
 	def __str__(self):
 		return self.chatNameID
+
+class Grupo(models.Model):
+
+	chat = models.ForeignKey(Chat, null=True)
+	coach = models.ForeignKey(Coach)
+	pacientes = models.ManyToManyField(Paciente)
+
+	def __str__(self):
+		name = "Grupo "+str(self.pk)+" coach "+str(self.coach.perfil.user.username)
+		return name

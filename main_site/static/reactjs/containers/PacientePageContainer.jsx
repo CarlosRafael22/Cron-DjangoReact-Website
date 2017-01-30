@@ -137,8 +137,10 @@ class PacientePageContainer extends React.Component{
 
 	//Com o ID da Receita eu pego essa Receita direto do Store ja que eu nao posso passar parametros para o objeto Link que dps acessaria aqui
 	_getChatFromStore(chatNameID){
+		console.log("PEGANDO CHAT DO STORE");
 		const localState = loadState();
 		const listaChats = localState.chats.chats;
+		console.log(listaChats);
 		console.log(listaChats[0]);
 		// console.log(listaChats[0]['chatNameID']);
 		for(let i=0;i<listaChats.length;i++){
@@ -212,6 +214,7 @@ class PacientePageContainer extends React.Component{
 		}
 		
 		console.log(paciente);
+		console.log(this.state.chatExiste);
 		const ButtonCondition = ( (this.props.usuario.user !=null) && (this.props.usuario.user.isCoach) && (paciente != null) && !this.state.chatExiste );
 		console.log("CONDICAO DO BOTAO");
 		console.log(ButtonCondition);

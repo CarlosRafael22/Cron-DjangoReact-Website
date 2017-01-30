@@ -11,8 +11,6 @@ class UsuarioListContainer extends React.Component{
 
 	constructor(props){
 		super(props);
-		console.log("Profiles");
-		console.log(this.props.profiles);
 		console.log("User na sessao");
 		console.log(this.props.usuario);
 		this._getProfiles();
@@ -157,7 +155,6 @@ function mapStateToProps(state){
   	// Eu tb tenho que ver o state.usuario pra saber quem ta logado e assim se for um coach eu pego os pacientes dele
 	return {
 		usuario: state.usuario,
-		profiles: state.profiles.profilesList,
 		coaches: state.coaches.coachesList,
 		pacientes: state.pacientes.pacientesList
 	};

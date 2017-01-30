@@ -7,7 +7,7 @@ export default function profileReducer(state= {
   loading: false,
   chatExiste: null,
   chatNaoExiste: true,
-  chats: []
+  chatsCoach: []
 }, action){
   switch(action.type){
     case CHAT_EXISTS_REQUEST:
@@ -28,7 +28,7 @@ export default function profileReducer(state= {
     case ADD_CHAT_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
-        chats: action.chats
+        chatsCoach: action.chatsCoach
     })
     default:
       return state

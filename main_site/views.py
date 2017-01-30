@@ -524,13 +524,18 @@ class ChatList(generics.ListCreateAPIView):
 		chat.coachParticipante = coach_participante
 		#chat.save()
 
-		# Pegar todos os chats e retornar so com os ids
-		chats = Chat.objects.all()
+		# Pegar TODOS OS CHATS DO COACH QUE ADICIONOU ESSE NOVO
+		# ASSIM SO RETORNAREMOS OS CHATS DOS COACHES LOGADOS
+		chatsDoCoach = Chat.objects.filter(coachUsername=coachUsername)
 
 		# Vou pegar so os chatNameIDs e retornar
 		chatsInfo = []
-		for chat in chats:
-			chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername})
+		for chat in chatsDoCoach:
+			pacDoChat = chat.pacientesParticipantes.all()
+			usernamesPacientes = []
+			for paciente in pacDoChat:
+				usernamesPacientes.append(paciente.perfil.user.username)
+			chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername, "usernamesPacientes":usernamesPacientes})
 
 		#return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(chatsInfo, status=status.HTTP_201_CREATED)
@@ -549,6 +554,25 @@ def chat_exists(request, chatNameID, format=None):
 			return Response({"chat_existe":True}, status=status.HTTP_200_OK)
 		else:
 			return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def get_coach_chats(request, coachUsername, format=None):
+
+	if request.method == 'GET':
+		chatsDoCoach = Chat.objects.filter(coachUsername=coachUsername)
+
+		# Vou pegar so os chatNameIDs e retornar
+		chatsInfo = []
+		for chat in chatsDoCoach:
+			pacDoChat = chat.pacientesParticipantes.all()
+			usernamesPacientes = []
+			for paciente in pacDoChat:
+				usernamesPacientes.append(paciente.perfil.user.username)
+			chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername, "usernamesPacientes":usernamesPacientes})
+		
+		return Response(chatsInfo, status=status.HTTP_200_OK)
+		# else:
+		# 	return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
 
 
 ######################################################################################################################################

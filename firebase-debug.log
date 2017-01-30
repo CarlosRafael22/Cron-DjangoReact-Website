@@ -446,3 +446,17 @@
 [info] Public Directory: public
 [info] 
 [info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\CarlosRafael\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     win32
+[debug] Node Version: v6.9.1
+[debug] Time:         Mon Jan 30 2017 10:25:59 GMT-0200 (E. South America Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\CarlosRafael\Documents\Projetos\Cron\Django-server\cronWebsite
+[info] Public Directory: public
+[info] 
+[info] Server listening at: http://localhost:5000

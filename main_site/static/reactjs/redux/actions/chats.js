@@ -68,13 +68,34 @@ export function checkChatExists(chatNameID){
 }
 
 
+export const ADD_CHAT_REQUEST = 'ADD_CHAT_REQUEST'
 export const ADD_CHAT_SUCCESS = 'ADD_CHAT_SUCCESS'
+export const ADD_CHAT_FAILURE = 'ADD_CHAT_FAILURE'
+
+
+function addChatRequest(){
+  console.log("Indo add chat do coach no action!");
+  return {
+    type: ADD_CHAT_REQUEST,
+    loading: true 
+  }
+}
 
 function addChatSuccess(chatsInfo){
   console.log("Adicionar chat no action");
   return {
     type: ADD_CHAT_SUCCESS,
-    chatsCoach: chatsInfo
+    loading: false,
+    coachChats: chatsInfo
+  }
+}
+
+function addChatFailure(errorMessage){
+  console.log("Deu merda no add coach chat no action");
+  return {
+    type: ADD_CHAT_FAILURE,
+    loading: false,
+    errorMessage
   }
 }
 
@@ -84,7 +105,7 @@ export function addChat(chatNameID, coachUsername, pacienteUsername){
   return dispatch => {
 
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(chatExistsRequest());
+    dispatch(addChatRequest());
 
     const data = {"chatNameID":chatNameID, "coachUsername":coachUsername, "pacienteUsername": pacienteUsername}
     jQuery.ajax({
@@ -104,7 +125,7 @@ export function addChat(chatNameID, coachUsername, pacienteUsername){
       console.log(xhr);
 
       // console.log(response);
-      dispatch(chatExistsFailure(error));
+      dispatch(addChatFailure(error));
 
     });
 
@@ -116,14 +137,6 @@ export const GET_COACH_CHATS_REQUEST = 'GET_COACH_CHATS_REQUEST'
 export const GET_COACH_CHATS_SUCCESS = 'GET_COACH_CHATS_SUCCESS'
 export const GET_COACH_CHATS_FAILURE = 'GET_COACH_CHATS_FAILURE'
 
-function addChatSuccess(chatsInfo){
-  console.log("Adicionar chat no action");
-  return {
-    type: ADD_CHAT_SUCCESS,
-    chatsCoach: chatsInfo
-  }
-}
-
 function getCoachChatsRequest(){
   console.log("Pegando chats do coach no action!");
   return {
@@ -132,12 +145,12 @@ function getCoachChatsRequest(){
   }
 }
 
-function getCoachChatsSuccess(chatsCoach){
+function getCoachChatsSuccess(coachChats){
   console.log("Pegou chats do coach no action");
   return {
     type: GET_COACH_CHATS_SUCCESS,
     loading: false,
-    chatsCoach: chatsCoach
+    coachChats: coachChats
   }
 }
 
@@ -146,14 +159,13 @@ function getCoachChatsFailure(errorMessage){
   return {
     type: GET_COACH_CHATS_FAILURE,
     loading: false,
-    chatNaoExiste: true,
     errorMessage
   }
 }
 
 export function getCoachChats(coachUsername){
 
-  console.log("checando se chat existe no action");
+  console.log("Tentando pegar chats do coach no action");
   return dispatch => {
 
     // We dispatch requestLogin to kickoff the call to the API
@@ -161,13 +173,13 @@ export function getCoachChats(coachUsername){
 
     jQuery.ajax({
       type: 'GET',
-      url: '/api/chats/coach/'+coachUsername.toString()
+      url: '/api/chats/coach/'+coachUsername
     }).done(chatsInfo => {
 
       console.log("TODOS OS CHATS DESSE COACH");
       console.log(chatsInfo);
       // Dispatch the success action
-      dispatch(addChatSuccess(chatsInfo));
+      dispatch(getCoachChatsSuccess(chatsInfo));
       
     })
     .fail(function(xhr, status, error){
@@ -175,7 +187,7 @@ export function getCoachChats(coachUsername){
       console.log(xhr);
 
       // console.log(response);
-      dispatch(chatExistsFailure(error));
+      dispatch(getCoachChatsFailure(error));
 
     });
 

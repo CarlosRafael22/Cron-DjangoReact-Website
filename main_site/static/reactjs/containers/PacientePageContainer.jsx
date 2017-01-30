@@ -6,7 +6,7 @@ import {loadState, saveState} from '../redux/localStorage'
 
 import {createChat} from "../util/firebaseChatHandler"
 
-import {checkChatExists, addChat} from "../redux/actions/chats"
+import {checkChatExists, addChat, getCoachChats} from "../redux/actions/chats"
 
 class PacientePageContainer extends React.Component{
 
@@ -21,6 +21,13 @@ class PacientePageContainer extends React.Component{
 			specialRender: false
 		}
 		this.paciente = this.getPacienteFromStore(this.props.params.pacienteId);
+
+		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
+		if(this.props.usuario.user != null){
+			console.log("DISPACHANDO GET CHATS");
+			this.props.dispatch(getCoachChats(this.props.usuario.user.username));
+		}
+		
 	}
 
 	// Para que ele atualize a pagina mesmo se so for mudar o id fdo Paciente na url
@@ -60,7 +67,8 @@ class PacientePageContainer extends React.Component{
 			console.log("Vendo se ja tem chat criado");
 			// Pegando o chat do state
 			console.log(this.chatID);
-			const chat = this._getChatFromStore(this.chatID);
+			//const chat = this._getChatFromStore(this.chatID);
+			const chat = this._getChatFromProps(this.chatID);
 			console.log(chat);
 
 			// Se tiver o chat com essa ID a gnt mostra o ChatMDL
@@ -121,14 +129,19 @@ class PacientePageContainer extends React.Component{
 	// Se tiver entao ele vai poder criar o chat com esse paciente
 	checkPacienteSupervisionadoFromProps(pacienteUsername){
 		const listaPacientes = this.props.pacientes_supervisionados;
-		console.log(listaPacientes);
-		console.log(listaPacientes[0]['id']);
-		for(let i=0;i<listaPacientes.length;i++){
-			if(listaPacientes[i]['username'] == pacienteUsername){
-				console.log(listaPacientes[i]);
-				return listaPacientes[i];
+
+		// Primeiro eu tenho que ver se ele tem algum paciente supervisionado, se tiver ai sim eu procuro ele nessa lista
+		if(listaPacientes.length > 0){
+			console.log(listaPacientes);
+			console.log(listaPacientes[0]['id']);
+			for(let i=0;i<listaPacientes.length;i++){
+				if(listaPacientes[i]['username'] == pacienteUsername){
+					console.log(listaPacientes[i]);
+					return listaPacientes[i];
+				}
 			}
 		}
+		
 		// se nao tiver entao retorna null para nao retornar undefined
 		return null;
 	}
@@ -150,6 +163,20 @@ class PacientePageContainer extends React.Component{
 			}
 		}
 	}
+
+	_getChatFromProps(chatNameID){
+		console.log("PEGANDO CHAT DO PROPS");
+		const listaChats = this.props.chats.coachChats;
+		console.log(listaChats);
+		console.log(listaChats[0]);
+		// console.log(listaChats[0]['chatNameID']);
+		for(let i=0;i<listaChats.length;i++){
+			if(listaChats[i]['chatNameID'] == chatNameID){
+				console.log(listaChats[i]);
+				return listaChats[i];
+			}
+		}
+	}	
 
 
 	_criarChatPaciente(){

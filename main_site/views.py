@@ -522,11 +522,11 @@ class ChatList(generics.ListCreateAPIView):
 
 		chat.pacientesParticipantes.add(paciente_participante)
 		chat.coachParticipante = coach_participante
-		#chat.save()
+		chat.save()
 
 		# Pegar TODOS OS CHATS DO COACH QUE ADICIONOU ESSE NOVO
 		# ASSIM SO RETORNAREMOS OS CHATS DOS COACHES LOGADOS
-		chatsDoCoach = Chat.objects.filter(coachUsername=coachUsername)
+		chatsDoCoach = Chat.objects.filter(coachUsername=self.request.data['coachUsername'])
 
 		# Vou pegar so os chatNameIDs e retornar
 		chatsInfo = []
@@ -561,14 +561,15 @@ def get_coach_chats(request, coachUsername, format=None):
 	if request.method == 'GET':
 		chatsDoCoach = Chat.objects.filter(coachUsername=coachUsername)
 
-		# Vou pegar so os chatNameIDs e retornar
 		chatsInfo = []
-		for chat in chatsDoCoach:
-			pacDoChat = chat.pacientesParticipantes.all()
-			usernamesPacientes = []
-			for paciente in pacDoChat:
-				usernamesPacientes.append(paciente.perfil.user.username)
-			chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername, "usernamesPacientes":usernamesPacientes})
+		if len(chatsDoCoach) > 0:
+			# Vou pegar so os chatNameIDs e retornar
+			for chat in chatsDoCoach:
+				pacDoChat = chat.pacientesParticipantes.all()
+				usernamesPacientes = []
+				for paciente in pacDoChat:
+					usernamesPacientes.append(paciente.perfil.user.username)
+				chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername, "usernamesPacientes":usernamesPacientes})
 		
 		return Response(chatsInfo, status=status.HTTP_200_OK)
 		# else:

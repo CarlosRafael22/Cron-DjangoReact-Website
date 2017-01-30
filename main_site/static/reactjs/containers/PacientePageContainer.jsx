@@ -140,7 +140,7 @@ class PacientePageContainer extends React.Component{
 		const localState = loadState();
 		const listaChats = localState.chats.chats;
 		console.log(listaChats[0]);
-		console.log(listaChats[0]['chatNameID']);
+		// console.log(listaChats[0]['chatNameID']);
 		for(let i=0;i<listaChats.length;i++){
 			if(listaChats[i]['chatNameID'] == chatNameID){
 				console.log(listaChats[i]);
@@ -153,7 +153,7 @@ class PacientePageContainer extends React.Component{
 	_criarChatPaciente(){
 		console.log("VOU CRIAR O CHAT");
 		
-
+		console.log(this.props);
 		createChat(this.props.usuario.user.coachId, this.props.paciente.id, this.props.usuario.user.username, this.props.paciente.username);
 		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username));
 

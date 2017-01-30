@@ -182,16 +182,22 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
       data: creds
     }).done(authInfo => {
 
+      console.log("FAZENDO A GAMBIARRA");
+      console.log(tipo_de_user);
+      saveInFirebaseTipoUser(authInfo, tipo_de_user);
+
+      function saveInFirebaseTipoUser(authInfo, tipo_de_user){
       console.log(authInfo);
       // PEGUEI O TOKEN DO USUARIO
       console.log("User signed up");
       console.log(typeof(authInfo));
       console.log(authInfo);
+      console.log(tipo_de_user);
 
       // CADASTRANDO NO FIREBASE
       // AGORA TA RETORNANDO UM PACIENTE OU COACH, ENTAO PARA PEGAR O USER A GNT TEM QUE PEGA-LO DO PERFIL
       //signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id);
-      signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id);
+      signUpFirebase(creds.email, creds.password, creds.username, authInfo.user.id, tipo_de_user);
 
       // // AGORA VOU PEGAR AS INFOS DO PROPRIO USUARIO
       console.log(authInfo.user);
@@ -205,6 +211,7 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
       // console.log(localStorage);
       // Dispatch the success action
       dispatch(receiveLogin(authInfo));
+      }
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })

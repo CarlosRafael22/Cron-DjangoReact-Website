@@ -104,7 +104,7 @@
 	};
 
 
-	export function _signUpFirebase(email, password, username, djangoId){
+	export function _signUpFirebase(email, password, username, djangoId, tipo_de_user){
 		console.log("Vou signUp no Firebase");
 		firebase.auth().createUserWithEmailAndPassword(email, password).then(function(result){
 		  	// This gives you a Google Access Token. You can use it to access the Google API.
@@ -124,7 +124,8 @@
 					username: username,
 					userUID: result.uid,
 					email: result.email,
-					displayName: result.displayName
+					displayName: result.displayName,
+					tipo_de_user: tipo_de_user
 				}).then(function(){
 					console.log("Criou o novo usuario no Firebase");
 				}).catch(function(error){

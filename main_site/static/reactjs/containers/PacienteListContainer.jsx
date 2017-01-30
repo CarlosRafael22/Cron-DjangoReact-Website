@@ -85,6 +85,7 @@ class PacienteListContainer extends React.Component{
 
 		console.log("Vou RENDER O UsuarioList");
 		console.log(this.props.pacientes);
+		console.log(this.props.usuario.user);
 
 		let coachRender = this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach;
 		// {coachRender ? coachLoggedView : standardView}

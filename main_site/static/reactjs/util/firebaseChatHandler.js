@@ -41,7 +41,9 @@ export function getCoachChats(coachUsername, thisState, callbackFunction){
 		snapshot.forEach(function(chatIDChildSnapshot){
 			// Se nesse chatID que a gnt ta olhando tem o coach como um dos participantes
 			// pegamos o id do chat e o paciente
-			if(chatIDChildSnapshot.child(coachUsername)){
+
+			// EH COM A PORRA DO HASCHILD E NAO CHILD
+			if(chatIDChildSnapshot.hasChild(coachUsername)){
 				const data = chatIDChildSnapshot.val();
 				
 				const key_chatID = chatIDChildSnapshot.key;

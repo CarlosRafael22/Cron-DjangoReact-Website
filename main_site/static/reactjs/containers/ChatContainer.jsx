@@ -30,6 +30,7 @@ class ChatContainer extends React.Component{
 	}
 
 	_getCoachChats(){
+		console.log(this.props.usuario.user.username);
 		 getCoachChats(this.props.usuario.user.username, this, function(coachChats, thisState){
 			console.log("peguei OS CHATS");
 			//return coachChats;
@@ -106,39 +107,6 @@ class ChatContainer extends React.Component{
 	// }
 
 //  AQUI PODE SER USADO AO CRIAR-MOS OS ELEMENTOS DINAMICAMENTE SE O CHAT NAO FOR A PAGINA INICIAL DO ROUTER!
-	_loadElements(){
-	  let button = document.createElement('button');
-	  let textNode = document.createTextNode('Bora!');
-	  button.appendChild(textNode);
-	  button.className = 'mdl-button mdl-js-button mdl-js-ripple-effect';
-	  componentHandler.upgradeElement(button);
-	  document.getElementById('message-form').appendChild(button);
-	}
-
-	_loadLabel(){
-		let div = document.createElement('div');
-		div.className = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-		let input = document.createElement('input');
-		input.className = "mdl-textfield__input";
-		let label = document.createElement('label');
-		label.className = "mdl-textfield__label";
-
-		let msgText = document.createTextNode("Message ...");
-		label.appendChild(msgText);
-
-		div.appendChild(input);
-		div.appendChild(label);
-
-		var myNode = document.getElementById("message-form");
-		while (myNode.firstChild) {
-			console.log("Tirando children do form");
-		    myNode.removeChild(myNode.firstChild);
-		}
-
-		componentHandler.upgradeElement(div);
-		document.getElementById("message-form").appendChild(div);
-
-	}
 	
 	render(){
 

@@ -299,6 +299,12 @@ class PacienteList(generics.ListCreateAPIView):
 		paciente_serializer = PacienteSerializer(paciente)
 		paciente = paciente_serializer.data
 		print(paciente)
+
+		if hasattr(user, 'perfil'):
+			if hasattr(user.perfil, 'paciente'):
+				user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+				"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+				"id": user_serialized.data['id'], "isCoach": False}
 		#return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response({'token': token.key, 'user': user, 'paciente': paciente}, status=status.HTTP_201_CREATED)
 
@@ -358,6 +364,8 @@ class CoachList(generics.ListCreateAPIView):
 
 	def create(self, serializer):
 
+		# import pdb;
+		# pdb.set_trace();
 		# Criando o paciente na mao com o metodo definido no model
 		# dps serializando para mandar o Response com o paciente como JSON
 		coach = Coach.objects.create_pessoa(username=self.request.data['username'], email=self.request.data['email'], password=self.request.data['password'])
@@ -369,10 +377,10 @@ class CoachList(generics.ListCreateAPIView):
 		# PEGA O TOKEN LOGO AGORA PQ ELE SO ACEITA OBJECT E USER EH UM OBJECT NESSE MOMENTO
 		# QD SERIALIZARMOS ELE VAI VIRAR UM RETURNDICT, FAZENDO COM Q NAO POSSAMOS PEGAR O TOKEN ASSIM
 
-		# MAS PARA MANDAR PRO RESPONSE TEM QUE SERIALIZAAR, SEMPREEE!!!!!
+		# # MAS PARA MANDAR PRO RESPONSE TEM QUE SERIALIZAAR, SEMPREEE!!!!!
 		user_serialized = UserSerializer(user)
-		user = user_serialized.data
-		print(user)
+		# user = user_serialized.data
+		# print(user)
 
 		
 		# Serializando o paciente para mandar o JSON e nao object
@@ -380,6 +388,18 @@ class CoachList(generics.ListCreateAPIView):
 		coach_serializer = CoachSerializer(coach)
 		coach = coach_serializer.data
 		print(coach)
+
+		# NA VERDADE, AGORA EU TENHO QUE PEGAR O OBJ PARA EXTRAIR DADOS DELE E DPS MANDAR COMO DICT COMO FACO EMBAIXO:
+
+		# Limitando como vai retornar para o front-end
+		# Vou botar se ele eh coach para dps poder pegar os pac_supervisionados no front-end
+		# se tem perfil associado olha, senao retorna normal
+		if hasattr(user, 'perfil'):
+			if hasattr(user.perfil, 'coach'):
+				user = {"username": user_serialized.data['username'], "email": user_serialized.data['email'],
+				"first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
+				"id": user_serialized.data['id'], "isCoach": True, "coachId": user.perfil.coach.id}
+		print(user)
 		#return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response({'token': token.key, 'user': user, 'coach': coach}, status=status.HTTP_201_CREATED)
 

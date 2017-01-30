@@ -14,10 +14,10 @@ class ReceitaListContainer extends React.Component{
 
 		// SE TIVER COM NADA NO LOCALSTORAGE (QD TA ACESSANDO PELA PRIMEIRA VEZ) ELE VAI RETORNAR receitasList: []
 		// ENTAO TEM Q FAZER UMA REQUISICAO PARA POPULAR AS RECEITAS DESSA VEZ
-		if(localStorage.getItem('state') == null){
-			console.log("PEGANDO AS RECEITAS PELA PRIMEIRA VEZ!!");
-			this.props.dispatch(getReceitas());
-		}
+		// if(localStorage.getItem('state') == null){
+		console.log("PEGANDO AS RECEITAS PELA PRIMEIRA VEZ!!");
+		this.props.dispatch(getReceitas());
+	// }
 	}
 
 	_deleteReceita(receita){

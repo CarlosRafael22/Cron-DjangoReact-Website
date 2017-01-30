@@ -18,6 +18,8 @@ import PacientePageContainer from "./containers/PacientePageContainer"
 import CoachContainer from "./containers/CoachContainer"
 import CoachPageContainer from "./containers/CoachPageContainer"
 
+import GrupoContainer from "./containers/GrupoContainer"
+
 import ChatMDL from "./components/ChatMDL"
 
 
@@ -37,15 +39,7 @@ import * as firebase from 'firebase'
 
 
 class AppRouter extends React.Component{
-	_loadElements(){
-	  let button = document.createElement('button');
-	  let textNode = document.createTextNode('App!');
-	  button.appendChild(textNode);
-	  button.className = 'mdl-button mdl-js-button mdl-js-ripple-effect';
-	  componentHandler.upgradeElement(button);
-	  document.getElementById('message-form').appendChild(button);
-	}
-
+	
 	constructor(){
 		super();
 
@@ -86,6 +80,8 @@ class AppRouter extends React.Component{
 						</Route>
 						<Route path="/chats" component={ChatContainer}>
 							{/*<Route path="/chats/:chatID" {...ChatMDL} />*/}
+						</Route>
+						<Route path="/grupos" component={GrupoContainer}>
 						</Route>
 						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 					</Route>

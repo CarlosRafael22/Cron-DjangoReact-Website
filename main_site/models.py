@@ -149,6 +149,7 @@ class Chat(models.Model):
 
 class Grupo(models.Model):
 
+	nome_grupo = models.CharField(max_length=50, null=True)
 	chat = models.ForeignKey(Chat, null=True)
 	coach = models.ForeignKey(Coach)
 	pacientes = models.ManyToManyField(Paciente)

@@ -337,7 +337,7 @@ class ChatSerializer(serializers.ModelSerializer):
 
 class GrupoSerializer(serializers.ModelSerializer):
 	coach = CoachSerializer()
-	pacientes = PacienteSerializer(required=False)
+	pacientes = PacienteSerializer(many=True, required=False)
 	chat = ChatSerializer(required=False)
 	
 	class Meta:

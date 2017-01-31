@@ -29,15 +29,20 @@ function addGrupoFailure(errorMessage){
   }
 }
 
-export function addGrupo(grupoNameID, coachUsername, pacienteUsername){
+export function addGrupo(grupoName, coachUsername, pacientesUsernames, firebaseCallback){
 
-  console.log("checando se Grupo existe no action");
+  console.log("Indo add grupo no action");
   return dispatch => {
 
+    // Nao pode mandar array para a request entao tenho que stringify
+    const pacUsernamesSTR = JSON.stringify(pacientesUsernames);
+
+    const data = {"nome_grupo": grupoName, "coachUsername": coachUsername, "pacientesUsernames": pacUsernamesSTR}
+    console.log(data);
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(addGrupoRequest());
 
-    const data = {"grupoNameID":grupoNameID, "coachUsername":coachUsername, "pacienteUsername": pacienteUsername}
+
     jQuery.ajax({
       type: 'POST',
       url: '/api/grupos/',
@@ -46,6 +51,17 @@ export function addGrupo(grupoNameID, coachUsername, pacienteUsername){
 
       console.log("TODOS OS GrupoS DESSE COACH");
       console.log(gruposInfo);
+
+      // Vou criar o chat no Firebase aqui pq eu uso o ID do Django
+
+      // Ele vai retornar as infos de todos os chats
+      // Pra pegar o recem criado e criar no Firebase eu pego o ultimo da lista retornada
+      console.log("ULTIMO CHAT ADICIONADO");
+      const new_added_grupo = gruposInfo[gruposInfo.length-1];
+      console.log(new_added_grupo);
+      console.log("INDO ADICIONAR NO FIREBASE");
+      firebaseCallback(new_added_grupo['grupo_id'], new_added_grupo['nome_grupo'], new_added_grupo['coach'], new_added_grupo['pacientesUsernames']);
+
       // Dispatch the success action
       dispatch(addGrupoSuccess(gruposInfo));
       

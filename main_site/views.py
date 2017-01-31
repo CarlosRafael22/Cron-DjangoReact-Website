@@ -21,6 +21,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
+import json
+
 class IngredienteList(generics.ListCreateAPIView):
 	queryset = Ingrediente.objects.all()
 	serializer_class = IngredienteSerializer
@@ -272,7 +274,7 @@ class PacienteList(generics.ListCreateAPIView):
 	queryset = Paciente.objects.all()
 	serializer_class = PacienteSerializer
 
-	def create(self, serializer):
+	def create(self, request):
 
 		import pdb;
 		pdb.set_trace();
@@ -362,7 +364,7 @@ class CoachList(generics.ListCreateAPIView):
 	queryset = Coach.objects.all()
 	serializer_class = CoachSerializer
 
-	def create(self, serializer):
+	def create(self, request):
 
 		# import pdb;
 		# pdb.set_trace();
@@ -509,7 +511,7 @@ class ChatList(generics.ListCreateAPIView):
 	queryset = Chat.objects.all()
 	serializer_class = ChatSerializer
 
-	def create(self, serializer):
+	def create(self, request):
 
 		# Criando o paciente na mao com o metodo definido no model
 		# dps serializando para mandar o Response com o paciente como JSON
@@ -580,6 +582,46 @@ def get_coach_chats(request, coachUsername, format=None):
 class GrupoList(generics.ListCreateAPIView):
 	queryset = Grupo.objects.all()
 	serializer_class = GrupoSerializer
+
+	def create(self, request):
+
+		# import pdb;
+		# pdb.set_trace();
+
+		grupo = Grupo(nome_grupo=self.request.data['nome_grupo'])
+		# Vou pegar o coach com o username para salvar
+		coachDoGrupo = Coach.objects.get(perfil__user__username=self.request.data['coachUsername'])
+		grupo.coach = coachDoGrupo
+		grupo.save()
+
+		# Pegando os pacientes pelo username e dps adicionando
+		#pacientesDoGrupo = []
+
+		# self.request.data['pacientesUsernames'] VEM COMO JSON ENTAO VOU CONVERTER PARA ARRAY
+		pacientesUsernames = json.loads(self.request.data['pacientesUsernames'])
+		for pacienteUsername in pacientesUsernames:
+			paciente = Paciente.objects.get(perfil__user__username=pacienteUsername)
+			grupo.pacientes.add(paciente)
+
+		grupo.save()
+
+		# Pegando todos os grupos do coach para retornar
+		gruposDoCoach = Grupo.objects.filter(coach__perfil__user__username=self.request.data['coachUsername'])
+		gruposResponse = []
+
+		gruposInfos = []
+		for grupo in gruposDoCoach:
+			# Pegando primeiro os pacientes do grupo
+			pacientesGrupo = []
+			for paciente in grupo.pacientes.all():
+				pacienteUsername = paciente.perfil.user.username
+				pacientesGrupo.append(pacienteUsername)
+			coachUsername = grupo.coach.perfil.user.username
+			grupo_id = grupo.id
+			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "pacientesUsernames":pacientesGrupo})
+
+		return Response(gruposResponse, status=status.HTTP_200_OK)
+
 
 class GrupoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Grupo.objects.all()

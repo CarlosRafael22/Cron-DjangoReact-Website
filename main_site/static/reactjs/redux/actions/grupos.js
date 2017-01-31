@@ -1,3 +1,6 @@
+import {addChat} from "./chats"
+
+
 export const ADD_GRUPO_REQUEST = 'ADD_GRUPO_REQUEST'
 export const ADD_GRUPO_SUCCESS = 'ADD_GRUPO_SUCCESS'
 export const ADD_GRUPO_FAILURE = 'ADD_GRUPO_FAILURE'
@@ -64,6 +67,11 @@ export function addGrupo(grupoName, coachUsername, pacientesUsernames, firebaseC
 
       // Dispatch the success action
       dispatch(addGrupoSuccess(gruposInfo));
+
+      // Criando um chat tb para esse grupo no Django
+      const chatID = "C"+coachUsername+"G"+new_added_grupo['grupo_id'].toString();
+      console.log("INDO CRIAR CHAT NO DJANGO");
+      dispatch(addChat(chatID, coachUsername, pacientesUsernames));
       
     })
     .fail(function(xhr, status, error){

@@ -520,9 +520,16 @@ class ChatList(generics.ListCreateAPIView):
 
 		# AGORA VOU PEGAR O OBJETO DO COACH E O PACIENTE PARA ADICIONAR NO CHAT
 		coach_participante = Coach.objects.get(perfil__user__username=self.request.data['coachUsername'])
-		paciente_participante = Paciente.objects.get(perfil__user__username=self.request.data['pacienteUsername'])
+		#paciente_participante = Paciente.objects.get(perfil__user__username=self.request.data['pacienteUsername'])
 
-		chat.pacientesParticipantes.add(paciente_participante)
+		# AO CRIAR UM CHAT EU POSSO TA MANDANDO SO UM PACIENTE NO CASO DO CHAT INDIVIDUAL OU VARIOS NO CASO DE CRIAR UM CHAT DE GRUPO
+		pacientesUsernames = json.loads(self.request.data['pacientesUsernames'])
+
+		# ENTAO ADICIONO CADA UM NA LISTA DE PACIENTES PART DESSE CHAT, SEJA DE GRUPO OU INDIVIDUAL
+		for pacienteUsername in pacientesUsernames:
+			paciente = Paciente.objects.get(perfil__user__username=pacienteUsername)
+			chat.pacientesParticipantes.add(paciente)
+
 		chat.coachParticipante = coach_participante
 		chat.save()
 

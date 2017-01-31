@@ -184,7 +184,11 @@ class PacientePageContainer extends React.Component{
 		
 		console.log(this.props);
 		createChat(this.props.usuario.user.coachId, this.props.paciente.id, this.props.usuario.user.username, this.props.paciente.username);
-		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username, this.props.paciente.username));
+
+		// AGORA O ADDCHAT ESTA RECEBENDO UMA LISTA DE USERNAMES DOS PACIENTES PARA NO CASO DE EU CRIAR UM CHAT PARA O GRUPO TB
+		// ENTAO AQUI A GNT BOTA O USERNAME NUMA LISTA
+		pacUsernameArray = [this.props.paciente.username];
+		this.props.dispatch(addChat(this.chatID, this.props.usuario.user.username, pacUsernameArray));
 
 		console.log("ATUALIZEI O PROPS DE CHAT");
 		console.log(this.props.chats);

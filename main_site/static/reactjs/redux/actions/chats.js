@@ -99,7 +99,7 @@ function addChatFailure(errorMessage){
   }
 }
 
-export function addChat(chatNameID, coachUsername, pacienteUsername){
+export function addChat(chatNameID, coachUsername, pacientesUsernames){
 
   console.log("checando se chat existe no action");
   return dispatch => {
@@ -107,7 +107,10 @@ export function addChat(chatNameID, coachUsername, pacienteUsername){
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(addChatRequest());
 
-    const data = {"chatNameID":chatNameID, "coachUsername":coachUsername, "pacienteUsername": pacienteUsername}
+    // Nao pode mandar array para a request entao tenho que stringify
+    const pacUsernamesSTR = JSON.stringify(pacientesUsernames);
+
+    const data = {"chatNameID":chatNameID, "coachUsername":coachUsername, "pacientesUsernames": pacUsernamesSTR}
     jQuery.ajax({
       type: 'POST',
       url: '/api/chats/',

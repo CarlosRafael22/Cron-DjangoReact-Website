@@ -4,20 +4,13 @@ import GrupoList from "../components/GrupoList"
 
 class GrupoListContainer extends React.Component{
 
-	// _renderGrupoList(){
-	// 	const grupos = [1,2,3,4,5];
-	// 	return grupos.map((grupo) => {
-	// 		return (
-
-	// 		)
-	// 	})
-	// }
-
 	render(){
 		const grupos = [1,2,3,4,5];
+		console.log("RENDER DO GL CONTAINER");
+		console.log(this.props.grupos.coachGrupos);
 		return (
 			<div className="col-md-12">
-				<GrupoList grupos={grupos}/>
+				<GrupoList grupos={this.props.grupos.coachGrupos}/>
 			</div>
 		)
 	}

@@ -625,7 +625,7 @@ class GrupoList(generics.ListCreateAPIView):
 				pacientesGrupo.append(pacienteUsername)
 			coachUsername = grupo.coach.perfil.user.username
 			grupo_id = grupo.id
-			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "pacientesUsernames":pacientesGrupo})
+			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "usernamesPacientes":pacientesGrupo})
 
 		return Response(gruposResponse, status=status.HTTP_200_OK)
 
@@ -633,6 +633,26 @@ class GrupoList(generics.ListCreateAPIView):
 class GrupoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Grupo.objects.all()
 	serializer_class = GrupoSerializer
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+def get_coach_grupos(request, coachUsername, format=None):
+
+	if request.method == 'GET':
+		gruposDoCoach = Grupo.objects.filter(coach__perfil__user__username=coachUsername)
+
+		gruposInfo = []
+		if len(gruposDoCoach) > 0:
+			# Vou pegar so os chatNameIDs e retornar
+			for grupo in gruposDoCoach:
+				pacDoGrupo = grupo.pacientes.all()
+				usernamesPacientes = []
+				for paciente in pacDoGrupo:
+					usernamesPacientes.append(paciente.perfil.user.username)
+				grupo_id = grupo.id
+				gruposInfo.append({"grupo_id": grupo_id, "nome_grupo": grupo.nome_grupo, "coach": grupo.coach.perfil.user.username, "usernamesPacientes":usernamesPacientes})
+		
+		return Response(gruposInfo, status=status.HTTP_200_OK)
 
 ######################################################################################################################################
 #

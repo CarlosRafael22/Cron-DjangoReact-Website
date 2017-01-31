@@ -72,75 +72,27 @@ function createGrupoChat(coachUsername, grupoId, pacientesUsernames){
 
 export function getCoachGrupos(coachUsername, thisState, callbackFunction){
 
-	let listaChatsDoCoach = [];
+	let listaGruposDoCoach = [];
 
-	const chatUsersRef = firebase.database().ref('chatUsers');
-	chatUsersRef.once("value").then(function(snapshot){
-		console.log("PEGANDO OS CHATS DO COACH NO FIREBASE");
-		snapshot.forEach(function(chatIDChildSnapshot){
-			// Se nesse chatID que a gnt ta olhando tem o coach como um dos participantes
-			// pegamos o id do chat e o paciente
+	const grupoUsersRef = firebase.database().ref('grupoUsers');
+	grupoUsersRef.once("value").then(function(snapshot){
+		console.log("PEGANDO OS grupoS DO COACH NO FIREBASE");
+		snapshot.forEach(function(grupoIDChildSnapshot){
+			// Se nesse grupoID que a gnt ta olhando tem o coach como um dos participantes
+			// pegamos o id do grupo e o paciente
 
 			// EH COM A PORRA DO HASCHILD E NAO CHILD
-			if(chatIDChildSnapshot.hasChild(coachUsername)){
-				const data = chatIDChildSnapshot.val();
+			if(grupoIDChildSnapshot.hasChild(coachUsername)){
+				const data = grupoIDChildSnapshot.val();
 				
-				const key_chatID = chatIDChildSnapshot.key;
-				console.log(key_chatID);
+				const key_grupoID = grupoIDChildSnapshot.key;
+				console.log(key_grupoID);
 				console.log(data);
 				const participantes = Object.keys(data);
-				listaChatsDoCoach.push({"chatID":key_chatID, "participantes":participantes});
+				listagruposDoCoach.push({"grupoID":key_grupoID, "participantes":participantes});
 			}
 		});
-		console.log(listaChatsDoCoach);
-		callbackFunction(listaChatsDoCoach, thisState);
+		console.log(listagruposDoCoach);
+		callbackFunction(listagruposDoCoach, thisState);
 	});
-}
-
-
-export function checkChatExists(coachId, pacienteId){
-
-	console.log("CHECANDO SE EXISTE CHAT");
-
-	const chatID = "c"+coachId.toString()+"p"+pacienteId.toString();
-	const refPath = "chats/"+chatID;
-
-	let exists;
-	var ref = firebase.database().ref(refPath);
-	ref.once("value")
-	  .then(function(snapshot) {
-	    exists = snapshot.exists();  // true
-	    console.log("CHECOU AGORA, ", exists);
-	    return exists;
-	});
-	//return true;
-}
-
-// Loads chat messages history and listens for upcoming ones.
-export function listenMessagesChat(chatID){
-  // TODO(DEVELOPER): Load and listens for new messages.
-  // Reference to the /messages/ database path
-  const refPath = "chatMessages/"+chatID;
-  const chatMsgsRef = this.database.ref(refPath);
-
-  //Make sure we remove all previous listeners
-  chatMsgsRef.off();
-
-  //Loads the last 12 messages and listen for new ones
-  var setMessage = function(data){
-	var val = data.val();
-	this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
-  }.bind(this);
-
-
-  chatMsgsRef.limitToLast(12).on('child_added', setMessage);
-  chatMsgsRef.limitToLast(12).on('child_changed', setMessage);
-}
-
-export function stopListeningChat(chatID){
-	const refPath = "chatMessages/"+chatID;
-  	const chatMsgsRef = this.database.ref(refPath);
-
-  	//Make sure we remove all previous listeners
-  	chatMsgsRef.off();
 }

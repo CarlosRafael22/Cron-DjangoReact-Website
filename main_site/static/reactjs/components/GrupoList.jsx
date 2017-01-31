@@ -16,6 +16,8 @@ export default class GrupoList extends React.Component{
 	render(){
 
 		const grupos = this._getGrupos();
+		console.log("RENDER DO GroupList");
+		console.log(this.props.grupos);
 
 		return (
 			<div>

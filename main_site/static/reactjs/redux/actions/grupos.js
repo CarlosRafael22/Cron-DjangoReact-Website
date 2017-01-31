@@ -63,7 +63,7 @@ export function addGrupo(grupoName, coachUsername, pacientesUsernames, firebaseC
       const new_added_grupo = gruposInfo[gruposInfo.length-1];
       console.log(new_added_grupo);
       console.log("INDO ADICIONAR NO FIREBASE");
-      firebaseCallback(new_added_grupo['grupo_id'], new_added_grupo['nome_grupo'], new_added_grupo['coach'], new_added_grupo['pacientesUsernames']);
+      firebaseCallback(new_added_grupo['grupo_id'], new_added_grupo['nome_grupo'], new_added_grupo['coach'], new_added_grupo['usernamesPacientes']);
 
       // Dispatch the success action
       dispatch(addGrupoSuccess(gruposInfo));

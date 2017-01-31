@@ -5,13 +5,17 @@ import GrupoForm from "../components/GrupoForm"
 
 class GrupoContainer extends React.Component{
 
+	_criarGrupo(nome_grupo, pacientesUsernames){
+		alert(nome_grupo);
+	}
+
 	render(){
 
 		console.log("GRUPO PROPS");
 		console.log(this.props);
 		return (
 			<div>
-				<GrupoForm pacientes_supervisionados={this.props.pacientes} />
+				<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
 				<GrupoListContainer />
 			</div>
 		)

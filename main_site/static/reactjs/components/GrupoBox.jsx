@@ -7,10 +7,12 @@ export default class GrupoBox extends React.Component{
 		console.log(this.props.grupo);
 		return this.props.grupo.usernamesPacientes.map((paciente, idx) => {
 			return (
+				<Link to={"pacientes/"+paciente.id}>
 				<span className="mdl-chip mdl-chip--contact" key={idx}>
 				    <span className="mdl-chip__contact mdl-color--teal mdl-color-text--white">A</span>
 				    <span className="mdl-chip__text">{paciente}</span>
 				</span>
+				</Link>
 			);
 		});
 	}
@@ -21,11 +23,14 @@ export default class GrupoBox extends React.Component{
 
 		const pacientes = this._renderPacientesNoGrupo();
 
+		//const link = "grupos/"+this.props.coachUsername+"/"+this.props.grupo.nome_grupo.replace(/\s/g, '');
+		const link = "grupos/"+this.props.coachUsername+"/"+this.props.grupo.grupo_id.toString();
+
 		return(
 
 			<div className="well">
 				<div className="row">
-					<Link to="chats/"><h3 className="col-sm-6">{this.props.grupo.nome_grupo}</h3></Link>
+					<Link to={link}><h3 className="col-sm-6">{this.props.grupo.nome_grupo}</h3></Link>
 				</div>
 				<h4>Pacientes no grupo</h4>
 				<div>

@@ -74,8 +74,14 @@ class GrupoContainer extends React.Component{
 		console.log(this.props);
 		return (
 			<div>
-				<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
-				<GrupoListContainer  />
+			{	this.props.children != null ?
+				this.props.children
+				:		
+				<div>
+					<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
+					<GrupoListContainer  />
+				</div>
+			}
 			</div>
 		)
 	}

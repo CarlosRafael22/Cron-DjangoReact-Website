@@ -19,6 +19,7 @@ import CoachContainer from "./containers/CoachContainer"
 import CoachPageContainer from "./containers/CoachPageContainer"
 
 import GrupoContainer from "./containers/GrupoContainer"
+import GrupoPage from "./components/GrupoPage"
 
 import ChatMDL from "./components/ChatMDL"
 
@@ -82,6 +83,7 @@ class AppRouter extends React.Component{
 							{/*<Route path="/chats/:chatID" {...ChatMDL} />*/}
 						</Route>
 						<Route path="/grupos" component={GrupoContainer}>
+							<Route path="/grupos/:coachUsername/:grupo_id" component={GrupoPage} />
 						</Route>
 						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 					</Route>

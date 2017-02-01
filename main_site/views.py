@@ -620,12 +620,19 @@ class GrupoList(generics.ListCreateAPIView):
 		for grupo in gruposDoCoach:
 			# Pegando primeiro os pacientes do grupo
 			pacientesGrupo = []
+
+			# VOU BOTAR A ID TB PRA FACILITAR NA HORA DE AO CLICAR NO NOME DO PACIENTE IR PARA A PAGINA DELE NO FRONT-END
+			pacientesInfo = []
+
 			for paciente in grupo.pacientes.all():
 				pacienteUsername = paciente.perfil.user.username
 				pacientesGrupo.append(pacienteUsername)
+
+				# PROVENDO ID E USERNAME DO PACIENTE
+				pacientesInfo.append({"username": pacienteUsername, "id": paciente.id})
 			coachUsername = grupo.coach.perfil.user.username
 			grupo_id = grupo.id
-			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "usernamesPacientes":pacientesGrupo})
+			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "usernamesPacientes":pacientesGrupo, "pacientesInfo": pacientesInfo})
 
 		return Response(gruposResponse, status=status.HTTP_200_OK)
 
@@ -642,15 +649,23 @@ def get_coach_grupos(request, coachUsername, format=None):
 		gruposDoCoach = Grupo.objects.filter(coach__perfil__user__username=coachUsername)
 
 		gruposInfo = []
+
 		if len(gruposDoCoach) > 0:
 			# Vou pegar so os chatNameIDs e retornar
 			for grupo in gruposDoCoach:
 				pacDoGrupo = grupo.pacientes.all()
 				usernamesPacientes = []
+
+				# VOU BOTAR A ID TB PRA FACILITAR NA HORA DE AO CLICAR NO NOME DO PACIENTE IR PARA A PAGINA DELE NO FRONT-END
+				pacientesInfo = []
+
 				for paciente in pacDoGrupo:
 					usernamesPacientes.append(paciente.perfil.user.username)
+
+					# PROVENDO ID E USERNAME DO PACIENTE
+					pacientesInfo.append({"username": paciente.perfil.user.username, "id": paciente.id})
 				grupo_id = grupo.id
-				gruposInfo.append({"grupo_id": grupo_id, "nome_grupo": grupo.nome_grupo, "coach": grupo.coach.perfil.user.username, "usernamesPacientes":usernamesPacientes})
+				gruposInfo.append({"grupo_id": grupo_id, "nome_grupo": grupo.nome_grupo, "coach": grupo.coach.perfil.user.username, "usernamesPacientes":usernamesPacientes, "pacientesInfo": pacientesInfo})
 		
 		return Response(gruposInfo, status=status.HTTP_200_OK)
 

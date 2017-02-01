@@ -5,7 +5,6 @@ export default class GrupoList extends React.Component{
 
 	_getGrupos(){
 		return this.props.grupos.map((grupo, idx) => {
-			const pac = ["Joana", "Banana", "Alana"];
 			return (
 				<GrupoBox grupo={grupo} coachUsername={this.props.coachUsername} key={idx}/>
 			);

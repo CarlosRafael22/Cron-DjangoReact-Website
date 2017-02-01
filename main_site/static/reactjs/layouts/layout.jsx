@@ -2,12 +2,31 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { Link } from "react-router"
 import NavHeaderContainer from "../containers/NavHeaderContainer"
+import {connect} from "react-redux"
 
 
-
-export default class Layout extends React.Component{
+class Layout extends React.Component{
 
 	render(){
+
+		const chatAba = (
+			<li role="presentation">
+			  	<Link to="/chats" activeStyle={{ color: 'yellow' }}>Chats</Link>
+			</li>
+		);
+
+		const grupoAba = (
+			<li role="presentation">
+				<Link to="/grupos" activeStyle={{ color: 'blue' }}>Grupos</Link>
+			</li>
+		);
+
+		let CoachRender = false;
+		if(this.props.usuario.user != null){
+			if(this.props.usuario.user.isCoach)
+				CoachRender = true;
+		}
+
 		return(
 		<div id="wrapper">
 
@@ -28,12 +47,16 @@ export default class Layout extends React.Component{
 				  <li role="presentation">
 				  	<Link to="/receitas" activeStyle={{ color: 'blue' }}>Receitas</Link>
 				  </li>
-				  <li role="presentation">
-				  	<Link to="/chats" activeStyle={{ color: 'yellow' }}>Chats</Link>
-				  </li>
-				  <li role="presentation">
-				  	<Link to="/grupos" activeStyle={{ color: 'blue' }}>Grupos</Link>
-				  </li>
+				  {	CoachRender?
+				  	chatAba
+				  	:
+				  	null
+				  }
+				  {	CoachRender?
+				  	grupoAba
+				  	:
+				  	null
+				  }
 				</ul>
         </div>
         
@@ -57,3 +80,15 @@ export default class Layout extends React.Component{
 		)
 	}
 }
+
+// PEGANDO O USUARIO DO REDUX PARA SABER SE QUEM TA LOGADO EH UM COACH
+// SE FOR EU MOSTRO A ABA GRUPOS E CHATS
+
+function mapStateToProps(state){
+
+	return {
+		usuario: state.usuario
+	};
+}
+
+export default connect(mapStateToProps)(Layout)

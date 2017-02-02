@@ -1,10 +1,10 @@
 import React from "react"
 import {connect} from "react-redux"
 import GrupoListContainer from "./GrupoListContainer"
-import GrupoForm from "../components/GrupoForm"
-import {addGrupo} from "../redux/actions/grupos"
-import {createGrupo} from "../util/firebaseGruposHandler"
-import {getCoachGrupos} from "../redux/actions/grupos"
+import GrupoForm from "../../components/Grupo/GrupoForm"
+import {addGrupo} from "../../redux/actions/grupos"
+import {createGrupo} from "../../util/firebaseGruposHandler"
+import {getCoachGrupos} from "../../redux/actions/grupos"
 
 class GrupoContainer extends React.Component{
 

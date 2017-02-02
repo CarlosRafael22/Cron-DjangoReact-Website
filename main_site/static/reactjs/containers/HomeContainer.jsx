@@ -4,7 +4,7 @@ import {loginUser, logoutUser, signUpUser} from '../redux/actions/auth'
 import { connect } from 'react-redux'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
-import PacientesSupervisionadosContainer from "./PacientesSupervisionadosContainer"
+import PacientesSupervisionadosContainer from "./Paciente/PacientesSupervisionadosContainer"
 
 class HomeContainer extends React.Component{
 

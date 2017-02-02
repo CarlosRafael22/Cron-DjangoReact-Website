@@ -1,6 +1,6 @@
 import React from "react"
-import FriendlyChat from "../util/FirebaseChat"
-import ChatMDL from "../components/ChatMDL"
+import FriendlyChat from "../../util/FirebaseChat"
+import ChatMDL from "../../components/Chat/ChatMDL"
 
 import {Layout, Header, Drawer, Navigation, Content} from "react-mdl"
 

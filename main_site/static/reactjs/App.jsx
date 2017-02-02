@@ -4,24 +4,24 @@ import {hashHistory, Router, Route, Redirect, IndexRoute} from "react-router"
 
 import HomeContainer from "./containers/HomeContainer"
 import App1Container from "./containers/App1Container"
-import ReceitaContainer from "./containers/ReceitaContainer"
-import ChatContainer from "./containers/ChatContainer"
-import ReceitaPage from "./components/ReceitaPage"
+import ReceitaContainer from "./containers/Receita/ReceitaContainer"
+import ChatContainer from "./containers/Chat/ChatContainer"
+import ReceitaPage from "./components/Receita/ReceitaPage"
 import Layout from "./layouts/layout"
 
-import UsuarioContainer from "./containers/UsuarioContainer"
-import UsuarioPageContainer from "./containers/UsuarioPageContainer"
+import UsuarioContainer from "./containers/Usuario/UsuarioContainer"
+import UsuarioPageContainer from "./containers/Usuario/UsuarioPageContainer"
 
-import PacienteContainer from "./containers/PacienteContainer"
-import PacientePageContainer from "./containers/PacientePageContainer"
+import PacienteContainer from "./containers/Paciente/PacienteContainer"
+import PacientePageContainer from "./containers/Paciente/PacientePageContainer"
 
-import CoachContainer from "./containers/CoachContainer"
-import CoachPageContainer from "./containers/CoachPageContainer"
+import CoachContainer from "./containers/Coach/CoachContainer"
+import CoachPageContainer from "./containers/Coach/CoachPageContainer"
 
-import GrupoContainer from "./containers/GrupoContainer"
-import GrupoPage from "./components/GrupoPage"
+import GrupoContainer from "./containers/Grupo/GrupoContainer"
+import GrupoPage from "./components/Grupo/GrupoPage"
 
-import ChatMDL from "./components/ChatMDL"
+import ChatMDL from "./components/Chat/ChatMDL"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

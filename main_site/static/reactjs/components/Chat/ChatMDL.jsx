@@ -2,7 +2,7 @@ import React from "react"
 
 import {Card, CardTitle, CardText, CardActions, CardMenu, Button, IconButton, Snackbar} from "react-mdl"
 
-import FriendlyChat from "../util/FirebaseChat"
+import FriendlyChat from "../../util/FirebaseChat"
 
 export default class ChatMDL extends React.Component{
 

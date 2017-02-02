@@ -1,6 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
-import GrupoList from "../components/GrupoList"
+import GrupoList from "../../components/Grupo/GrupoList"
 
 class GrupoListContainer extends React.Component{
 

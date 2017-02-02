@@ -1,7 +1,7 @@
 import React from "react"
 import GrupoBox from "./GrupoBox"
-import {loadState, saveState} from '../redux/localStorage'
-import ChatMDL from "./ChatMDL"
+import {loadState, saveState} from '../../redux/localStorage'
+import ChatMDL from "../Chat/ChatMDL"
 
 export default class GrupoPage extends React.Component{
 

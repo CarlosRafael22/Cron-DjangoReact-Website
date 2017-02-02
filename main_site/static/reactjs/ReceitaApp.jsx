@@ -1,7 +1,7 @@
 import React from "react"
 import { render } from "react-dom"
 
-import ReceitaContainer from "./containers/ReceitaContainer"
+import ReceitaContainer from "./containers/Receita/ReceitaContainer"
 
 class ReceitaApp extends React.Component {
   render() {

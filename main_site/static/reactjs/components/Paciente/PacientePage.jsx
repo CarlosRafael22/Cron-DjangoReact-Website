@@ -1,23 +1,23 @@
 import React from "react"
-import {loadState, saveState} from '../redux/localStorage'
-import {deleteReceita} from '../redux/action'
+import {loadState, saveState} from '../../redux/localStorage'
+import {deleteReceita} from '../../redux/action'
 import { hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 
-import FriendlyChat from "../util/FirebaseChat"
-import ChatBox from "./ChatBox"
-import ChatContainer from "../containers/ChatContainer"
+import FriendlyChat from "../../util/FirebaseChat"
+import ChatBox from "../Chat/ChatBox"
+import ChatContainer from "../../containers/Chat/ChatContainer"
 
 //import componentHandler from "exports?componentHandler&MaterialRipple!material-design-lite/material.js"
 import componentHandler from "exports?componentHandler!material-design-lite/material.js"
 import {Button} from "react-mdl"
 
-import ChatMDL from "./ChatMDL"
-import ChatMDLContainer from "../containers/ChatMDLContainer"
+import ChatMDL from "../Chat/ChatMDL"
+import ChatMDLContainer from "../../containers/Chat/ChatMDLContainer"
 
-import {createChat} from "../util/firebaseChatHandler"
+import {createChat} from "../../util/firebaseChatHandler"
 
-import {checkChatExists, addChat} from "../redux/actions/chats"
+import {checkChatExists, addChat} from "../../redux/actions/chats"
 
 export default class PacientePage extends React.Component{
 

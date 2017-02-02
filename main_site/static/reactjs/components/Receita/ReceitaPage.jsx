@@ -1,6 +1,6 @@
 import React from "react"
-import {loadState, saveState} from '../redux/localStorage'
-import {deleteReceita} from '../redux/action'
+import {loadState, saveState} from '../../redux/localStorage'
+import {deleteReceita} from '../../redux/action'
 import { hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 

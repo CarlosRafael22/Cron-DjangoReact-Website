@@ -1,8 +1,8 @@
 import React from "react"
 import {connect} from "react-redux"
-import {getCoach} from "../redux/actions/coaches"
-import CoachPage from "../components/CoachPage"
-import {loadState, saveState} from '../redux/localStorage'
+import {getCoach} from "../../redux/actions/coaches"
+import CoachPage from "../../components/Coach/CoachPage"
+import {loadState, saveState} from '../../redux/localStorage'
 
 class CoachPageContainer extends React.Component{
 

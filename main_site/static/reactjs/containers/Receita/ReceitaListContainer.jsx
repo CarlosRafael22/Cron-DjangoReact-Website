@@ -1,9 +1,9 @@
 import React from "react"
 
-import ReceitaList from '../components/ReceitaList'
+import ReceitaList from '../../components/Receita/ReceitaList'
 import { connect } from 'react-redux'
-import {getReceitas, addReceita, deleteReceita} from '../redux/actions/receitas'
-import {loadState, saveState} from '../redux/localStorage'
+import {getReceitas, addReceita, deleteReceita} from '../../redux/actions/receitas'
+import {loadState, saveState} from '../../redux/localStorage'
 
 class ReceitaListContainer extends React.Component{
 

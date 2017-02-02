@@ -1,12 +1,12 @@
 import React from "react"
-import FriendlyChat from "../util/FirebaseChat"
-import ChatBox from "../components/ChatBox"
-import ChatMDL from "../components/ChatMDL"
+import FriendlyChat from "../../util/FirebaseChat"
+import ChatBox from "../../components/Chat/ChatBox"
+import ChatMDL from "../../components/Chat/ChatMDL"
 import {Link} from "react-router"
 import {Layout, Drawer, Content, Navigation, Header} from "react-mdl"
 import componentHandler from "exports?componentHandler!material-design-lite/material.js"
 
-import {getCoachChats} from "../util/firebaseChatHandler"
+import {getCoachChats} from "../../util/firebaseChatHandler"
 import {connect} from "react-redux"
 
 class ChatContainer extends React.Component{

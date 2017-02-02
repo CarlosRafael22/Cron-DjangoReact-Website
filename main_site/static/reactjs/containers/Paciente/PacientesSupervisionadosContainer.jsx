@@ -1,9 +1,9 @@
 import React from "react"
-import UsuarioList from "../components/UsuarioList"
-import {getCoachPatients} from "../redux/actions/coachPatients"
+import UsuarioList from "../../components/Usuario/UsuarioList"
+import {getCoachPatients} from "../../redux/actions/coachPatients"
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import {addCoachPatient, deleteCoachPatient} from "../redux/actions/coachPatients"
+import {addCoachPatient, deleteCoachPatient} from "../../redux/actions/coachPatients"
 
 class PacientesSupervisionadosContainer extends React.Component{
 

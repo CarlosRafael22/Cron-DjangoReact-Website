@@ -1,8 +1,8 @@
 import React from "react"
 
 import Headline from "../components/Headline"
-import ReceitaList from "../components/ReceitaList"
-import IngredienteList from "../components/IngredienteList"
+import ReceitaList from "../components/Receita/ReceitaList"
+import IngredienteList from "../components/Ingrediente/IngredienteList"
 
 export default class App1Container extends React.Component {
 

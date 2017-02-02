@@ -95,7 +95,7 @@ export default class ReceitaForm extends React.Component{
 
 	render(){
 
-		const imageFile = require('../../images/recipe-icon.png');
+		const imageFile = require('../../../images/recipe-icon.png');
 
 		const categorias = ['Bolos e Tortas', 'Doces e Sobremesas', 'Massas', 'Lanches'];
 

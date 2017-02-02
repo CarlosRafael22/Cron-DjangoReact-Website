@@ -1,12 +1,12 @@
 import React from "react"
 import {connect} from "react-redux"
-import {getPatient} from "../redux/actions/patients"
-import PacientePage from "../components/PacientePage"
-import {loadState, saveState} from '../redux/localStorage'
+import {getPatient} from "../../redux/actions/patients"
+import PacientePage from "../../components/Paciente/PacientePage"
+import {loadState, saveState} from '../../redux/localStorage'
 
-import {createChat} from "../util/firebaseChatHandler"
+import {createChat} from "../../util/firebaseChatHandler"
 
-import {checkChatExists, addChat, getCoachChats} from "../redux/actions/chats"
+import {checkChatExists, addChat, getCoachChats} from "../../redux/actions/chats"
 
 class PacientePageContainer extends React.Component{
 

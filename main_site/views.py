@@ -584,6 +584,32 @@ def get_coach_chats(request, coachUsername, format=None):
 		# else:
 		# 	return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET', 'POST', 'DELETE'])
+def get_paciente_chats(request, pacienteUsername, format=None):
+
+	if request.method == 'GET':
+		paciente = Paciente.objects.get(perfil__user__username=pacienteUsername)
+		chatsDoPaciente = []
+
+		for chat in Chat.objects.all():
+			if paciente in chat.pacientesParticipantes.all():
+				chatsDoPaciente.append(chat)
+
+		chatsInfo = []
+		if len(chatsDoPaciente) > 0:
+			# Vou pegar so os chatNameIDs e retornar
+			for chat in chatsDoPaciente:
+				pacDoChat = chat.pacientesParticipantes.all()
+				usernamesPacientes = []
+				for paciente in pacDoChat:
+					usernamesPacientes.append(paciente.perfil.user.username)
+				chatsInfo.append({"chatNameID": chat.chatNameID, "coach": chat.coachUsername, "usernamesPacientes":usernamesPacientes})
+		
+		return Response(chatsInfo, status=status.HTTP_200_OK)
+		# else:
+		# 	return Response({"chat_existe":False}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 class GrupoList(generics.ListCreateAPIView):

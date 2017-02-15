@@ -42,6 +42,7 @@ urlpatterns = [
 	url(r'^api/chats/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
 	url(r'^api/chat_exists/(?P<chatNameID>[\w]+)/$', views.chat_exists),
 	url(r'^api/chats/coach/(?P<coachUsername>[\w]+)/$', views.get_coach_chats),
+	url(r'^api/chats/paciente/(?P<pacienteUsername>[\w]+)/$', views.get_paciente_chats),
 
 	url(r'^api/grupos/$', views.GrupoList.as_view()),
 	url(r'^api/grupos/(?P<pk>[0-9]+)/$', views.GrupoDetail.as_view()),

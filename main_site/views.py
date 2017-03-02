@@ -128,6 +128,38 @@ def receita_list(request, format=None):
 class ReceitaDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Receita.objects.all()
 	serializer_class = ReceitaSerializer
+
+
+
+@api_view(['GET', 'POST'])
+@parser_classes((JSONParser,))
+def get_receitas_ids(request, format=None):
+
+	if request.method == 'GET':
+
+		receitas_ids = []
+		todas_receitas = Receita.objects.all()
+
+		for receita in todas_receitas:
+			receitas_ids.append(receita.id)
+
+		return Response(receitas_ids, status=status.HTTP_200_OK)
+
+	elif request.method == 'POST':
+
+		# Vamos receber as ids das receitas que o cliente quer pegar
+		ids_receitas_desejadas = request.data['receitas_ids']
+
+		# Lista em que iremos retornar as receitas desejadas
+		receitas_retornadas = []
+
+		for receita_id in ids_receitas_desejadas:
+			receitas_retornadas.append(Receita.objects.get(id=receita_id))
+
+		serializer = ReceitaSerializer(receitas_retornadas, many=True)
+
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
 ########################################################################
 
 class Foto_ReceitaList(generics.ListCreateAPIView):

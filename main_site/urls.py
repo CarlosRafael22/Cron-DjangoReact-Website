@@ -21,6 +21,8 @@ urlpatterns = [
 	#url(r'^api/receitas/$', views.ReceitaList.as_view()),
 	url(r'^api/receitas/$', views.receita_list),
 	url(r'^api/receitas/(?P<pk>[0-9]+)/$', views.ReceitaDetail.as_view()),
+	url(r'^api/receitas_ids/$', views.get_receitas_ids),
+
 	url(r'^$', views.render_home),
 	url(r'^ingredientes/$', views.render_view1),
 	url(r'^receitas/$', views.render_view2),

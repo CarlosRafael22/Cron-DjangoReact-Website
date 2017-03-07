@@ -6,6 +6,8 @@ import {addGrupo} from "../../redux/actions/grupos"
 import {createGrupo} from "../../util/firebaseGruposHandler"
 import {getCoachGrupos} from "../../redux/actions/grupos"
 
+import Sidebar from '../../components-dashboard/Sidebar/'
+
 class GrupoContainer extends React.Component{
 
 
@@ -74,11 +76,13 @@ class GrupoContainer extends React.Component{
 		console.log(this.props);
 		return (
 			<div>
+			
 			{	this.props.children != null ?
 				this.props.children
 				:		
 				<div>
-					<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
+					
+					{/*<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />*/}
 					<GrupoListContainer  />
 				</div>
 			}

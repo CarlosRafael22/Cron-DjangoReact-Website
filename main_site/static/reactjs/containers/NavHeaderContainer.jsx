@@ -5,6 +5,9 @@ import {loginUser, logoutUser, signUpUser} from '../redux/actions/auth'
 import NavHeader from '../components/NavHeader'
 import * as firebaseAuth from '../util/firebase'
 
+import HeaderDashboard from '../components-dashboard/Header'
+import { hashHistory } from 'react-router'
+
 class NavHeaderContainer extends React.Component{
 
 	// constructor(){
@@ -48,6 +51,7 @@ class NavHeaderContainer extends React.Component{
 		console.log("Logout Header");
 		this.props.dispatch(logoutUser());
 		firebaseAuth._signOutFirebase();
+		hashHistory.push('/');
 	}
 
 	_signup(username, email, password, tipo_de_user){
@@ -74,10 +78,28 @@ class NavHeaderContainer extends React.Component{
 	
 
 	render(){
-		return (
-			<NavHeader login={this._login.bind(this)} logout={this._logout.bind(this)} signup={this._signup.bind(this)} usuario={this.props.usuario}
-			user={this.props.user} id_token={this.props.id_token} />
+
+		let headerDashboardLoggedIn = (
+
+			<HeaderDashboard isLogged = {true} logOut={this._logout.bind(this)} updateSidebar={this.props.updateSidebar.bind(this)} />
 		)
+
+
+		let headerDashboardLoggedOut = (
+
+			<HeaderDashboard isLogged = {false} logIn={this._login.bind(this)} updateSidebar={this.props.updateSidebar.bind(this)} />
+		)
+
+		return (
+			<div>
+			{this.props.usuario.isAuthenticated == true ? headerDashboardLoggedIn : headerDashboardLoggedOut}
+			</div>
+		)
+
+		// return (
+		// 	<NavHeader login={this._login.bind(this)} logout={this._logout.bind(this)} signup={this._signup.bind(this)} usuario={this.props.usuario}
+		// 	user={this.props.user} id_token={this.props.id_token} />
+		// )
 	}
 
 }

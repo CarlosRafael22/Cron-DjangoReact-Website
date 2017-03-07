@@ -6,6 +6,12 @@ import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
 import PacientesSupervisionadosContainer from "./Paciente/PacientesSupervisionadosContainer"
 
+import * as firebaseAuth from '../util/firebase'
+
+import LoginPage from '../views-dashboard/Pages/Login'
+import GrupoContainer from './Grupo/GrupoContainer'
+import { hashHistory } from 'react-router'
+
 class HomeContainer extends React.Component{
 
 	constructor(){
@@ -16,13 +22,13 @@ class HomeContainer extends React.Component{
 		this.state = {
 			django_token: localStorage.getItem('id_token'),
 			usuario: localStorage.getItem('user'),
-			localStorageState: localStorageState
+			localStorageState: localStorageState,
+			atualizaPagina: false
 		};
 		console.log(this.state);
 		console.log("Home Local Storage");
 		console.log(localStorage);
 		console.log(this.context);
-
 		
 		//console.log(localStorage.user.username);
 
@@ -33,32 +39,41 @@ class HomeContainer extends React.Component{
 		// });
 	}
 
+	 
+
 	componentWillUnmount(){
 		console.log("Terminando Home");
 	}
 
 	_logout(){
-		console.log("Logout Home");
+		console.log("Logout Header");
 		this.props.dispatch(logoutUser());
+		firebaseAuth._signOutFirebase();
+		browserHistory.push('/');
 	}
 
-	_signup(){
-
-		let username = this._username.value;
-		let password = this._password.value;
-		let email = this._email.value;
+	_signup(username, email, password, tipo_de_user){
 
 		console.log("Dispatching SignUp");
-		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}));
+		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), tipo_de_user ));
+		//this._signUpFirebase(email, password);
+
+		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE
+		// PQ O METODO createUserWithEmailAndPassword CRIA UM USER EM UMA TABLEA A PARTE
+		// http://stackoverflow.com/questions/14673708/how-do-i-return-a-list-of-users-if-i-use-the-firebase-simple-username-password
+
 	}
 
-	_loginSubmit(event){
+	_login(usernameOrEmail, password){
 
-		let username = this._username.value;
-		let password = this._password.value;
+		let emailFirebase = usernameOrEmail;
 
 		console.log("Dispatching");
-		this.props.dispatch(loginUser({"email_or_username":username, "password": password}));
+		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}, firebaseAuth._signInFirebase.bind(this)));
+		//firebaseAuth._signInFirebase(emailFirebase, password);
+		browserHistory.push('#/grupos');
+		//this.context.router.push('#/grupos');
+		//this.setState({atualizaPagina: true});
 
 	}
 
@@ -73,51 +88,40 @@ class HomeContainer extends React.Component{
 		let view;
 		// Vendo se o usuario esta logado. Se nao estiver vai mostrar o Login Form, se estiver mostra alguma outra coisa
 		if(this.props.usuario.user == null){
-			view = 
-			<div className="container" style={ownStyle}>
-				<form onSubmit={this._loginSubmit.bind(this)}>
-				  <div className="form-group">
-				    <label htmlFor="inputUsername">Username</label>
-				    <input type="text" className="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter username" 
-				    ref={(input) => this._username = input}/>
-				  </div>
-				  <div className="form-group">
-				    <label htmlFor="inputEmail">Email</label>
-				    <input type="text" className="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" 
-				    ref={(input) => this._email = input}/>
-				  </div>
-				  
-				  <div className="form-group">
-				    <label htmlFor="inputPassword">Password</label>
-				    <input type="password" className="form-control" id="inputPassword" placeholder="Password"
-				    ref={(input) => this._password = input}/>
-				  </div>
-				  <button type="submit" className="btn btn-primary">Login</button>
-				  <button type="button" className="btn btn-success" onClick={this._signup.bind(this)}>SignUp</button>
-				  <button type="button" className="btn btn-danger" onClick={this._logout.bind(this)}>Logout</button>
-				</form>
-			</div>
-		}else if(this.props.usuario.user.isCoach == true){
 			view = (
-				<div>
-					<div className="alert alert-success" role="alert">
-					  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-					</div>
-					<div>
-						<PacientesSupervisionadosContainer />
-					</div>
-				</div>
-			)
-			
-		}else{
-			view = (
-				<div>
-					<div className="alert alert-success" role="alert">
-					  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-					</div>
-				</div>
-			)
+				<LoginPage login={this._login.bind(this)} />
+			)			
+
 		}
+		else if(this.props.usuario.user.isCoach == true){
+			// view = (
+			// 	<div>
+			// 		<div className="alert alert-success" role="alert">
+			// 		  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
+			// 		</div>
+			// 		<div>
+			// 			<PacientesSupervisionadosContainer />
+			// 		</div>
+			// 	</div>
+			// )
+
+			// view = (
+			// 	<div>
+			// 		<GrupoContainer />
+			// 	</div>
+			// )
+			hashHistory.push('/grupos');
+		}
+			
+		// }else{
+		// 	view = (
+		// 		<div>
+		// 			<div className="alert alert-success" role="alert">
+		// 			  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
+		// 			</div>
+		// 		</div>
+		// 	)
+		// }
 
 
 		return(

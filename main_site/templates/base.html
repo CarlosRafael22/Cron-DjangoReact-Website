@@ -12,7 +12,7 @@
 
     <!-- COLOCANDO O SIDEBAR  https://startbootstrap.com/template-overviews/simple-sidebar/ -->
     <!-- Custom CSS -->
-    <link href="{% static 'simple-sidebar.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'simple-sidebar.css' %}" rel="stylesheet"> -->
 
     <!-- A PARTIR DAQUI EH O CODIGO DO FIREBASE CHAT -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,9 +47,18 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="{% static 'main.css' %}">
 
+
+    <!-- ADICAO DO DASHBOARD -->
+    <!-- Icons -->
+    <link href="{% static '/css-dashboard/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css-dashboard/simple-line-icons.css' %}" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="{% static '/css-dashboard/style.css' %}" rel="stylesheet">
+
     <script>console.time('react-app')</script>
   </head>
-  <body>
+  <body >
 
     {% block main %}{% endblock %}
 
@@ -81,4 +90,5 @@
     });
     </script> -->
   </body>
+  <script type="text/javascript" src="{% static '/js-dashboard/main.2f0de3fc.js' %}"></script>
 </html>

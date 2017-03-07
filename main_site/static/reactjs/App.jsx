@@ -1,6 +1,6 @@
 import React from "react"
 import { render } from "react-dom"
-import {hashHistory, Router, Route, Redirect, IndexRoute} from "react-router"
+import {hashHistory, Router, Route, Redirect, IndexRoute, IndexRedirect} from "react-router"
 
 import HomeContainer from "./containers/HomeContainer"
 import App1Container from "./containers/App1Container"
@@ -22,6 +22,13 @@ import GrupoContainer from "./containers/Grupo/GrupoContainer"
 import GrupoPage from "./components/Grupo/GrupoPage"
 
 import ChatMDL from "./components/Chat/ChatMDL"
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////									DASHBOARD CODE
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import Full from "./containers-dashboard/Full"
+import Login from "./views-dashboard/Pages/Login"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,9 +74,17 @@ class AppRouter extends React.Component{
 				<Router history={hashHistory}>
 					{/*<Redirect from="/" to="/home"/>*/}
 
-					<Route path="/" component={Layout}>
-						<IndexRoute component={HomeContainer}/>
-						<Route path="/home" component={HomeContainer} />
+					<Route path="/" component={Full}>
+						
+						{/*<IndexRedirect to="/grupos" />*/}
+						<IndexRoute component={HomeContainer} />
+						<Route path="/chats" component={ChatContainer}>
+							{/*<Route path="/chats/:chatID" {...ChatMDL} />*/}
+						</Route>
+						<Route path="/grupos" component={GrupoContainer}>
+							<Route path="/grupos/:coachUsername/:grupo_id" component={GrupoPage} />
+						</Route>
+						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 						<Route path="/pacientes" component={PacienteContainer}>
 							<Route path="/pacientes/:pacienteId" component={PacientePageContainer} />
 						</Route>
@@ -79,13 +94,6 @@ class AppRouter extends React.Component{
 						<Route path="/receitas" component={ReceitaContainer}>
 							<Route path="/receitas/:receitaId" component={ReceitaPage} />
 						</Route>
-						<Route path="/chats" component={ChatContainer}>
-							{/*<Route path="/chats/:chatID" {...ChatMDL} />*/}
-						</Route>
-						<Route path="/grupos" component={GrupoContainer}>
-							<Route path="/grupos/:coachUsername/:grupo_id" component={GrupoPage} />
-						</Route>
-						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>*/}
 					</Route>
 				</Router>
 			</Provider>

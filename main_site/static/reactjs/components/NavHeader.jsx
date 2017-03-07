@@ -6,6 +6,8 @@ import store from '../redux/store'
 import Modal from './Modal'
 import Header from './Header'
 
+import HeaderDashboard from '../components-dashboard/Header'
+
 export default class NavHeader extends React.Component{
 
 	constructor(props){
@@ -138,40 +140,64 @@ export default class NavHeader extends React.Component{
 		)
 
 		// AGORA O HEADER VAI SER DIFERENTE BASEADO EM SE O USUARIO ESTA LOGADO OU NAO
-		let headerUserLoggedOut = (
-			<Header>
-				<ul className="nav navbar-nav navbar-right">
-		          	<li><a href="#/home">{this.props.id_token}</a></li>
-		            <li><button type="button" className="btn btn-primary btn-lg" onClick={this._handleShowModal.bind(this, 0)}
-		            data-toggle="modal" data-target="#myModal">
-					  Login
-					</button>
-					</li>
-		            <li><a href="#" onClick={this._handleShowModal.bind(this, 1)}>Signup</a></li>
-		            {/*<Link to="/home">Profile</Link>*/}
-		            <li><a href="#/home">Profile</a></li>
-		          </ul>
-			</Header>
+		// let headerUserLoggedOut = (
+		// 	<Header>
+		// 		<ul className="nav navbar-nav navbar-right">
+		//           	<li><a href="#/home">{this.props.id_token}</a></li>
+		//             <li><button type="button" className="btn btn-primary btn-lg" onClick={this._handleShowModal.bind(this, 0)}
+		//             data-toggle="modal" data-target="#myModal">
+		// 			  Login
+		// 			</button>
+		// 			</li>
+		//             <li><a href="#" onClick={this._handleShowModal.bind(this, 1)}>Signup</a></li>
+		//             {/*<Link to="/home">Profile</Link>*/}
+		//             <li><a href="#/home">Profile</a></li>
+		//           </ul>
+		// 	</Header>
+		// )
+
+		// let headerUserLoggedIn = (
+		// 	<Header>
+		// 		<ul className="nav navbar-nav navbar-right">
+		//           	<li><a href="#/home">{this.props.id_token}</a></li>
+		//             <li><button type="button" className="btn btn-primary btn-lg">
+		// 			  {this.props.user != null ? this._showUserInfo() : "Null"}
+		// 			</button>
+		// 			</li>
+		//             <li>{/*<a href="#" onClick={this.props.logout.bind(this)}>Log out</a>*/}
+		//             ><button type="button" className="btn btn-primary btn-lg" onClick={this.props.logout.bind(this)}
+		//             data-toggle="modal" data-target="#myModal">
+		// 			  Log out
+		// 			</button></li>
+		//             {/*<Link to="/home">Profile</Link>*/}
+		//             <li><a href="#/home">Profile</a></li>
+		//         </ul>
+		// 	</Header>
+		// )
+
+
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		let headerDashboardLoggedIn = (
+
+			<HeaderDashboard isLogged = {true} logOut={this.props.logout.bind(this)} />
 		)
 
-		let headerUserLoggedIn = (
-			<Header>
-				<ul className="nav navbar-nav navbar-right">
-		          	<li><a href="#/home">{this.props.id_token}</a></li>
-		            <li><button type="button" className="btn btn-primary btn-lg">
-					  {this.props.user != null ? this._showUserInfo() : "Null"}
-					</button>
-					</li>
-		            <li>{/*<a href="#" onClick={this.props.logout.bind(this)}>Log out</a>*/}
-		            ><button type="button" className="btn btn-primary btn-lg" onClick={this.props.logout.bind(this)}
-		            data-toggle="modal" data-target="#myModal">
-					  Log out
-					</button></li>
-		            {/*<Link to="/home">Profile</Link>*/}
-		            <li><a href="#/home">Profile</a></li>
-		        </ul>
-			</Header>
+
+		let headerDashboardLoggedOut = (
+
+			<HeaderDashboard isLogged = {false} logIn={this._handleShowModal.bind(this, 0)} />
 		)
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		console.log("Storage no Header");
 		console.log(localStorage);
@@ -183,7 +209,7 @@ export default class NavHeader extends React.Component{
 		console.log(this.props.usuario.isAuthenticated);
 		return (
 			<div>
-			{this.props.usuario.isAuthenticated == true ? headerUserLoggedIn : headerUserLoggedOut}
+			{this.props.usuario.isAuthenticated == true ? headerDashboardLoggedIn : headerDashboardLoggedOut}
 	    	{/* PRIMEIRA PARTE VE SE TA COM O showModal E DPS DENTRO DO PRIMEIRO () VE SE EH O DE LOGIN OU SIGNUP*/}
 	    	{this.state.showModal ? ( this.state.modalType==0 ? modalLogIn : modalSignUp ) : (null) }
 	    	</div>

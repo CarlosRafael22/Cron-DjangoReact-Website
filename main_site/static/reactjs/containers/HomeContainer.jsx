@@ -1,6 +1,6 @@
 import React from "react"
 
-import {loginUser, logoutUser, signUpUser} from '../redux/actions/auth'
+import {loginUser, logoutUser, signUpUser, getProfilePicture} from '../redux/actions/auth'
 import { connect } from 'react-redux'
 import reducer from '../redux/reducer'
 import {loadState, saveState} from '../redux/localStorage'
@@ -70,6 +70,7 @@ class HomeContainer extends React.Component{
 
 		console.log("Dispatching");
 		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}, firebaseAuth._signInFirebase.bind(this)));
+		//this._getProfilePicture();
 		//firebaseAuth._signInFirebase(emailFirebase, password);
 		hashHistory.push('/grupos');
 		//this.context.router.push('#/grupos');
@@ -79,7 +80,7 @@ class HomeContainer extends React.Component{
 
 
 	_getProfilePicture(){
-		
+		this.props.dispatch(getProfilePicture(this.props.usuario.user.username));
 	}
 
 	render(){

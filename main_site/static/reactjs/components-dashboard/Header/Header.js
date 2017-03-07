@@ -38,6 +38,8 @@ class Header extends Component {
 
     const adminImg = require('../../../img/avatars/6.jpg');
 
+    const coachImgURL = this.props.profilePictureURL;
+
 
     let dropdown;
 
@@ -114,7 +116,7 @@ class Header extends Component {
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
-                <img src="http://localhost:8000/media/1f671e21-2dfb-415a-b8e8-a3f90b3a567b.jpg" className="img-avatar" alt="admin@bootstrapmaster.com"/>
+                <img src={coachImgURL} className="img-avatar" alt="admin@bootstrapmaster.com"/>
                 <span className="hidden-md-down">admin</span>
               </a>
             <DropdownMenu className="dropdown-menu-right">

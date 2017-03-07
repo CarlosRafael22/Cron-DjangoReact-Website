@@ -1,6 +1,7 @@
 import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
-  SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE
+  SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
+  GET_PROFILE_PICTURE_REQUEST,GET_PROFILE_PICTURE_SUCCESS,GET_PROFILE_PICTURE_FAILURE
 } from '../actions/auth'
 
 
@@ -54,11 +55,26 @@ export default function auth(state = {
         isAuthenticated: false,
         errorMessage: action.message
       })
+    case GET_PROFILE_PICTURE_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+    })
+    case GET_PROFILE_PICTURE_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        profilePictureURL: action.profilePictureURL
+    })
+    case GET_PROFILE_PICTURE_FAILURE:
+      return Object.assign({}, state, {
+        loading: false,
+        error: action.errorMessage
+    })
     case LOGOUT_SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
         user: null,
+        profilePictureURL: null,
         id_token: null
       })
     default:

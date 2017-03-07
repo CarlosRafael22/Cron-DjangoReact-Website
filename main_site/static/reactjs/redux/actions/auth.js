@@ -1,3 +1,64 @@
+
+export const GET_PROFILE_PICTURE_REQUEST = 'GET_PROFILE_PICTURE_REQUEST'
+export const GET_PROFILE_PICTURE_SUCCESS = 'GET_PROFILE_PICTURE_SUCCESS'
+export const GET_PROFILE_PICTURE_FAILURE = 'GET_PROFILE_PICTURE_FAILURE'
+
+function getProfilePictureRequest(){
+  console.log("Pegando a foto do user no action!");
+  return {
+    type: GET_PROFILE_PICTURE_REQUEST,
+    loading: true 
+  }
+}
+
+function getProfilePictureSuccess(profilePicUrl){
+  console.log("Pegou a foto do user no action");
+  return {
+    type: GET_PROFILE_PICTURE_SUCCESS,
+    loading: false,
+    profilePictureURL: profilePicUrl
+  }
+}
+
+function getProfilePictureFailure(errorMessage){
+  console.log("Deu merda na foto do user no action");
+  return {
+    type: GET_PROFILE_PICTURE_FAILURE,
+    loading: false,
+    errorMessage
+  }
+}
+
+export function getProfilePicture(coachUsername){
+
+  console.log("getProfilePicture no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(getProfilePictureRequest());
+
+    jQuery.ajax({
+      type: 'GET',
+      url: '/api/fotos_perfis/'+coachUsername.toString()
+    }).done(profilePicUrl => {
+
+      console.log(profilePicUrl);
+      // Dispatch the success action
+      dispatch(getProfilePictureSuccess(profilePicUrl));
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(getProfilePictureFailure(error))
+
+    });
+
+  }
+}
+
+
 // There are three possible states for our login
 // process and we need actions for each of them
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -67,6 +128,8 @@ export function loginUser(creds, signInFirebase) {
       signInFirebase(creds.email_or_username, creds.password);
       // Dispatch the success action
       dispatch(receiveLogin(authInfo));
+
+      dispatch(getProfilePicture(authInfo.user.username));
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })
@@ -225,3 +288,5 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
     });
   }
 }
+
+

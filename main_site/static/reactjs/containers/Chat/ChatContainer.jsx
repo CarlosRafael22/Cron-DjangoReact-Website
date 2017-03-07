@@ -131,6 +131,7 @@ class ChatContainer extends React.Component{
 
 		return(
 		<div>
+		<p>Oi aqui!</p>
 		<div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
 		  <div className="mdl-layout__drawer">
 		    <span className="mdl-layout-title">Chats</span>

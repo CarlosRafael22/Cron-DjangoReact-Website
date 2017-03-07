@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo)
+
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil)
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
-	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer, GrupoSerializer)
+	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer, GrupoSerializer,
+	Foto_PerfilSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
 from rest_framework import parsers, renderers
 
 from rest_framework import generics
-from rest_framework.decorators import parser_classes
+from rest_framework.decorators import parser_classes, renderer_classes
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser, JSONParser
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -299,6 +302,50 @@ class PerfilList(generics.ListCreateAPIView):
 class PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Perfil.objects.all()
 	serializer_class = PerfilSerializer
+
+
+#########################################################################
+
+class Foto_PerfilList(generics.ListCreateAPIView):
+	queryset = Foto_Perfil.objects.all()
+	serializer_class = Foto_PerfilSerializer
+
+class Foto_PerfilDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Foto_Perfil.objects.all()
+	serializer_class = Foto_PerfilSerializer
+
+
+class JPEGRenderer(renderers.BaseRenderer):
+    media_type = 'image/jpeg'
+    format = 'jpg'
+    charset = 'UTF-8'
+    render_style = 'binary'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        return data
+
+@api_view(['GET'])
+#@renderer_classes((JPEGRenderer,))
+#@parser_classes((FormParser, MultiPartParser,FileUploadParser,))
+def get_foto_perfil(request, perfil_username, format=None):
+
+	if request.method == 'GET':
+
+		perfil = Perfil.objects.get(user__username=perfil_username)
+
+		foto_perfil = perfil.foto_perfil
+
+		#  USA O CONTEXT PARA QUE ELE VOLTE COM A URL COMPLETA DA FOTO
+		#  http://masnun.com/2015/10/26/django-rest-framework-displaying-full-url-for-imagefield-or-filefield.html
+		foto_serialized = Foto_PerfilSerializer(foto_perfil, context={"request": request})
+
+		#return HttpResponse(foto_serialized.data, content_type="image/jpg")
+		#return Response(foto_serialized.data['foto'], content_type="image/jpg")
+		# So vou mostrar qual a URL onde a foto esta, o <img src> pode acessar essa url diretamente e pegar a imagem
+		return Response(foto_serialized.data['foto'], status=status.HTTP_200_OK)
+
+
+
 
 ########################################################################
 

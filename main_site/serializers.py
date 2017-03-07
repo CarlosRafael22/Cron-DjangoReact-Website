@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil)
 from django.contrib.auth.models import User
 import json
 
@@ -190,9 +190,24 @@ class UserSerializer(serializers.ModelSerializer):
 		return instance
 
 
+class Foto_PerfilSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Foto_Perfil
+		fields = '__all__'
+
+	# def create(self, validated_data):
+
+	# 	# import pdb;
+	# 	# pdb.set_trace();
+
+	# 	foto = Foto_Receita.objects.create(**validated_data)
+	# 	return foto
+
 class PerfilSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
 	data_nascimento = serializers.DateField()
+	foto_perfil = Foto_PerfilSerializer()
 
 	class Meta:
 		model = Perfil
@@ -220,8 +235,6 @@ class PerfilSerializer(serializers.ModelSerializer):
 			ret = super(PerfilSerializer, self).to_representation(obj)
 
 		return ret
-
-
 
 	#def create(self, validated_data)
 

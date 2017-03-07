@@ -71,10 +71,15 @@ class HomeContainer extends React.Component{
 		console.log("Dispatching");
 		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}, firebaseAuth._signInFirebase.bind(this)));
 		//firebaseAuth._signInFirebase(emailFirebase, password);
-		browserHistory.push('#/grupos');
+		hashHistory.push('/grupos');
 		//this.context.router.push('#/grupos');
 		//this.setState({atualizaPagina: true});
 
+	}
+
+
+	_getProfilePicture(){
+		
 	}
 
 	render(){
@@ -93,25 +98,25 @@ class HomeContainer extends React.Component{
 			)			
 
 		}
-		else if(this.props.usuario.user.isCoach == true){
-			// view = (
-			// 	<div>
-			// 		<div className="alert alert-success" role="alert">
-			// 		  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-			// 		</div>
-			// 		<div>
-			// 			<PacientesSupervisionadosContainer />
-			// 		</div>
-			// 	</div>
-			// )
+		// else if(this.props.usuario.user.isCoach == true){
+		// 	// view = (
+		// 	// 	<div>
+		// 	// 		<div className="alert alert-success" role="alert">
+		// 	// 		  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
+		// 	// 		</div>
+		// 	// 		<div>
+		// 	// 			<PacientesSupervisionadosContainer />
+		// 	// 		</div>
+		// 	// 	</div>
+		// 	// )
 
-			// view = (
-			// 	<div>
-			// 		<GrupoContainer />
-			// 	</div>
-			// )
-			hashHistory.push('/grupos');
-		}
+		// 	// view = (
+		// 	// 	<div>
+		// 	// 		<GrupoContainer />
+		// 	// 	</div>
+		// 	// )
+		// 	hashHistory.push('/grupos');
+		// }
 			
 		// }else{
 		// 	view = (

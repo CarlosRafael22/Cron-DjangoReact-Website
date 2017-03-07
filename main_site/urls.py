@@ -27,9 +27,16 @@ urlpatterns = [
 	url(r'^ingredientes/$', views.render_view1),
 	url(r'^receitas/$', views.render_view2),
 	url(r'^chat/$', views.render_chat),
+
+
 	url(r'^api/fotos/$', views.Foto_ReceitaList.as_view()),
 	#url(r'^api/fotos/$', views.foto_list),
 	url(r'^api/fotos/(?P<pk>[0-9]+)/$', views.Foto_ReceitaDetail.as_view()),
+	url(r'^api/fotos_perfis/$', views.Foto_PerfilList.as_view()),
+	url(r'^api/fotos_perfis/(?P<pk>[0-9]+)/$', views.Foto_PerfilDetail.as_view()),
+	url(r'^api/fotos_perfis/(?P<perfil_username>[\w]+)/$', views.get_foto_perfil),
+
+
 	url(r'^api/usuarios/$', views.UserList.as_view()),
 	url(r'^api/usuarios/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
 	url(r'^api/perfis/$', views.PerfilList.as_view()),

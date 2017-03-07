@@ -120,3 +120,64 @@ export function getCoach(coachId){
 
   }
 }
+
+
+export const GET_COACH_PROFILE_PICTURE_REQUEST = 'GET_COACH_PROFILE_PICTURE_REQUEST'
+export const GET_COACH_PROFILE_PICTURE_SUCCESS = 'GET_COACH_PROFILE_PICTURE_SUCCESS'
+export const GET_COACH_PROFILE_PICTURE_FAILURE = 'GET_COACH_PROFILE_PICTURE_FAILURE'
+
+function getCoachProfilePictureRequest(){
+  console.log("Pegando a foto do coach no action!");
+  return {
+    type: GET_COACH_PROFILE_PICTURE_REQUEST,
+    loading: true 
+  }
+}
+
+function getCoachProfilePictureSuccess(coach){
+  console.log("Pegou a foto do coach no action");
+  return {
+    type: GET_COACH_PROFILE_PICTURE_SUCCESS,
+    loading: false,
+    coachVisto: coach
+  }
+}
+
+function getCoachProfilePictureFailure(errorMessage){
+  console.log("Deu merda na foto do coach no action");
+  return {
+    type: GET_COACH_PROFILE_PICTURE_FAILURE,
+    loading: false,
+    errorMessage
+  }
+}
+
+export function getCoachProfilePicture(coachUsername){
+
+  console.log("getCoachProfilePicture no action");
+  return dispatch => {
+
+    // We dispatch requestLogin to kickoff the call to the API
+    dispatch(getCoachProfilePictureRequest());
+
+    jQuery.ajax({
+      type: 'GET',
+      url: '/api/fotos_perfis/'+coachUsername.toString(),
+      contentType: 'application/json'
+    }).done(coach => {
+
+      console.log(coach);
+      // Dispatch the success action
+      dispatch(getCoachProfilePictureSuccess(coach));
+    })
+    .fail(function(xhr, status, error){
+      console.log(error);
+      console.log(xhr);
+
+      // console.log(response);
+      dispatch(getCoachProfilePictureFailure(error))
+
+    });
+
+  }
+}

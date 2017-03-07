@@ -79,12 +79,23 @@ class Receita(models.Model):
 #
 ####################################################################################################################################################
 
+# TO CRIANDO UM MODEL DA IMAGEM PRA VER SE FICA MAIS FACIL DE SERIALIZAR
+# E TB PRA DPS PODER TER VARIAS IMAGENS EM UMA MESMA RECEITA
+class Foto_Perfil(models.Model):
+	def upload_filename(instance, filename):
+		extension = filename.split(".")[-1]
+		return "{}.{}".format(uuid.uuid4(), extension)
+
+	foto = models.ImageField(upload_to=upload_filename, null=True)
+
+DEFAULT_FOTO_PERFIL_ID = 1
 class Perfil(models.Model):
 	def get_image_path(self, instance):
 		self.url_da_imagem = '/media/' + 'perfil/{0}/{1}'.format(self.categoria, instance)
 		return settings.MEDIA_ROOT + 'perfil/{0}/{1}'.format(self.categoria, instance)
 
-	imagem_perfil = models.ImageField(upload_to=get_image_path, null=True)
+	#imagem_perfil = models.ImageField(upload_to=get_image_path, null=True)
+	foto_perfil = models.ForeignKey(Foto_Perfil, null=True, on_delete=models.CASCADE, default=DEFAULT_FOTO_PERFIL_ID)
 	user = models.OneToOneField(User)
 	cpf = models.CharField(max_length=15, null=True)
 	data_nascimento = models.DateField(null=True)
@@ -114,6 +125,10 @@ class PessoaManager(models.Manager):
 
 class Paciente(models.Model):
 	perfil = models.OneToOneField(Perfil)
+	peso = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+	medida_abdominal = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+	medida_cintura = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+
 
 	objects = PessoaManager()
 

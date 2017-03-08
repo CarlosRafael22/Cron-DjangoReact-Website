@@ -1,6 +1,5 @@
 import {addChat} from "./chats"
 
-
 export const ADD_GRUPO_REQUEST = 'ADD_GRUPO_REQUEST'
 export const ADD_GRUPO_SUCCESS = 'ADD_GRUPO_SUCCESS'
 export const ADD_GRUPO_FAILURE = 'ADD_GRUPO_FAILURE'

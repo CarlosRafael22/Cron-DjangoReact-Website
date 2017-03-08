@@ -740,16 +740,24 @@ class GrupoList(generics.ListCreateAPIView):
 
 			# VOU BOTAR A ID TB PRA FACILITAR NA HORA DE AO CLICAR NO NOME DO PACIENTE IR PARA A PAGINA DELE NO FRONT-END
 			pacientesInfo = []
+			pacientes = []
 
 			for paciente in grupo.pacientes.all():
 				pacienteUsername = paciente.perfil.user.username
 				pacientesGrupo.append(pacienteUsername)
 
 				# PROVENDO ID E USERNAME DO PACIENTE
-				pacientesInfo.append({"username": pacienteUsername, "id": paciente.id})
+				#pacientesInfo.append({"username": pacienteUsername, "id": paciente.id})
+
+				# PASSANDO AS INFOS PROVIDAS PELO SERIALIZER DO PACIENTE PARA TER AS MESMAS INFOS QUE TEMOS NO state.pacientes_supervisionados DO REDUX
+				paciente_serializer = PacienteSerializer(paciente, context={"limited_representation" : True})
+				pacientes.append(paciente_serializer.data)
+
 			coachUsername = grupo.coach.perfil.user.username
 			grupo_id = grupo.id
-			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "usernamesPacientes":pacientesGrupo, "pacientesInfo": pacientesInfo})
+			grupo_data_inicio = grupo.data_inicio
+			gruposResponse.append({ "grupo_id": grupo_id, "nome_grupo":grupo.nome_grupo, "coach":coachUsername, "usernamesPacientes":pacientesGrupo, "pacientes": pacientes, 
+				"data_inicio": grupo_data_inicio})
 
 		return Response(gruposResponse, status=status.HTTP_200_OK)
 
@@ -775,14 +783,22 @@ def get_coach_grupos(request, coachUsername, format=None):
 
 				# VOU BOTAR A ID TB PRA FACILITAR NA HORA DE AO CLICAR NO NOME DO PACIENTE IR PARA A PAGINA DELE NO FRONT-END
 				pacientesInfo = []
+				pacientes = []
 
 				for paciente in pacDoGrupo:
 					usernamesPacientes.append(paciente.perfil.user.username)
 
 					# PROVENDO ID E USERNAME DO PACIENTE
-					pacientesInfo.append({"username": paciente.perfil.user.username, "id": paciente.id})
+					#pacientesInfo.append({"username": paciente.perfil.user.username, "id": paciente.id})
+
+					# PASSANDO AS INFOS PROVIDAS PELO SERIALIZER DO PACIENTE PARA TER AS MESMAS INFOS QUE TEMOS NO state.pacientes_supervisionados DO REDUX
+					paciente_serializer = PacienteSerializer(paciente, context={"limited_representation" : True})
+					pacientes.append(paciente_serializer.data)
+
 				grupo_id = grupo.id
-				gruposInfo.append({"grupo_id": grupo_id, "nome_grupo": grupo.nome_grupo, "coach": grupo.coach.perfil.user.username, "usernamesPacientes":usernamesPacientes, "pacientesInfo": pacientesInfo})
+				grupo_data_inicio = grupo.data_inicio
+				gruposInfo.append({"grupo_id": grupo_id, "nome_grupo": grupo.nome_grupo, "coach": grupo.coach.perfil.user.username, "usernamesPacientes":usernamesPacientes, 
+					"pacientes": pacientes, "data_inicio": grupo_data_inicio})
 		
 		return Response(gruposInfo, status=status.HTTP_200_OK)
 

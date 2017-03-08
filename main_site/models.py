@@ -135,8 +135,6 @@ class Paciente(models.Model):
 	def __str__(self):
 		return self.perfil.user.username
 
-
-
 class Coach(models.Model):
 	perfil = models.OneToOneField(Perfil)
 	pacientes_supervisionados = models.ManyToManyField(Paciente)
@@ -168,7 +166,13 @@ class Grupo(models.Model):
 	chat = models.ForeignKey(Chat, null=True)
 	coach = models.ForeignKey(Coach)
 	pacientes = models.ManyToManyField(Paciente)
+	data_inicio = models.DateField(null=True)
 
 	def __str__(self):
 		name = "Grupo "+str(self.pk)+" coach "+str(self.coach.perfil.user.username)
 		return name
+
+	def save(self, *args, **kwargs):
+		if not self.id:
+			self.data_inicio = timezone.now()
+		return super(Grupo, self).save(*args, **kwargs)

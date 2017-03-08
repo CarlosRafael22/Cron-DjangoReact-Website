@@ -521,7 +521,7 @@ def pacientes_coach(request, pk, format=None):
 		# pk eh a coachId entao vou pegar e retornar a lista de perfils de pacientes
 		pacientes_coach = Coach.objects.get(pk=pk).pacientes_supervisionados.all()
 
-		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True})
+		serializer = PacienteSerializer(pacientes_coach, many=True, context={"limited_representation" : True, "request": request})
 
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -611,6 +611,18 @@ class ChatList(generics.ListCreateAPIView):
 
 		chat.coachParticipante = coach_participante
 		chat.save()
+
+		###########################################################
+		# SE TIVER SIDO UM CHAT COM MAIS DE UM NO pacientesUsernames ENTAO FOI UM CHAT DE GRUPO
+		# E VAMOS ADICIONA-LO NO RESPECTIVO GRUPO
+		if len(pacientesUsernames) > 1:
+			# Pego a ID do grupo
+			# Vem no formato CdeboraG23
+			grupo_id = int(self.request.data['chatNameID'].split('G')[1])
+			grupo = Grupo.objects.get(id=grupo_id)
+			grupo.chat = chat
+			grupo.save()
+		###########################################################
 
 		# Pegar TODOS OS CHATS DO COACH QUE ADICIONOU ESSE NOVO
 		# ASSIM SO RETORNAREMOS OS CHATS DOS COACHES LOGADOS

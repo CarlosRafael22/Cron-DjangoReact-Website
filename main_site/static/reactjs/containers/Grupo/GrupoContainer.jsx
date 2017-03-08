@@ -3,6 +3,7 @@ import {connect} from "react-redux"
 import GrupoListContainer from "./GrupoListContainer"
 import GrupoForm from "../../components/Grupo/GrupoForm"
 import {addGrupo} from "../../redux/actions/grupos"
+import {getCoachPatients} from "../../redux/actions/coachPatients"
 import {createGrupo} from "../../util/firebaseGruposHandler"
 import {getCoachGrupos} from "../../redux/actions/grupos"
 
@@ -24,6 +25,9 @@ class GrupoContainer extends React.Component{
 			console.log("DISPACHANDO GET COACHES");
 			this.props.dispatch(getCoachGrupos(this.props.usuario.user.username));
 		}
+
+		// Pegando os pacientes supervisionados para colocar os checkboxes
+		this._getPacientes();
 		
 	}
 
@@ -51,6 +55,18 @@ class GrupoContainer extends React.Component{
 	// 		this.setState({coachGrupos : this._getCoachGrupos() });
 	// 	}
 	// }
+
+	_getPacientes(){
+		console.log("PEGANDO OS Pacientes Superv");
+
+		// VOU TER QUE CHECAR PRA VER SE ELE JA TA LOGADO E SE TIVER SE ELE EH UM COACH
+		// TENHO Q FAZER AQUI TB PARA O CASO DE ELE LOGAR EM OUTRA TELA ASSIM O componentWillReceiveProps NAO VAI RODAR
+		// Se eu tiver logado e for um coach eu pego os pacientes
+    	if(this.props.usuario.isAuthenticated && this.props.usuario.user.isCoach){
+    		this.props.dispatch(getCoachPatients(this.props.usuario.user.coachId));
+    	}
+		
+	}
 
 
 	_getCoachGrupos(){
@@ -82,7 +98,7 @@ class GrupoContainer extends React.Component{
 				:		
 				<div>
 					
-					{/*<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />*/}
+					<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
 					<GrupoListContainer  />
 				</div>
 			}

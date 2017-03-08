@@ -257,12 +257,15 @@ class PacienteSerializer(serializers.ModelSerializer):
 
 			# Para nao gerar: ValueError: The 'imagem_perfil' attribute has no file associated with it.
 			# To checando logo aqui
-			if obj.perfil.imagem_perfil:
+			if obj.perfil.foto_perfil:
 				print("Tem imagem")
-				imagem = obj.perfil.imagem_perfil
+				#  USA O CONTEXT PARA QUE ELE VOLTE COM A URL COMPLETA DA FOTO
+				#  http://masnun.com/2015/10/26/django-rest-framework-displaying-full-url-for-imagefield-or-filefield.html
+				foto_serializer = Foto_PerfilSerializer(obj.perfil.foto_perfil, context={"request": self.context.get("request")})
+				imagem_url = foto_serializer.data['foto']
 			else:
 				print("Nao tem imagem")
-				imagem = None
+				imagem_url = None
 
 			# Tb vou botar a informacao de que coaches estao supervisionando esse paciente! Isso vai ser usado na hora de mostrar esse paciente no site
 			# Se for um paciente do coach logado vai haver um botao para ele dessupervisionar
@@ -275,7 +278,7 @@ class PacienteSerializer(serializers.ModelSerializer):
 				coaches_usernames = None
 
 			paciente = {"id": obj.id, "data_nascimento": obj.perfil.data_nascimento, "cpf": obj.perfil.cpf, "perfilId" : obj.perfil.id,
-				"imagem_perfil": imagem, 
+				"foto_perfil": imagem_url, 
 				"userId": obj.perfil.user.id, "username": obj.perfil.user.username, "first_name": obj.perfil.user.first_name,
         		"last_name": obj.perfil.user.last_name, "email": obj.perfil.user.email, "paciente": True, "coaches": coaches_usernames}
         	# Botei "paciente": True pq no front-end no UsuarioInfoBox ele checa isso

@@ -20,8 +20,6 @@ class AdminGrupoContainer extends React.Component{
 			grupoSelected: null
 		}
 
-		alert("Admin Grupo");
-
 		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
 		if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
 			console.log("DISPACHANDO GET COACHES");
@@ -95,7 +93,7 @@ class AdminGrupoContainer extends React.Component{
 		return (
 			<div>
 
-				<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
+				<GrupoForm pacientes_supervisionados={this.props.todos_pacientes} criarGrupo={this._criarGrupo.bind(this)} />
 					<GrupoListContainer />
 			
 			{/*{	this.props.children != null ?
@@ -118,6 +116,7 @@ function mapStateToProps(state){
 	return {
 		grupos: state.grupos,
 		pacientes: state.pacientes_supervisionados.coachPatientsList,
+		todos_pacientes: state.pacientes.pacientesList,
 		usuario: state.usuario
 	}
 }

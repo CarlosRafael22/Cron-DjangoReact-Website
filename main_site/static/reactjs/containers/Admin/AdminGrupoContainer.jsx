@@ -1,6 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
-import GrupoListContainer from "./GrupoListContainer"
+import GrupoListContainer from "../Grupo/GrupoListContainer"
 import GrupoForm from "../../components/Grupo/GrupoForm"
 import {addGrupo} from "../../redux/actions/grupos"
 import {getCoachPatients} from "../../redux/actions/coachPatients"
@@ -9,7 +9,7 @@ import {getCoachGrupos} from "../../redux/actions/grupos"
 
 import Sidebar from '../../components-dashboard/Sidebar/'
 
-class GrupoContainer extends React.Component{
+class AdminGrupoContainer extends React.Component{
 
 
 	constructor(props){
@@ -19,6 +19,8 @@ class GrupoContainer extends React.Component{
 			coachGrupo: null,
 			grupoSelected: null
 		}
+
+		alert("Admin Grupo");
 
 		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
 		if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
@@ -92,16 +94,19 @@ class GrupoContainer extends React.Component{
 		console.log(this.props);
 		return (
 			<div>
+
+				<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
+					<GrupoListContainer />
 			
-			{	this.props.children != null ?
-				this.props.children
-				:		
-				<div>
-					
-					{/*<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />*/}
-					<GrupoListContainer  />
-				</div>
-			}
+			{/*{	this.props.children != null ?
+							this.props.children
+							:		
+							<div>
+								
+								<GrupoForm pacientes_supervisionados={this.props.pacientes} criarGrupo={this._criarGrupo.bind(this)} />
+								<GrupoListContainer />
+							</div>
+						}*/}
 			</div>
 		)
 	}
@@ -117,4 +122,4 @@ function mapStateToProps(state){
 	}
 }
 
-export default connect(mapStateToProps)(GrupoContainer)
+export default connect(mapStateToProps)(AdminGrupoContainer)

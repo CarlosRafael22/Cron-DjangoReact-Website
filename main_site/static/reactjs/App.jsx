@@ -24,6 +24,7 @@ import GrupoPage from "./components/Grupo/GrupoPage"
 import ChatMDL from "./components/Chat/ChatMDL"
 
 import AdminContainer from "./containers/Admin/AdminContainer"
+import AdminGrupoContainer from "./containers/Admin/AdminGrupoContainer"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,8 +92,10 @@ class AppRouter extends React.Component{
 						</Route>
 
 						{/* PAGINA PARA ADMIN LOGAR E CRIAR NOVO COACH E GRUPOS */}
-						<Route path="/admin" component={AdminContainer} />
-						
+						<Route path="/admin" component={AdminContainer} >
+							
+						</Route>
+						<Route path="/admin/grupos" component={AdminGrupoContainer} />
 						{/*<Route path="chat" component={ChatContainer} onChange={this._loadElements.bind(this)}/>
 						<Route path="/pacientes" component={PacienteContainer}>
 							<Route path="/pacientes/:pacienteId" component={PacientePageContainer} />

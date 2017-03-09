@@ -51,26 +51,12 @@ class AdminContainer extends React.Component{
 
 		console.log("Dispatching SignUp");
 		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), tipo_de_user ));
-		hashHistory.push('/grupos');
+		hashHistory.push('/admin/grupos');
 		//this._signUpFirebase(email, password);
 
 		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE
 		// PQ O METODO createUserWithEmailAndPassword CRIA UM USER EM UMA TABLEA A PARTE
 		// http://stackoverflow.com/questions/14673708/how-do-i-return-a-list-of-users-if-i-use-the-firebase-simple-username-password
-
-	}
-
-	_login(usernameOrEmail, password){
-
-		let emailFirebase = usernameOrEmail;
-
-		console.log("Dispatching");
-		this.props.dispatch(loginUser({"email_or_username":usernameOrEmail, "password": password}, firebaseAuth._signInFirebase.bind(this)));
-		//this._getProfilePicture();
-		//firebaseAuth._signInFirebase(emailFirebase, password);
-		hashHistory.push('/grupos');
-		//this.context.router.push('#/grupos');
-		//this.setState({atualizaPagina: true});
 
 	}
 
@@ -95,37 +81,7 @@ class AdminContainer extends React.Component{
 			)			
 
 		}
-		// else if(this.props.usuario.user.isCoach == true){
-		// 	// view = (
-		// 	// 	<div>
-		// 	// 		<div className="alert alert-success" role="alert">
-		// 	// 		  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-		// 	// 		</div>
-		// 	// 		<div>
-		// 	// 			<PacientesSupervisionadosContainer />
-		// 	// 		</div>
-		// 	// 	</div>
-		// 	// )
-
-		// 	// view = (
-		// 	// 	<div>
-		// 	// 		<GrupoContainer />
-		// 	// 	</div>
-		// 	// )
-		// 	hashHistory.push('/grupos');
-		// }
-			
-		// }else{
-		// 	view = (
-		// 		<div>
-		// 			<div className="alert alert-success" role="alert">
-		// 			  <strong>Well done, {this.props.usuario.user.username}!</strong> You successfully logged with token <a href="#" className="alink">{this.props.usuario.id_token}</a>.
-		// 			</div>
-		// 		</div>
-		// 	)
-		// }
-
-
+		
 		return(
 			<div>{view}</div>
 		)

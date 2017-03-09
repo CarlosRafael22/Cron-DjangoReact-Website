@@ -51,7 +51,7 @@ export default class GrupoBox extends React.Component{
 
 		return(
 
-			<div className="well col-md-5 mr-1">
+			<div className="well col-md-5 mr-1" key={link}>
 				<div className="row">
 					<Link to={link} className="col-sm-10"><h3 >{this.props.grupo.nome_grupo}</h3></Link>
 				</div>

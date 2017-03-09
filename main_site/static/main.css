@@ -202,3 +202,12 @@ main, #messages-card {
   display: inline-flex;
   vertical-align: bottom;
 }
+
+
+
+/* ADAPTACAO DO CODIGO DO DASHBOARD */
+
+/* PARA TIRAR O ESPACAMENTO DO HEADER E DO SIDEBAR */
+.navbar{
+  margin-bottom: 0px;
+}

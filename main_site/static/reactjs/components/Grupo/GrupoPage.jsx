@@ -2,6 +2,7 @@ import React from "react"
 import GrupoBox from "./GrupoBox"
 import {loadState, saveState} from '../../redux/localStorage'
 import ChatMDL from "../Chat/ChatMDL"
+import ParticipantesGrupoListContainer from "../../containers/Participante/ParticipantesGrupoListContainer"
 
 export default class GrupoPage extends React.Component{
 
@@ -34,8 +35,11 @@ export default class GrupoPage extends React.Component{
 
 		return (
 			<div>
+			<div className="row">
 			<GrupoBox grupo={this.grupo} coachUsername={this.props.params.coachUsername} />
-			<ChatMDL chatID = {this.chatID} />
+			</div>
+			{/*<ChatMDL chatID = {this.chatID} />*/}
+			<ParticipantesGrupoListContainer grupo_id={this.props.params.grupo_id} />
 			</div>
 		)
 	}

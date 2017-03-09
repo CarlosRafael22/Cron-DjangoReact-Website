@@ -29,43 +29,34 @@ class Sidebar extends Component {
 
          <nav className="sidebar-nav">
           <ul className="nav">
-            <li className="nav-item">
-              <Link to={'/dashboard'} className="nav-link" activeClassName="active"><i className="icon-speedometer"></i> {title} <span className="badge badge-info">NEW</span></Link>
-            </li>
-            <li className="nav-title">
-              UI Elements
-            </li>
+           {/* <li className="nav-item">
+                         <Link to={'/dashboard'} className="nav-link" activeClassName="active"><i className="icon-speedometer"></i> {title} <span className="badge badge-info">NEW</span></Link>
+                       </li>
+                       <li className="nav-title">
+                         UI Elements
+                       </li>*/}
             <li className={this.activeRoute("/components")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Components</a>
+              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-puzzle"></i> Visão Geral</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
-                  <Link to={'/components/buttons'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Buttons</Link>
+                  <Link to={'/components/buttons'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Visão Geral</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={'/components/social-buttons'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Social Buttons</Link>
+                  <Link to={'/components/social-buttons'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Feed</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={'/components/cards'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Cards</Link>
+                  <Link to={'/components/cards'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Atualizações</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={'/components/forms'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Forms</Link>
+                  <Link to={'/components/forms'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Biblioteca</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={'/components/modals'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Modals</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/components/switches'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Switches</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/components/tables'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Tables</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/components/tabs'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Tabs</Link>
+                  <Link to={'/components/modals'} className="nav-link" activeClassName="active"><i className="icon-puzzle"></i> Chat do Grupo</Link>
                 </li>
               </ul>
             </li>
             <li className={this.activeRoute("/icons")}>
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Icons</a>
+              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Feed</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
                   <Link to={'/icons/font-awesome'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Font Awesome</Link>
@@ -76,17 +67,15 @@ class Sidebar extends Component {
               </ul>
             </li>
             <li className="nav-item">
-              <Link to={'/widgets'} className="nav-link" activeClassName="active"><i className="icon-calculator"></i> Widgets <span className="badge badge-info">NEW</span></Link>
+              <Link to={'/widgets'} className="nav-link" activeClassName="active"><i className="icon-calculator"></i> Atualizações <span className="badge badge-info">NEW</span></Link>
             </li>
             <li className="nav-item">
-              <Link to={'/charts'} className="nav-link" activeClassName="active"><i className="icon-pie-chart"></i> Charts</Link>
+              <Link to={'/charts'} className="nav-link" activeClassName="active"><i className="icon-pie-chart"></i> Biblioteca</Link>
             </li>
             <li className="divider"></li>
-            <li className="nav-title">
-              Extras
-            </li>
+            
             <li className="nav-item nav-dropdown">
-              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Pages</a>
+              <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick.bind(this)}><i className="icon-star"></i> Chat do Grupo</a>
               <ul className="nav-dropdown-items">
                 <li className="nav-item">
                   <Link to={'/pages/login'} className="nav-link" activeClassName="active"><i className="icon-star"></i> Login</Link>

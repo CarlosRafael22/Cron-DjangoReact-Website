@@ -21,7 +21,7 @@ class Full extends Component {
 
   _updateSidebar(tab){
       //alert(tab);
-      const tabName = (tab == 'grupos'? "Grupos" : "Chats");
+      const tabName = (tab == 'chats'? "Chats" : "Grupos");
       this.setState({sidebarTab: tabName});
   }
 
@@ -38,6 +38,17 @@ class Full extends Component {
     this._updateSidebar(location);
     
   }
+
+  // componentWillUpdate(nextProps, nextState){
+  //   console.log("ATUALIZOU PROPS FULL NO UPDATE");
+  //   console.log(nextProps.location);
+  //   const locationSplit = nextProps.location.pathname.split("/");
+  //   const location = locationSplit[1];
+  //   console.log(locationSplit);
+
+  //   this._updateSidebar(location);
+
+  // }
 
 
   render() {

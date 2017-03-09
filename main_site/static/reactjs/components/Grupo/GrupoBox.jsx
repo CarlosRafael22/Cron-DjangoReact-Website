@@ -11,7 +11,7 @@ export default class GrupoBox extends React.Component{
 			console.log(paciente.foto_perfil);
 			console.log(paciente);
 			return (
-				<Link to={"pacientes/"+paciente.id}>
+				<Link to={"pacientes/"+paciente.id} >
 				{/*<span className="mdl-chip mdl-chip--contact" key={idx}>
 								    <span className="mdl-chip__contact mdl-color--teal mdl-color-text--white">
 								    <div className="avatar">

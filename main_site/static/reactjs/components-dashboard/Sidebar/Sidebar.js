@@ -141,7 +141,9 @@ class Sidebar extends Component {
         {sidebarView}
       </div>
     )
+
   }
+  
 }
 
 export default Sidebar;

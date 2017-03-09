@@ -74,11 +74,27 @@ class PacienteListContainer extends React.Component{
 	}
 
 
+	// _getParticipantesGrupoComId(grupoId){
+
+	// 	//Com o ID da Receita eu pego essa Receita direto do Store ja que eu nao posso passar parametros para o objeto Link que dps acessaria aqui
+	// 	const localState = loadState();
+	// 	const listaGruposCoach = localState.grupos.coachGrupos;
+	// 	console.log(listaGruposCoach[0]);
+	// 	console.log(listaGruposCoach[0]['grupo_id']);
+	// 	for(let i=0;i<listaGruposCoach.length;i++){
+	// 		if(listaGruposCoach[i]['grupo_id'] == grupoId){
+	// 			console.log("PEGANDO PARTICIPANTES DO GRUPO");
+	// 			console.log(listaGruposCoach[i]);
+	// 			return listaGruposCoach[i]['pacientes'];
+	// 		}
+	// 	}
+	// }
+
 	_getParticipantesGrupoComId(grupoId){
 
 		//Com o ID da Receita eu pego essa Receita direto do Store ja que eu nao posso passar parametros para o objeto Link que dps acessaria aqui
-		const localState = loadState();
-		const listaGruposCoach = localState.grupos.coachGrupos;
+		//const localState = loadState();
+		const listaGruposCoach = this.props.grupos.coachGrupos;
 		console.log(listaGruposCoach[0]);
 		console.log(listaGruposCoach[0]['grupo_id']);
 		for(let i=0;i<listaGruposCoach.length;i++){

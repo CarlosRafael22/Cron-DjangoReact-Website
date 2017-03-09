@@ -88,6 +88,9 @@ class Foto_Perfil(models.Model):
 
 	foto = models.ImageField(upload_to=upload_filename, null=True)
 
+	def __str__(self):
+		return str(self.id)
+
 DEFAULT_FOTO_PERFIL_ID = 1
 class Perfil(models.Model):
 	def get_image_path(self, instance):

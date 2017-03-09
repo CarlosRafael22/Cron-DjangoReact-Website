@@ -1,64 +1,4 @@
 
-export const GET_PROFILE_PICTURE_REQUEST = 'GET_PROFILE_PICTURE_REQUEST'
-export const GET_PROFILE_PICTURE_SUCCESS = 'GET_PROFILE_PICTURE_SUCCESS'
-export const GET_PROFILE_PICTURE_FAILURE = 'GET_PROFILE_PICTURE_FAILURE'
-
-function getProfilePictureRequest(){
-  console.log("Pegando a foto do user no action!");
-  return {
-    type: GET_PROFILE_PICTURE_REQUEST,
-    loading: true 
-  }
-}
-
-function getProfilePictureSuccess(profilePicUrl){
-  console.log("Pegou a foto do user no action");
-  return {
-    type: GET_PROFILE_PICTURE_SUCCESS,
-    loading: false,
-    profilePictureURL: profilePicUrl
-  }
-}
-
-function getProfilePictureFailure(errorMessage){
-  console.log("Deu merda na foto do user no action");
-  return {
-    type: GET_PROFILE_PICTURE_FAILURE,
-    loading: false,
-    errorMessage
-  }
-}
-
-export function getProfilePicture(coachUsername){
-
-  console.log("getProfilePicture no action");
-  return dispatch => {
-
-    // We dispatch requestLogin to kickoff the call to the API
-    dispatch(getProfilePictureRequest());
-
-    jQuery.ajax({
-      type: 'GET',
-      url: '/api/fotos_perfis/'+coachUsername.toString()
-    }).done(profilePicUrl => {
-
-      console.log(profilePicUrl);
-      // Dispatch the success action
-      dispatch(getProfilePictureSuccess(profilePicUrl));
-    })
-    .fail(function(xhr, status, error){
-      console.log(error);
-      console.log(xhr);
-
-      // console.log(response);
-      dispatch(getProfilePictureFailure(error))
-
-    });
-
-  }
-}
-
-
 // There are three possible states for our login
 // process and we need actions for each of them
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -183,14 +123,14 @@ export function logoutUser() {
 
 
 //Sign Up User
-export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
+export const CREATE_COACH_REQUEST = 'CREATE_COACH_REQUEST';
+export const CREATE_COACH_SUCCESS = 'CREATE_COACH_SUCCESS';
+export const CREATE_COACH_FAILURE = 'CREATE_COACH_FAILURE';
 
-function requestSignUp(creds) {
+function createCoachRequest(creds) {
   console.log("Request signup");
   return {
-    type: SIGNUP_REQUEST,
+    type: CREATE_COACH_REQUEST,
     isFetching: true,
     isAuthenticated: false,
     creds
@@ -200,7 +140,7 @@ function requestSignUp(creds) {
 function receiveSignUp(authInfo) {
   console.log("Received signup");
   return {
-    type: SIGNUP_SUCCESS,
+    type: CREATE_COACH_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
     id_token: authInfo.token,
@@ -210,7 +150,7 @@ function receiveSignUp(authInfo) {
 
 function signUpError(message) {
   return {
-    type: SIGNUP_FAILURE,
+    type: CREATE_COACH_FAILURE,
     isFetching: false,
     isAuthenticated: false,
     message
@@ -220,14 +160,14 @@ function signUpError(message) {
 
 // Calls the API to get a token and
 // dispatches actions along the way
-export function signUpUser(creds, signUpFirebase, tipo_de_user) {
+export function createCoach(creds, signUpFirebase, tipo_de_user) {
 
-  console.log("Estamos no signup user");
+  console.log("Estamos no create coach");
   console.log(creds);
 
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(requestSignUp(creds))
+    dispatch(createCoachRequest(creds))
 
     // AGORA EU TO MANDANDO DEPENDENDO DE SE A PESSOA Q TA CRIANDO A CONTA EH COACH OU PACIENTE
 
@@ -283,7 +223,7 @@ export function signUpUser(creds, signUpFirebase, tipo_de_user) {
       console.log(xhr);
 
       // console.log(response);
-      dispatch(signUpError(error))
+      dispatch(loginError(error))
 
     });
   }

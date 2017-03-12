@@ -25,3 +25,8 @@ export default class GrupoList extends React.Component{
 		)
 	}
 }
+
+GrupoList.propTypes = {
+	coachUsername: React.PropTypes.string.isRequired,
+	grupos: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+};

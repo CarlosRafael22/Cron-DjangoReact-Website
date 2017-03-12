@@ -56,7 +56,7 @@
     "redux-thunk": "^2.1.0"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require ./main_site/static/reactjs/tests/jsdomSetup.js --recursive ./main_site/static/reactjs/tests/*.spec.jsx",
+    "test": "mocha --compilers js:babel-register --require ./main_site/static/reactjs/tests/jsdomSetup.js --recursive ./main_site/static/reactjs/tests/**/*.spec.jsx",
     "tdd": "npm test -- --watch"
   }
 }

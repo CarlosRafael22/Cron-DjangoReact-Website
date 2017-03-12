@@ -8,6 +8,7 @@ import {createGrupo} from "../../util/firebaseGruposHandler"
 import {getCoachGrupos} from "../../redux/actions/grupos"
 
 import Sidebar from '../../components-dashboard/Sidebar/'
+import {Spinner} from "react-mdl"
 
 class GrupoContainer extends React.Component{
 
@@ -16,18 +17,20 @@ class GrupoContainer extends React.Component{
 		super(props);
 
 		this.state = {
-			coachGrupo: null,
-			grupoSelected: null
+			coachGrupos: null,
+			grupoSelected: null,
+			loading: true
 		}
 
 		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
 		if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
-			console.log("DISPACHANDO GET COACHES");
+			console.log("DISPACHANDO GET GRUPOS");
 			this.props.dispatch(getCoachGrupos(this.props.usuario.user.username));
 		}
 
 		// Pegando os pacientes supervisionados para colocar os checkboxes
-		this._getPacientes();
+		// Isso servia para fazer o GrupoForm mas agora nao tem pra que fazer essa requisicao
+		//this._getPacientes();
 		
 	}
 
@@ -36,7 +39,7 @@ class GrupoContainer extends React.Component{
 		//this.FriendlyChat = new FriendlyChat("messages");
 		//console.log(this.FriendlyChat.userPic);
 		// Assim que for criar o Componente a gnt tenta pegar os chats do coach logado
-		console.log("TENTANDO PEGAR OS CHATS");
+		console.log("TENTANDO PEGAR OS GRUPOS");
 		this.setState({coachGrupos : this._getCoachGrupos() });
 		//this.chatNames = this._getChatNames();
 
@@ -90,7 +93,14 @@ class GrupoContainer extends React.Component{
 
 		console.log("GRUPO PROPS");
 		console.log(this.props);
-		return (
+
+
+		let view;
+		console.log("GRUPO LOADING " + this.props.grupos.loading);
+		if(!this.props.grupos.loading){
+
+			view = (
+
 			<div>
 			
 			{	this.props.children != null ?
@@ -102,6 +112,18 @@ class GrupoContainer extends React.Component{
 					<GrupoListContainer  />
 				</div>
 			}
+			</div>
+			);
+		}else{
+
+			view = (
+				<Spinner />
+			);
+		}
+
+		return (
+			<div>
+				{view}
 			</div>
 		)
 	}

@@ -11,7 +11,7 @@ export default class GrupoBox extends React.Component{
 			console.log(paciente.foto_perfil);
 			console.log(paciente);
 			return (
-				<Link to={"pacientes/"+paciente.id} >
+				<Link to={"pacientes/"+paciente.id} key={idx}>
 				{/*<span className="mdl-chip mdl-chip--contact" key={idx}>
 								    <span className="mdl-chip__contact mdl-color--teal mdl-color-text--white">
 								    <div className="avatar">
@@ -56,7 +56,7 @@ export default class GrupoBox extends React.Component{
 					<Link to={link} className="col-sm-10"><h3 >{this.props.grupo.nome_grupo}</h3></Link>
 				</div>
 				<h4>Pacientes no grupo</h4>
-				<div>
+				<div className="participants-photos">
 					{pacientes}
 				</div>
 				<h4 className="mt-1 float-right">
@@ -66,3 +66,9 @@ export default class GrupoBox extends React.Component{
 		)
 	}
 }
+
+// Failed propType: Required prop `onDelete` was not specified in `ReceitaBox`. Check the render method of `ReceitaList`
+GrupoBox.propTypes = {
+	coachUsername: React.PropTypes.string.isRequired,
+	grupo: React.PropTypes.object.isRequired
+};

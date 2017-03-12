@@ -4,7 +4,7 @@ import {expect} from "chai"
 
 import { sinon, spy } from "sinon"
 
-import UsuarioList from "../components/UsuarioList"
+import UsuarioList from "../components/Usuario/UsuarioList"
 
 describe('<UsuarioList/>', () => {
 	const profiles = [

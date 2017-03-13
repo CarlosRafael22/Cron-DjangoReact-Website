@@ -51,7 +51,13 @@ class AdminContainer extends React.Component{
 
 		console.log("Dispatching SignUp");
 		this.props.dispatch(signUpUser({"username":username, "email":email, "password": password}, firebaseAuth._signUpFirebase.bind(this), tipo_de_user ));
-		hashHistory.push('/admin/grupos');
+
+		//checkando pra ver se ele conseguiu logar mesmo
+		// se nao tiver conseguido entao nao redireciona aggora
+		if(this.props.usuario.user != null){
+			hashHistory.push('/grupos');
+		}
+		
 		//this._signUpFirebase(email, password);
 
 		// QUANDO FIZER O SIGNUP VAMOS CRIAR UM USUARIO EM UMA TABELA NO FIREBASE

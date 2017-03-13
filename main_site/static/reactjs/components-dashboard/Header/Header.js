@@ -40,50 +40,6 @@ class Header extends Component {
 
     const coachImgURL = this.props.profilePictureURL;
 
-
-    let dropdown;
-
-    if(this.props.isLogged){
-      dropdown = (
-
-        <DropdownMenu className="dropdown-menu-right">
-          <DropdownItem header className="text-center"><strong>Account</strong></DropdownItem>
-
-          <DropdownItem><i className="fa fa-bell-o"></i> Updates<span className="badge badge-info">42</span></DropdownItem>
-          <DropdownItem><i className="fa fa-envelope-o"></i> Messages<span className="badge badge-success">42</span></DropdownItem>
-          <DropdownItem><i className="fa fa-tasks"></i> Tasks<span className="badge badge-danger">42</span></DropdownItem>
-          <DropdownItem><i className="fa fa-comments"></i> Comments<span className="badge badge-warning">42</span></DropdownItem>
-
-          <DropdownItem header className="text-center"><strong>Settings</strong></DropdownItem>
-
-          <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
-          <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
-          <DropdownItem><i className="fa fa-usd"></i> Payments<span className="badge badge-default">42</span></DropdownItem>
-          <DropdownItem><i className="fa fa-file"></i> Projects<span className="badge badge-primary">42</span></DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-          <DropdownItem onClick={this.props.logOut.bind(this)}><i className="fa fa-lock"></i> Logout</DropdownItem>
-
-        </DropdownMenu>
-      );
-    }else{
-      dropdown = (
-
-        <DropdownMenu className="dropdown-menu-right">
-          <DropdownItem header className="text-center"><strong>Account</strong></DropdownItem>
-
-          <DropdownItem header className="text-center"><strong>Settings</strong></DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-          <DropdownItem onClick={this.props.logIn.bind(this)}><i className="fa fa-lock"></i> Login</DropdownItem>
-
-        </DropdownMenu>
-
-      );
-      
-    }
-
-
     let headerView;
 
     if(this.props.isLogged){
@@ -117,24 +73,19 @@ class Header extends Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <a onClick={this.toggle} className="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <img src={coachImgURL} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                <span className="hidden-md-down">admin</span>
+                <span className="hidden-md-down">{this.props.usuario.username}</span>
               </a>
             <DropdownMenu className="dropdown-menu-right">
               <DropdownItem header className="text-center"><strong>Account</strong></DropdownItem>
 
               <DropdownItem><i className="fa fa-bell-o"></i> Updates<span className="badge badge-info">42</span></DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<span className="badge badge-success">42</span></DropdownItem>
-              <DropdownItem><i className="fa fa-tasks"></i> Tasks<span className="badge badge-danger">42</span></DropdownItem>
-              <DropdownItem><i className="fa fa-comments"></i> Comments<span className="badge badge-warning">42</span></DropdownItem>
+              <DropdownItem><Link to="/chats"><i className="fa fa-envelope-o"></i> Chats<span className="badge badge-success">42</span></Link></DropdownItem>
 
               <DropdownItem header className="text-center"><strong>Settings</strong></DropdownItem>
 
               <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
               <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
-              <DropdownItem><i className="fa fa-usd"></i> Payments<span className="badge badge-default">42</span></DropdownItem>
-              <DropdownItem><i className="fa fa-file"></i> Projects<span className="badge badge-primary">42</span></DropdownItem>
               <DropdownItem divider />
-              <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
               <DropdownItem onClick={this.props.logOut.bind(this)}><i className="fa fa-lock"></i> Logout</DropdownItem>
 
             </DropdownMenu>

@@ -24,6 +24,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
+from django.contrib.admin.views.decorators import staff_member_required
+
 import json
 
 class IngredienteList(generics.ListCreateAPIView):
@@ -864,7 +866,8 @@ class CustomObtainAuthToken(APIView):
 def render_home(request):
 	return render(request, 'main_view.html')
 
-def render_view1(request):
+@staff_member_required
+def render_admin_view(request):
 	return render(request, 'view1.html')
 
 def render_view2(request):

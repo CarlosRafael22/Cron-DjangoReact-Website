@@ -81,7 +81,8 @@ class NavHeaderContainer extends React.Component{
 
 		let headerDashboardLoggedIn = (
 
-			<HeaderDashboard isLogged = {true} logOut={this._logout.bind(this)} updateSidebar={this.props.updateSidebar.bind(this)} profilePictureURL={this.props.usuario.profilePictureURL} />
+			<HeaderDashboard isLogged = {true} logOut={this._logout.bind(this)} updateSidebar={this.props.updateSidebar.bind(this)} 
+			profilePictureURL={this.props.usuario.profilePictureURL} usuario={this.props.user} />
 		)
 
 

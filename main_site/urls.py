@@ -24,7 +24,8 @@ urlpatterns = [
 	url(r'^api/receitas_ids/$', views.get_receitas_ids),
 
 	url(r'^$', views.render_home),
-	url(r'^ingredientes/$', views.render_view1),
+	# url(r'^ingredientes/$', views.render_view1),
+	url(r'^admin-app/$', views.render_admin_view),
 	url(r'^receitas/$', views.render_view2),
 	url(r'^chat/$', views.render_chat),
 

@@ -23,10 +23,10 @@ class GrupoContainer extends React.Component{
 		}
 
 		// Ja pegando os chats desse coach para assim poder ver se esse paciente tem chat com o coach ou nao
-		if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
-			console.log("DISPACHANDO GET GRUPOS");
-			this.props.dispatch(getCoachGrupos(this.props.usuario.user.username));
-		}
+		// if(this.props.usuario.user != null && this.props.usuario.user.isCoach){
+		// 	console.log("DISPACHANDO GET GRUPOS");
+		// 	this.props.dispatch(getCoachGrupos(this.props.usuario.user.username));
+		// }
 
 		// Pegando os pacientes supervisionados para colocar os checkboxes
 		// Isso servia para fazer o GrupoForm mas agora nao tem pra que fazer essa requisicao
@@ -36,12 +36,10 @@ class GrupoContainer extends React.Component{
 
 
 	componentDidMount(){
-		//this.FriendlyChat = new FriendlyChat("messages");
-		//console.log(this.FriendlyChat.userPic);
+		
 		// Assim que for criar o Componente a gnt tenta pegar os chats do coach logado
 		console.log("TENTANDO PEGAR OS GRUPOS");
-		this.setState({coachGrupos : this._getCoachGrupos() });
-		//this.chatNames = this._getChatNames();
+		//this.setState({coachGrupos : this._getCoachGrupos() });
 
 		componentHandler.upgradeDom();
 	}
@@ -73,12 +71,21 @@ class GrupoContainer extends React.Component{
 
 
 	_getCoachGrupos(){
+		console.log("GRUPO");
 		console.log(this.props.usuario.user.username);
-		 getCoachGrupos(this.props.usuario.user.username, this, function(coachGrupos, thisState){
-			console.log("peguei OS GRUPOS");
-			//return coachGrupos;
-			thisState.setState({coachGrupos: coachGrupos});
-		});
+		// Se ainda nao pegou os grupos entao ele pega
+		if(!this.props.grupos.gruposFetched){
+
+			// this.props.dispatch(getCoachGrupos(this.props.usuario.user.username, this, function(coachGrupos, thisState){
+			// console.log("peguei OS GRUPOS");
+			// //return coachGrupos;
+			// thisState.setState({coachGrupos: coachGrupos});
+			// }));
+
+			this.props.dispatch(getCoachGrupos(this.props.usuario.user.username));
+
+		}
+		 
 	}
 
 	_criarGrupo(nome_grupo, pacientesUsernames){

@@ -94,16 +94,20 @@ function getCoachGruposRequest(){
   console.log("Pegando Grupos do coach no action!");
   return {
     type: GET_COACH_GRUPOS_REQUEST,
-    loading: true 
+    loading: true
   }
 }
 
+// So boto o gruposFetched aqui pq quando ele pega realmente os grupos a gnt diz q pegou
+// e so tira isso qd ele deslogar e nao seta nada como 
+// gruposFetched: false no getCoachGruposRequest
 function getCoachGruposSuccess(coachGrupos){
   console.log("Pegou Grupos do coach no action");
   return {
     type: GET_COACH_GRUPOS_SUCCESS,
     loading: false,
-    coachGrupos: coachGrupos
+    coachGrupos: coachGrupos,
+    gruposFetched: true
   }
 }
 
@@ -112,6 +116,7 @@ function getCoachGruposFailure(errorMessage){
   return {
     type: GET_COACH_GRUPOS_FAILURE,
     loading: false,
+    gruposFetched: false,
     errorMessage
   }
 }
@@ -119,10 +124,12 @@ function getCoachGruposFailure(errorMessage){
 export function getCoachGrupos(coachUsername){
 
   console.log("Tentando pegar Grupos do coach no action");
+  console.log(coachUsername);
   return dispatch => {
 
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(getCoachGruposRequest());
+    console.log(coachUsername);
 
     jQuery.ajax({
       type: 'GET',

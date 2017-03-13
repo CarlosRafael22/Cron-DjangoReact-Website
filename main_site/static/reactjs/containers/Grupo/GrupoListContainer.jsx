@@ -8,6 +8,7 @@ class GrupoListContainer extends React.Component{
 		const grupos = [1,2,3,4,5];
 		console.log("RENDER DO GL CONTAINER");
 		console.log(this.props.grupos.coachGrupos);
+		console.log(this.props.usuario.user.username);
 		return (
 			<div className="col-md-12">
 				<GrupoList grupos={this.props.grupos.coachGrupos} coachUsername={this.props.usuario.user.username} />

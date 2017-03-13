@@ -1,3 +1,4 @@
+import {getCoachGrupos} from "./grupos"
 
 export const GET_PROFILE_PICTURE_REQUEST = 'GET_PROFILE_PICTURE_REQUEST'
 export const GET_PROFILE_PICTURE_SUCCESS = 'GET_PROFILE_PICTURE_SUCCESS'
@@ -130,6 +131,8 @@ export function loginUser(creds, signInFirebase) {
       dispatch(receiveLogin(authInfo));
 
       dispatch(getProfilePicture(authInfo.user.username));
+
+      dispatch(getCoachGrupos(authInfo.user.username));
 
       //this.setState({logado : true, token: authInfo.token, usuario: authInfo.user});
     })

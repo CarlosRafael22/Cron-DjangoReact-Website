@@ -3,6 +3,8 @@ import {
   GET_COACH_GRUPOS_REQUEST, GET_COACH_GRUPOS_SUCCESS, GET_COACH_GRUPOS_FAILURE
 } from '../actions/grupos'
 
+import {LOGOUT_SUCCESS} from '../actions/auth'
+
 export default function profileReducer(state= {
   loading: false,
   coachgrupos: []
@@ -24,17 +26,26 @@ export default function profileReducer(state= {
     })
     case GET_COACH_GRUPOS_REQUEST:
       return Object.assign({}, state, {
-        loading: true
+        loading: true,
+        gruposFetched: false
     })
     case GET_COACH_GRUPOS_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
+        gruposFetched: action.gruposFetched,
         coachGrupos: action.coachGrupos
     })
     case GET_COACH_GRUPOS_FAILURE:
       return Object.assign({}, state, {
         loading: false,
+        gruposFetched: action.gruposFetched,
         error: action.errorMessage
+    })
+    // LIMPANDO A PORRA TODA QD DESLOGA
+    case LOGOUT_SUCCESS:
+    return Object.assign({}, state, {
+      error: null,
+      gruposFetched: false
     })
     default:
       return state

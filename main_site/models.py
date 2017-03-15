@@ -11,6 +11,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+from simple_history.models import HistoricalRecords 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
@@ -180,3 +182,21 @@ class Grupo(models.Model):
 		if not self.id:
 			self.data_inicio = timezone.now()
 		return super(Grupo, self).save(*args, **kwargs)
+
+
+####################################################################################################################################################
+#
+#	CRIACAO DOS MODELS DOS MONITORAMENTOS
+#
+####################################################################################################################################################
+
+class Log_Peso(models.Model):
+	peso = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+	data = models.DateTimeField(auto_now_add=True)
+	participante = models.OneToOneField(Paciente)
+	history = HistoricalRecords()
+
+	def __str__(self):
+		peso_mais_recente = str(self.history.most_recent().peso)
+		response = self.participante.perfil.user.username + " " + peso_mais_recente
+		return response

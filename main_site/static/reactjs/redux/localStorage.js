@@ -9,7 +9,7 @@ export const loadState = () => {
 			return undefined;
 		}
 		const parsed = JSON.parse(serializedState);
-		console.log(parsed);
+		//console.log(parsed);
 		return parsed;
 	}catch(error){
 		console.log(error);
@@ -22,8 +22,8 @@ export const saveState = (state) => {
 	try{
 		const serializedState = JSON.stringify(state);
 		localStorage.setItem('state', serializedState);
-		console.log(serializedState);
-		console.log(localStorage);
+		// console.log(serializedState);
+		// console.log(localStorage);
 	}catch(error){
 		console.log("Deu erro ao salvar no localStorage");
 		console.log(error);

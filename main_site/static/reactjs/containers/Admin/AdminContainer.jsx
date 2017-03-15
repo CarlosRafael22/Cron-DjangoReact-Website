@@ -14,22 +14,23 @@ import { hashHistory } from 'react-router'
 
 import RegisterPage from '../../views-dashboard/Pages/Register'
 
-class AdminContainer extends React.Component{
+// Usa isso para poder chamar o {AdminContainer} no test
+export class AdminContainer extends React.Component{
 
 	constructor(){
 		super();
 
 		console.log(this.state);
 		const localStorageState = loadState();
-		this.state = {
-			django_token: localStorage.getItem('id_token'),
-			usuario: localStorage.getItem('user'),
-			localStorageState: localStorageState,
-			atualizaPagina: false
-		};
+		// this.state = {
+		// 	django_token: localStorage.getItem('id_token'),
+		// 	usuario: localStorage.getItem('user'),
+		// 	localStorageState: localStorageState,
+		// 	atualizaPagina: false
+		// };
 		console.log(this.state);
 		console.log("Home Local Storage");
-		console.log(localStorage);
+		//console.log(localStorage);
 		console.log(this.context);
 		
 	}

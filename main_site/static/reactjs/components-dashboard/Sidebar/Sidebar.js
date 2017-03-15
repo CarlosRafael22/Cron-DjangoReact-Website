@@ -3,6 +3,10 @@ import { Link } from 'react-router'
 
 class Sidebar extends Component {
 
+  constructor(props){
+    super(props);
+  }
+
   handleClick(e) {
     e.preventDefault();
     e.target.parentElement.classList.toggle('open');

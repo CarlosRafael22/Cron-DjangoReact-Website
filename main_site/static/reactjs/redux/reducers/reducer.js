@@ -11,7 +11,7 @@ import { combineReducers } from 'redux'
 
 var reducer = combineReducers({
   usuario: auth,
-  receitas: receitasReducer,
+  // receitas: receitasReducer,
   pacientes_supervisionados: coachPatients,
   pacientes: patientsReducer,
   coaches: coachesReducer,

@@ -26,8 +26,7 @@ export default function auth(state = {
       isFetching: false,
       isAuthenticated: true,
       id_token: action.id_token,
-      user: action.user,
-      errorMessage: ''
+      user: action.user
     })
     case SIGNUP_FAILURE:
       return Object.assign({}, state, {
@@ -46,8 +45,7 @@ export default function auth(state = {
         isFetching: false,
         isAuthenticated: true,
         id_token: action.id_token,
-        user: action.user,
-        errorMessage: ''
+        user: action.user
       })
     case LOGIN_FAILURE:
       return Object.assign({}, state, {

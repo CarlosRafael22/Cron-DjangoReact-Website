@@ -8,32 +8,29 @@ import {AdminContainer} from "../../containers/Admin/AdminContainer"
 import RegisterPage from "../../views-dashboard/Pages/Register"
 
 describe('<AdminContainer/>', () => {
-	const pacientes1 = [
-	{"id": 1, "foto_perfil": "http://localhost:8000/media/fad260e3-c530-48ec-ad0a-d546e6ebd2e2.jpg"},
-	{"id": 2, "foto_perfil": "http://localhost:8000/media/fad260e3-c530-48ec-ad0a-d546e6ebd2e2.jpg"}];
 
-	const grupo1 = {
-		"nome_grupo": "Grupo 1",
-		"grupo_id": 2,
-		"pacientes": pacientes1,
-		"data_inicio": "2017-02-24"
-	};
+  /**
+   * Mock out the top level Redux store with all the required 
+   * methods and have it return the provided state by default.
+   * @param {Object} state State to populate in store
+   * @return {Object} Mock store
+   */
+  function createMockStore(state) {
+    return {
+      subscribe: () => {},
+      dispatch: () => {},
+      getState: () => {
+        return {...state};
+      }
+    };
+  }
 
-
-  const pacientes2 = [
-  {"id": 3, "foto_perfil": "http://localhost:8000/media/fad260e3-c530-48ec-ad0a-d546e6ebd2e2.jpg"},
-  {"id": 4, "foto_perfil": "http://localhost:8000/media/fad260e3-c530-48ec-ad0a-d546e6ebd2e2.jpg"}];
-
-  const grupo2 = {
-    "nome_grupo": "Grupo 1",
-    "grupo_id": 3,
-    "pacientes": pacientes2,
-    "data_inicio": "2017-02-24"
+  const storeStateMock = {
+    myReducer:{
+      someState: 'ABC'
+    }
   };
 
-  const grupos = [grupo1, grupo2];
-
-	const coachUsername = "debora";
 
 	// it('should render RegisterPage', function () {
  //    	const wrapper = shallow(<AdminContainer />);

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, 
-	Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil, Log_Peso)
+	Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil, Log_Peso, Porcao, Refeicao, Log_Refeicao, Diario_Alimentar)
 from simple_history.admin import SimpleHistoryAdmin
 
 # Register your models here.
@@ -17,3 +17,7 @@ admin.site.register(Chat)
 admin.site.register(Grupo)
 admin.site.register(Foto_Perfil)
 admin.site.register(Log_Peso, SimpleHistoryAdmin)
+admin.site.register(Porcao)
+admin.site.register(Refeicao)
+admin.site.register(Log_Refeicao)
+admin.site.register(Diario_Alimentar)

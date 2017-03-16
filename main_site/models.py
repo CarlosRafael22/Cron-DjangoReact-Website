@@ -180,7 +180,7 @@ class Grupo(models.Model):
 
 	def save(self, *args, **kwargs):
 		if not self.id:
-			self.data_inicio = timezone.now()
+			self.data_inicio = timezone.localtime(timezone.now())
 		return super(Grupo, self).save(*args, **kwargs)
 
 
@@ -192,7 +192,7 @@ class Grupo(models.Model):
 
 class Log_Peso(models.Model):
 	peso = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-	data = models.DateTimeField(auto_now_add=True)
+	data = models.DateTimeField()
 	participante = models.OneToOneField(Paciente)
 	history = HistoricalRecords()
 
@@ -200,3 +200,46 @@ class Log_Peso(models.Model):
 		peso_mais_recente = str(self.history.most_recent().peso)
 		response = self.participante.perfil.user.username + " " + peso_mais_recente
 		return response
+
+	def save(self, *args, **kwargs):
+		if not self.id:
+			self.data = timezone.localtime(timezone.now())
+		return super(Log_Peso, self).save(*args, **kwargs)
+
+# Create your models here.
+class Porcao(models.Model):
+	quantidade = models.CharField(max_length=50, null=True)
+	ingrediente = models.CharField(max_length=100)
+
+	def __str__(self):
+		return str(self.quantidade)+" "+self.ingrediente
+
+# ManyToMany pq a porcao pode aparecer em varias refeicoes diferentes ja que ela vai ser
+# numero exato de quantidade(ex: 3colheres, 2 copos..) e  ingrediente(ex: frango grelhado, vinagrete)
+class Refeicao(models.Model):
+	nome_refeicao = models.CharField(max_length=50)
+	porcoes = models.ManyToManyField(Porcao)
+
+	def __str__(self):
+		return self.nome_refeicao + " " + str(self.id)
+
+class Log_Refeicao(models.Model):
+	refeicao = models.OneToOneField(Refeicao)
+	data_hora = models.DateTimeField()
+	local = models.CharField(max_length=50)
+	satisfacao = models.CharField(max_length=50)
+	diario_alimentar = models.ForeignKey("Diario_Alimentar", related_name="logs_refeicoes")
+
+	def __str__(self):
+		return self.refeicao.nome_refeicao + " em " + str(self.data_hora)
+
+	def save(self, *args, **kwargs):
+		if not self.id:
+			self.data_hora = timezone.localtime(timezone.now())
+		return super(Log_Refeicao, self).save(*args, **kwargs)
+
+class Diario_Alimentar(models.Model):
+	participante = models.OneToOneField(Paciente)
+	# pode-se acessar os log_refeicao desse diario por Diario.logs_refeicoes ja que tem a relacao inversa
+	# do ForeignKey no Log_Refeicao
+

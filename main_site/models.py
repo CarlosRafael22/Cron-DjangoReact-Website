@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # Unique identifier pra gerar o nome da imagem
 import uuid
-import datetime
+from datetime import datetime
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -122,7 +122,7 @@ class PessoaManager(models.Manager):
 
 		# Convertando para receber no formato dd/mm/yyyy e ja mandar o date
 		if data_nascimento:
-			data_nascimento = datetime.datetime.strptime(data_nascimento, "%d/%m/%Y").date()
+			data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
 		perfil = Perfil(user=usuario, cpf=cpf, data_nascimento=data_nascimento)
 		perfil.save()
 
@@ -223,11 +223,27 @@ class Refeicao(models.Model):
 	def __str__(self):
 		return self.nome_refeicao + " " + str(self.id)
 
+class Foto_Refeicao(models.Model):
+	def upload_filename(instance, filename):
+		extension = filename.split(".")[-1]
+		return "{}.{}".format(uuid.uuid4(), extension)
+
+	foto = models.ImageField(upload_to=upload_filename, null=True)
+
+	def __str__(self):
+		return str(self.id)
+
 class Log_Refeicao(models.Model):
-	refeicao = models.OneToOneField(Refeicao)
+	# Pode ser a descricao da Refeicao ou a foto entao ambos tem q ser null=True mas tem q ter um dos dois
+	refeicao = models.OneToOneField(Refeicao, null=True)
+	# Ou o usuario pode colocar uma foto ao inves de descrever a refeicao
+	refeicao_foto = models.OneToOneField(Foto_Refeicao, null=True)
+
+	# O usuario pode logar uma refeicao mas ter feito a mesma em algum horario antes
+	#  entao ele vai ter q setar o horario na mao por isso que aqui nao pode seta-lo automaticamente
 	data_hora = models.DateTimeField()
-	local = models.CharField(max_length=50)
-	satisfacao = models.CharField(max_length=50)
+	local = models.CharField(max_length=50, null=True)
+	satisfacao = models.CharField(max_length=50, null=True)
 	diario_alimentar = models.ForeignKey("Diario_Alimentar", related_name="logs_refeicoes")
 
 	def __str__(self):
@@ -235,11 +251,16 @@ class Log_Refeicao(models.Model):
 
 	def save(self, *args, **kwargs):
 		if not self.id:
-			self.data_hora = timezone.localtime(timezone.now())
+			# Se forneceram data e hora a gnt cria com o que deram se nao vai no automatico
+			if not self.data_hora:
+				self.data_hora = timezone.localtime(timezone.now())
+			else:
+				dt = datetime.strptime(self.data_hora, "%d/%m/%y %H:%M")
+				self.data_hora = dt
 		return super(Log_Refeicao, self).save(*args, **kwargs)
 
 class Diario_Alimentar(models.Model):
 	participante = models.OneToOneField(Paciente)
-	# pode-se acessar os log_refeicao desse diario por Diario.logs_refeicoes ja que tem a relacao inversa
+	# pode-se acessar os logs_refeicoes desse diario por Diario.logs_refeicoes ja que tem a relacao inversa
 	# do ForeignKey no Log_Refeicao
 

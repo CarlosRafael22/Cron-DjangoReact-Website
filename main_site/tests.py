@@ -78,22 +78,32 @@ class Log_RefeicaoTest(TestCase):
 
 
 
-# class Diario_AlimentarTest(TestCase):
+class Diario_AlimentarTest(TestCase):
 
-# 	def setUp(self):
-# 		p1 = Porcao.objects.create(ingrediente="2 pedaços pequenos de carne")
-# 		p2  = Porcao.objects.create(ingrediente="2 colheres de feijao")
+	def setUp(self):
+		p1 = Porcao.objects.create(ingrediente="2 pedaços pequenos de carne")
+		p2  = Porcao.objects.create(ingrediente="2 colheres de feijao")
 
-# 		r = Refeicao.objects.create(nome_refeicao="Almoço")
-# 		r.porcoes.add(p1,p2)
-# 		r.save()
+		r = Refeicao.objects.create(nome_refeicao="Almoço")
+		r.porcoes.add(p1,p2)
+		r.save()
 
-# 		Log_Refeicao.objects.create(refeicao=r, local="Casa", satisfacao="Saciada")
+		# Criando o diario alimentar para usar no log
+		# Tem que adicionar um paciente para usa-lo no Diario
+		user = User.objects.create_user(username="augusta", email="augusta@hotmail.com", password="augustaword")
+		perfil = Perfil.objects.create(user=user)
+		augusta = Paciente.objects.create(perfil=perfil)
 
-# 		# Diario_Alimentar.objects.create(par)
+		diario = Diario_Alimentar.objects.create(participante=augusta)
 
-# 	def test_logRefeicao(self):
-# 		log1 = Log_Refeicao.objects.get(id=1)
-# 		self.assertTrue(isinstance(log1, Log_Refeicao))
-# 		self.assertEqual(log1.refeicao.porcoes.count(), 2)
-# 		self.assertEqual(log1.refeicao.nome_refeicao, "Almoço")
+		Log_Refeicao.objects.create(refeicao=r, local="Casa", satisfacao="Saciada", diario_alimentar = diario)
+
+		# Diario_Alimentar.objects.create(par)
+
+	def test_DiarioTemLog(self):
+		log1 = Log_Refeicao.objects.get(id=1)
+		diario = Diario_Alimentar.objects.get(id=1)
+		augusta = Paciente.objects.get(id=1)
+
+		self.assertTrue(log1 in diario.logs_refeicoes.all())
+		self.assertEqual(diario.participante, augusta)

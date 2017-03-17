@@ -264,3 +264,6 @@ class Diario_Alimentar(models.Model):
 	# pode-se acessar os logs_refeicoes desse diario por Diario.logs_refeicoes ja que tem a relacao inversa
 	# do ForeignKey no Log_Refeicao
 
+	def __str__(self):
+		return "Diario " + self.participante.perfil.user.username
+

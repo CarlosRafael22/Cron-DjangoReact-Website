@@ -3,11 +3,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, 
+	Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil, Porcao, Refeicao, Foto_Refeicao, Log_Refeicao, Diario_Alimentar, Log_Peso)
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
 	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer, GrupoSerializer,
-	Foto_PerfilSerializer)
+	Foto_PerfilSerializer, PorcaoSerializer, RefeicaoSerializer, Foto_RefeicaoSerializer, Log_PesoSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
@@ -861,6 +862,38 @@ class CustomObtainAuthToken(APIView):
 		# "first_name": user_serialized.data['first_name'], "last_name": user_serialized.data['last_name'],
 		# "id": user_serialized.data['id']}
 		return Response({'token': token.key, 'user': user})
+
+
+##################################################################################################################
+####
+####		VIEWS RELACIONADOS A MONITORAMENTO
+####
+##################################################################################################################
+
+class Log_PesoList(generics.ListCreateAPIView):
+	queryset = Log_Peso.objects.all()
+	serializer_class = Log_PesoSerializer
+
+class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Log_Peso.objects.all()
+	serializer_class = Log_PesoSerializer
+
+class PorcaoList(generics.ListCreateAPIView):
+	queryset = Porcao.objects.all()
+	serializer_class = PorcaoSerializer
+
+class PorcaoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Porcao.objects.all()
+	serializer_class = PorcaoSerializer
+
+class RefeicaoList(generics.ListCreateAPIView):
+	queryset = Refeicao.objects.all()
+	serializer_class = RefeicaoSerializer
+
+class RefeicaoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Refeicao.objects.all()
+	serializer_class = RefeicaoSerializer
+
 
 #########################################################################
 def render_home(request):

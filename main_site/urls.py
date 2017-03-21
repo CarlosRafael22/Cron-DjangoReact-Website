@@ -57,6 +57,11 @@ urlpatterns = [
 	url(r'^api/grupos/(?P<pk>[0-9]+)/$', views.GrupoDetail.as_view()),
 	url(r'^api/grupos/coach/(?P<coachUsername>[\w]+)/$', views.get_coach_grupos),
 
+	url(r'^api/porcoes/$', views.PorcaoList.as_view()),
+	url(r'^api/porcoes/(?P<pk>[0-9]+)/$', views.PorcaoDetail.as_view()),
+	url(r'^api/refeicoes/$', views.RefeicaoList.as_view()),
+	url(r'^api/refeicoes/(?P<pk>[0-9]+)/$', views.RefeicaoDetail.as_view()),
+
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),
 	

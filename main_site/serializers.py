@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, Chat, Grupo, Foto_Perfil)
+from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, Foto_Receita, Perfil, Paciente, Coach, Ordem_Passo_na_Parte_Receita, 
+	Chat, Grupo, Foto_Perfil, Log_Peso, Porcao, Refeicao, Foto_Refeicao, Log_Refeicao, Diario_Alimentar)
 from django.contrib.auth.models import User
 import json
 
@@ -422,3 +423,42 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+####################################################################################################################################################
+#
+#	CRIACAO DOS SERIALIZERS DO DIARIO ALIMENTAR
+#
+####################################################################################################################################################
+
+
+class Log_PesoSerializer(serializers.ModelSerializer):
+	participante = PacienteSerializer()
+
+	class Meta:
+		model = Log_Peso
+		fields = '__all__'
+
+class PorcaoSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Porcao
+		fields = '__all__'
+
+class RefeicaoSerializer(serializers.ModelSerializer):
+	porcoes = PorcaoSerializer(many=True)
+
+	class Meta:
+		model = Refeicao
+		fields = '__all__'
+
+class Foto_RefeicaoSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Foto_Refeicao
+		fields = '__all__'
+
+
+
+
+

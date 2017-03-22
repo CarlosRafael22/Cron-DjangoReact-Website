@@ -450,15 +450,6 @@ class Foto_RefeicaoSerializer(serializers.ModelSerializer):
 		model = Foto_Refeicao
 		fields = '__all__'
 
-class Log_RefeicaoSerializer(serializers.ModelSerializer):
-	refeicao = RefeicaoSerializer()
-	refeicao_foto = Foto_RefeicaoSerializer()
-	# diario_alimentar = Diario_AlimentarSerializer()
-
-	class Meta:
-		model = Log_Refeicao
-		exclude = ('diario_alimentar', )
-
 class Diario_AlimentarSerializer(serializers.ModelSerializer):
 	participante = PacienteSerializer()
 	# logs_refeicoes =  serializers.SerializerMethodField('get_logs_refeicoes')
@@ -471,7 +462,23 @@ class Diario_AlimentarSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Diario_Alimentar
-		fields = ('participante', 'logs_refeicoes')
+		fields = ('id', 'participante', 'logs_refeicoes')
+
+class Log_RefeicaoSerializer(serializers.ModelSerializer):
+	refeicao = RefeicaoSerializer()
+	refeicao_foto = Foto_RefeicaoSerializer()
+	# diario_alimentar = Diario_AlimentarSerializer()
+	diario_alimentar_id = serializers.IntegerField(source='diario_alimentar.id')
+	# diario_id =  serializers.SerializerMethodField('get_diario_id')
+
+	# def get_diario_id(self, log_refeicao):
+	# 	return log_refeicao.diario_alimentar.id
+
+	class Meta:
+		model = Log_Refeicao
+		# fields = '__all__'
+		exclude = ('diario_alimentar', )
+
 
 
 

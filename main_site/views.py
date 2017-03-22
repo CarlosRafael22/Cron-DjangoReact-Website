@@ -936,6 +936,14 @@ class Diario_AlimentarDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Diario_Alimentar.objects.all()
 	serializer_class = Diario_AlimentarSerializer
 
+class Log_PesoList(generics.ListCreateAPIView):
+	queryset = Log_Peso.objects.all()
+	serializer_class = Log_PesoSerializer
+
+class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Log_Peso.objects.all()
+	serializer_class = Log_PesoSerializer
+
 #########################################################################
 def render_home(request):
 	return render(request, 'main_view.html')

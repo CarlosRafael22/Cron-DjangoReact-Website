@@ -12,6 +12,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
+from simple_history.models import HistoricalRecords
+
 # from drf_extra_fields.fields import Base64ImageField
 
 # class IngredienteSerializer(serializers.Serializer):
@@ -423,9 +425,40 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 #
 ####################################################################################################################################################
 
+class Peso_HistorySerializer(serializers.ModelSerializer):
+	peso = serializers.DecimalField(max_digits=5, decimal_places=2)
+	data = serializers.DateTimeField()
+
+	def to_representation(self, history):
+		# Chegando com o history object
+
+		history_logs = []
+		for log in history:
+			log_h = {
+				'peso': log.peso,
+				'data': log.history_date
+			}
+		history_logs.append(log_h)
+
+		return history_logs
 
 class Log_PesoSerializer(serializers.ModelSerializer):
 	participante = PacienteSerializer()
+	logs = serializers.SerializerMethodField('get_history')
+
+	def get_history(self, log_peso):
+		history = log_peso.history.all()
+		# To tentando fazer com que ele receba a lista de history para o serializer processar isso
+		history_logs = []
+
+		for log in history:
+			log_peso = {
+				'peso': log.peso,
+				'data': log.history_date
+			}
+			history_logs.append(log_peso)
+
+		return history_logs
 
 	class Meta:
 		model = Log_Peso

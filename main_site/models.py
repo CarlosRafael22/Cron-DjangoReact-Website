@@ -196,6 +196,12 @@ class Log_Peso(models.Model):
 	participante = models.OneToOneField(Paciente)
 	history = HistoricalRecords()
 
+
+	# for log in log1.history.all():
+	# 	type(log.history_date)
+	# 	print(log.history_date - timedelta(hours=3) )
+	#  TEM QUE SUBTRAIR 3 HORAS PARA DAR A HORA DAQUI JA QUE ELE PEGA A HORA DE GREENWICH
+
 	def __str__(self):
 		peso_mais_recente = str(self.history.most_recent().peso)
 		response = self.participante.perfil.user.username + " " + peso_mais_recente
@@ -204,6 +210,14 @@ class Log_Peso(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.id:
 			self.data = timezone.localtime(timezone.now())
+
+		# Salvando o peso mais recente no Paciente
+		# import pdb;
+		# pdb.set_trace();
+		# partic = Paciente.objects.get(id=self.participante.id)
+		# partic.peso = self.history.most_recent().peso
+		# partic.save()
+
 		return super(Log_Peso, self).save(*args, **kwargs)
 
 # Create your models here.
@@ -247,7 +261,14 @@ class Log_Refeicao(models.Model):
 	diario_alimentar = models.ForeignKey("Diario_Alimentar", related_name="logs_refeicoes")
 
 	def __str__(self):
-		return self.refeicao.nome_refeicao + " em " + str(self.data_hora)
+		# Ve se o log tem uma foto ou objeto refeicao
+		# import pdb;
+		# pdb.set_trace();
+
+		if self.refeicao:
+			return self.refeicao.nome_refeicao + " em " + str(self.data_hora)
+		else:
+			return "Foto Refeicao " + " em " + str(self.data_hora)
 
 	def save(self, *args, **kwargs):
 		if not self.id:

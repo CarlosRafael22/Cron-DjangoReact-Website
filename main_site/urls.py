@@ -61,6 +61,13 @@ urlpatterns = [
 	url(r'^api/porcoes/(?P<pk>[0-9]+)/$', views.PorcaoDetail.as_view()),
 	url(r'^api/refeicoes/$', views.RefeicaoList.as_view()),
 	url(r'^api/refeicoes/(?P<pk>[0-9]+)/$', views.RefeicaoDetail.as_view()),
+	url(r'^api/fotos_refeicoes/$', views.Foto_RefeicaoList.as_view()),
+	url(r'^api/fotos_refeicoes/(?P<pk>[0-9]+)/$', views.Foto_RefeicaoDetail.as_view()),
+	url(r'^api/fotos_refeicoes/foto/(?P<foto_id>[0-9]+)/$', views.get_foto_refeicao),
+	url(r'^api/logs_refeicoes/$', views.Log_RefeicaoList.as_view()),
+	url(r'^api/logs_refeicoes/(?P<pk>[0-9]+)/$', views.Log_RefeicaoDetail.as_view()),
+	url(r'^api/diarios_alimentares/$', views.Diario_AlimentarList.as_view()),
+	url(r'^api/diarios_alimentares/(?P<pk>[0-9]+)/$', views.Diario_AlimentarDetail.as_view()),
 
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),

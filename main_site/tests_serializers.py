@@ -47,6 +47,37 @@ class PorcaoTest(TestCase):
 		self.assertEqual(data['ingrediente'], self.porcao_attributes['ingrediente'])
 
 
+class Diario_AlimentarTest(TestCase):
+
+	def setUp(self):
+		import pdb;
+		pdb.set_trace();
+
+		self.porcao_attributes = {
+			'quantidade' : '3 pedaços pequenos',
+			'ingrediente' : 'de frango grelhado'
+		}
+
+		self.serializer_data = {
+			'quantidade' : '2 conchas',
+			'ingrediente' : 'de arroz'
+		}
+
+		self.porcao = Porcao.objects.create(**self.porcao_attributes)
+		# self.serializer = PorcaoSerializer(instance=self.porcao)
+		self.serializer =  PorcaoSerializer(data=self.porcao_attributes)
+
+	def test_constains_expected_fields(self):
+		is_valid = self.serializer.is_valid()
+		data = self.serializer.initial_data
+
+		# import pdb;
+		# pdb.set_trace();
+		self.assertTrue(is_valid)
+		self.assertEqual(set(data.keys()), set(['quantidade', 'ingrediente']))
+
+
+
 # class RefeicaoTest(TestCase):
 
 # 	def setUp(self):

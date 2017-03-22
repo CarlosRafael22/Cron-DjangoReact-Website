@@ -8,7 +8,7 @@ from .models import (Ingrediente, Receita, Passo_da_Receita, Parte_da_Receita, F
 from django.contrib.auth.models import User
 from .serializers import (IngredienteSerializer, ReceitaSerializer, Passo_da_ReceitaSerializer, Parte_da_ReceitaSerializer, Foto_ReceitaSerializer, 
 	UserSerializer, PerfilSerializer, PacienteSerializer, CoachSerializer, Ordem_Passo_na_Parte_ReceitaSerializer, ChatSerializer, GrupoSerializer,
-	Foto_PerfilSerializer, PorcaoSerializer, RefeicaoSerializer, Foto_RefeicaoSerializer, Log_PesoSerializer)
+	Foto_PerfilSerializer, PorcaoSerializer, RefeicaoSerializer, Foto_RefeicaoSerializer, Log_PesoSerializer, Log_RefeicaoSerializer, Diario_AlimentarSerializer)
 
 # IMPORTANDO O NOVO SERIALIZER DO CustomObtainAuthToken
 from .serializers import AuthCustomTokenSerializer
@@ -894,6 +894,47 @@ class RefeicaoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Refeicao.objects.all()
 	serializer_class = RefeicaoSerializer
 
+class Foto_RefeicaoList(generics.ListCreateAPIView):
+	queryset = Foto_Refeicao.objects.all()
+	serializer_class = Foto_RefeicaoSerializer
+
+class Foto_RefeicaoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Foto_Refeicao.objects.all()
+	serializer_class = Foto_RefeicaoSerializer
+
+@api_view(['GET'])
+#@renderer_classes((JPEGRenderer,))
+#@parser_classes((FormParser, MultiPartParser,FileUploadParser,))
+def get_foto_refeicao(request, foto_id, format=None):
+
+	if request.method == 'GET':
+
+		foto = Foto_Refeicao.objects.get(id=foto_id)
+
+		#  USA O CONTEXT PARA QUE ELE VOLTE COM A URL COMPLETA DA FOTO
+		#  http://masnun.com/2015/10/26/django-rest-framework-displaying-full-url-for-imagefield-or-filefield.html
+		foto_serialized = Foto_RefeicaoSerializer(foto, context={"request": request})
+
+		#return HttpResponse(foto_serialized.data, content_type="image/jpg")
+		#return Response(foto_serialized.data['foto'], content_type="image/jpg")
+		# So vou mostrar qual a URL onde a foto esta, o <img src> pode acessar essa url diretamente e pegar a imagem
+		return Response(foto_serialized.data['foto'], status=status.HTTP_200_OK)
+
+class Log_RefeicaoList(generics.ListCreateAPIView):
+	queryset = Log_Refeicao.objects.all()
+	serializer_class = Log_RefeicaoSerializer
+
+class Log_RefeicaoDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Log_Refeicao.objects.all()
+	serializer_class = Log_RefeicaoSerializer
+
+class Diario_AlimentarList(generics.ListCreateAPIView):
+	queryset = Diario_Alimentar.objects.all()
+	serializer_class = Diario_AlimentarSerializer
+
+class Diario_AlimentarDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Diario_Alimentar.objects.all()
+	serializer_class = Diario_AlimentarSerializer
 
 #########################################################################
 def render_home(request):

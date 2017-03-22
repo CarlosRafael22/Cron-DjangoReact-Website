@@ -197,14 +197,6 @@ class Foto_PerfilSerializer(serializers.ModelSerializer):
 		model = Foto_Perfil
 		fields = '__all__'
 
-	# def create(self, validated_data):
-
-	# 	# import pdb;
-	# 	# pdb.set_trace();
-
-	# 	foto = Foto_Receita.objects.create(**validated_data)
-	# 	return foto
-
 class PerfilSerializer(serializers.ModelSerializer):
 	user = UserSerializer()
 	data_nascimento = serializers.DateField()
@@ -457,6 +449,30 @@ class Foto_RefeicaoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Foto_Refeicao
 		fields = '__all__'
+
+class Log_RefeicaoSerializer(serializers.ModelSerializer):
+	refeicao = RefeicaoSerializer()
+	refeicao_foto = Foto_RefeicaoSerializer()
+	# diario_alimentar = Diario_AlimentarSerializer()
+
+	class Meta:
+		model = Log_Refeicao
+		exclude = ('diario_alimentar', )
+
+class Diario_AlimentarSerializer(serializers.ModelSerializer):
+	participante = PacienteSerializer()
+	# logs_refeicoes =  serializers.SerializerMethodField('get_logs_refeicoes')
+
+	# def get_logs_refeicoes(self, diario):
+	# 	logs = diario.logs_refeicoes.all()
+	# 	logs_serialized = Log_RefeicaoSerializer(logs, many=True)
+
+	# 	return logs_serialized
+
+	class Meta:
+		model = Diario_Alimentar
+		fields = ('participante', 'logs_refeicoes')
+
 
 
 

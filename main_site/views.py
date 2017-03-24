@@ -878,6 +878,17 @@ class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Log_Peso.objects.all()
 	serializer_class = Log_PesoSerializer
 
+@api_view(['GET', 'POST'])
+def logging_peso(request, participante_username, format=None):
+
+	if request.method == 'POST':
+
+		# Pegando o participante para dps pegar os logs do peso
+		participante = Paciente.objects.get(perfil__user__username=participante_username)
+
+		
+
+
 class PorcaoList(generics.ListCreateAPIView):
 	queryset = Porcao.objects.all()
 	serializer_class = PorcaoSerializer
@@ -943,6 +954,36 @@ class Log_PesoList(generics.ListCreateAPIView):
 class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Log_Peso.objects.all()
 	serializer_class = Log_PesoSerializer
+
+@api_view(['GET'])
+def log_peso_participante(request, participanteUsername, format=None):
+
+	if request.method == 'POST':
+
+		participante = Paciente.objects.get(perfil__user__username=participanteUsername)
+
+		# Vai receber da requisicao um json com {peso: 67}
+		# Vou tentar atualizar o Log_Peso, se nao puder eh pq vai criar um Log_Peso para esse participante agora
+		try:
+			log = Log_Peso.objects.get(participante=participante)
+			log.peso(request.data['peso'])
+			log.save()
+		except:
+			Log_Peso.objects.create(participante=participante, peso=request.data['peso'])
+
+		# Pegando o historico do peso pelo Log_Peso para retornar como Response
+		historico_peso = []
+		log = Log_Peso.objects.get(participante=participante)
+		log_history = log.history.all()
+		for log in log_history:
+			log = {
+			"peso" : log.peso,
+			"data_hora" : log.history_date.strftime("%Y-%m-%d %H:%M:%S")
+			}
+			historico_peso.append(log)
+		
+
+		return Response(foto_serialized.data['foto'], status=status.HTTP_200_OK)
 
 #########################################################################
 def render_home(request):

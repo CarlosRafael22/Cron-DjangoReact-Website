@@ -70,6 +70,7 @@ urlpatterns = [
 	url(r'^api/diarios_alimentares/(?P<pk>[0-9]+)/$', views.Diario_AlimentarDetail.as_view()),
 	url(r'^api/logs_pesos/$', views.Log_PesoList.as_view()),
 	url(r'^api/logs_pesos/(?P<pk>[0-9]+)/$', views.Log_PesoDetail.as_view()),
+	# url(r'^api/logs_pesos/participante/(?P<participanteUsername>[\w]+)/$', views.log_peso_participante),
 
 	#url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
 	url(r'^api-token-auth/', views.CustomObtainAuthToken.as_view()),

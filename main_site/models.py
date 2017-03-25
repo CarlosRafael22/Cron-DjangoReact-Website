@@ -288,3 +288,26 @@ class Diario_Alimentar(models.Model):
 	def __str__(self):
 		return "Diario " + self.participante.perfil.user.username
 
+class Log_Item(models.Model):
+	history = HistoricalRecords(inherit=True)
+	person = models.ForeignKey("Person", related_name='logs_item')
+
+
+class Log_Meal(Log_Item):
+	refeicao_nome = models.CharField(max_length=100)
+	data_hora = models.DateTimeField()
+	# person = models.ForeignKey(Person, related_name='logs_meal')
+
+	def __str__(self):
+		return self.refeicao_nome
+
+class Log_Weight(Log_Item):
+	peso = models.IntegerField()
+	data_hora = models.DateTimeField()
+	# person = models.ForeignKey(Person, related_name='logs_weights')
+
+	def __str__(self):
+		return self.peso
+
+class Person(models.Model):
+	nome = models.CharField(max_length=50)

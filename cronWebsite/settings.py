@@ -140,9 +140,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main_site/static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'main_site/static'),
+# ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 #STATS_FILE tells Django where it can find the JSON-file that maps entry-point names to bundle files. 
 #It is because of this stats file that we can use {% render_bundle 'App1' %} in our template. 

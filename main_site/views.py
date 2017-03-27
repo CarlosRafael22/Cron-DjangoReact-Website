@@ -27,6 +27,7 @@ from rest_framework.views import APIView
 
 from django.contrib.admin.views.decorators import staff_member_required
 
+from decimal import Decimal
 import json
 
 class IngredienteList(generics.ListCreateAPIView):
@@ -870,21 +871,21 @@ class CustomObtainAuthToken(APIView):
 ####
 ##################################################################################################################
 
-class Log_PesoList(generics.ListCreateAPIView):
-	queryset = Log_Peso.objects.all()
-	serializer_class = Log_PesoSerializer
+# class Log_PesoList(generics.ListCreateAPIView):
+# 	queryset = Log_Peso.objects.all()
+# 	serializer_class = Log_PesoSerializer
 
-class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
-	queryset = Log_Peso.objects.all()
-	serializer_class = Log_PesoSerializer
+# class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
+# 	queryset = Log_Peso.objects.all()
+# 	serializer_class = Log_PesoSerializer
 
-@api_view(['GET', 'POST'])
-def logging_peso(request, participante_username, format=None):
+# @api_view(['GET', 'POST'])
+# def logging_peso(request, participante_username, format=None):
 
-	if request.method == 'POST':
+# 	if request.method == 'POST':
 
-		# Pegando o participante para dps pegar os logs do peso
-		participante = Paciente.objects.get(perfil__user__username=participante_username)
+# 		# Pegando o participante para dps pegar os logs do peso
+# 		participante = Paciente.objects.get(perfil__user__username=participante_username)
 
 		
 
@@ -955,18 +956,22 @@ class Log_PesoDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Log_Peso.objects.all()
 	serializer_class = Log_PesoSerializer
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def log_peso_participante(request, participanteUsername, format=None):
 
 	if request.method == 'POST':
 
 		participante = Paciente.objects.get(perfil__user__username=participanteUsername)
 
+		import pdb;
+		pdb.set_trace();
+
 		# Vai receber da requisicao um json com {peso: 67}
 		# Vou tentar atualizar o Log_Peso, se nao puder eh pq vai criar um Log_Peso para esse participante agora
 		try:
 			log = Log_Peso.objects.get(participante=participante)
-			log.peso(request.data['peso'])
+			peso = Decimal(request.data['peso'])
+			log.peso(peso)
 			log.save()
 		except:
 			Log_Peso.objects.create(participante=participante, peso=request.data['peso'])
@@ -983,7 +988,7 @@ def log_peso_participante(request, participanteUsername, format=None):
 			historico_peso.append(log)
 		
 
-		return Response(foto_serialized.data['foto'], status=status.HTTP_200_OK)
+		return Response(historico_peso, status=status.HTTP_200_OK)
 
 #########################################################################
 def render_home(request):

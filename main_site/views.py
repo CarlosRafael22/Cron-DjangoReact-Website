@@ -252,8 +252,8 @@ class UserList(generics.ListCreateAPIView):
 		# Se vinher do Browser o content_type = text/plain e ai dou o Response padrao pra ficar do mesmo jeito
 		# Se vinher de uma request Ajax o content_type = application/json e assim indica que to acessando pelo front-end
 		# com isso eu limito o Response para mandar so alguns dados dos Users
-		import pdb;
-		pdb.set_trace();
+		# import pdb;
+		# pdb.set_trace();
 
 		if request.content_type == 'text/plain':
 			serializer = self.get_serializer(queryset, many=True)

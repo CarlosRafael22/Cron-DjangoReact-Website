@@ -426,6 +426,10 @@ class PacienteList(generics.ListCreateAPIView):
 			# ele de um overide no to_representation e mande a resposta de outro jeito
 			serializer = PacienteSerializer(queryset, many=True, context={"limited_representation" : True})
 			return Response(serializer.data)
+		else:
+			serializer = PacienteSerializer(queryset, many=True, context={"limited_representation" : True})
+			return Response(serializer.data)
+
 
 
 
@@ -446,6 +450,9 @@ class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
 		elif request.content_type == 'application/json':
 			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
 			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = PacienteSerializer(instance, context={"limited_representation" : True})
+			return Response(serializer.data)
+		else:
 			serializer = PacienteSerializer(instance, context={"limited_representation" : True})
 			return Response(serializer.data)
 
@@ -511,8 +518,8 @@ class CoachList(generics.ListCreateAPIView):
 		# Se vinher do Browser o content_type = text/plain e ai dou o Response padrao pra ficar do mesmo jeito
 		# Se vinher de uma request Ajax o content_type = application/json e assim indica que to acessando pelo front-end
 		# com isso eu limito o Response para mandar so alguns dados dos Users
-		# import pdb;
-		# pdb.set_trace();
+		import pdb;
+		pdb.set_trace();
 
 		if request.content_type == 'text/plain':
 			serializer = self.get_serializer(queryset, many=True)
@@ -520,6 +527,9 @@ class CoachList(generics.ListCreateAPIView):
 		elif request.content_type == 'application/json':
 			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
 			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = CoachSerializer(queryset, many=True, context={"limited_representation" : True})
+			return Response(serializer.data)
+		else:
 			serializer = CoachSerializer(queryset, many=True, context={"limited_representation" : True})
 			return Response(serializer.data)
 
@@ -588,6 +598,9 @@ class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
 		elif request.content_type == 'application/json':
 			# Se vier do Ajax eu mando um context para o serializer para que dentro dele 
 			# ele de um overide no to_representation e mande a resposta de outro jeito
+			serializer = CoachSerializer(instance, context={"limited_representation" : True})
+			return Response(serializer.data)
+		else:
 			serializer = CoachSerializer(instance, context={"limited_representation" : True})
 			return Response(serializer.data)
 

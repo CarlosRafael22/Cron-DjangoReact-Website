@@ -311,3 +311,41 @@ class Log_Weight(Log_Item):
 
 class Person(models.Model):
 	nome = models.CharField(max_length=50)
+
+class Participante(models.Model):
+	telegram_chat_id = models.CharField(max_length=50)
+	nome = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.nome
+
+class Log_RefeicaoBot(models.Model):
+	refeicao_nome = models.CharField(max_length=100, null = True)
+	descricao_refeicao = models.CharField(max_length=500)
+	data = models.DateTimeField()
+	participante = models.ForeignKey(Participante)
+	# person = models.ForeignKey(Person, related_name='logs_meal')
+
+	def __str__(self):
+		response = self.participante.nome + " ---> " + self.descricao_refeicao
+		return response
+
+class Log_PesoBot(models.Model):
+	# peso = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+	peso = models.FloatField()
+	data = models.DateTimeField()
+	participante = models.ForeignKey(Participante)
+	history = HistoricalRecords()
+
+	def __str__(self):
+		peso_mais_recente = str(self.history.most_recent().peso)
+		response = self.participante.nome + " " + peso_mais_recente
+		return response
+
+	def save(self, *args, **kwargs):
+		if not self.id and not self.data:
+			self.data = timezone.localtime(timezone.now())
+
+		return super(Log_PesoBot, self).save(*args, **kwargs)
+
+
